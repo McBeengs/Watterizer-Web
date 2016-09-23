@@ -1,4 +1,4 @@
-// BASE 15
+// BASE
 var express = require('express');
 var app = express();
 var session = require('express-session');
@@ -10,6 +10,8 @@ var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 var prefixoDados = "/dados";
 var prefixoPortal = "/portal"
+
+var asdjfbj = 0;
 
 //UPLOAD DE ARQUIVOS
 var multer  =   require('multer');
