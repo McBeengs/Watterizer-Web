@@ -11,7 +11,6 @@ var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 var prefixoDados = "/dados";
 var prefixoPortal = "/portal"
 
-var asdjfbj = 0;
 
 //UPLOAD DE ARQUIVOS
 var multer  =   require('multer');
