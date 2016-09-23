@@ -9,7 +9,7 @@ function MainViewModel(data) {
       success: function(response) {
         for (var i = 0; i <= response.length - 2; i++) {
           arrayGastoBanco.push(response[i].substr(response[i].lastIndexOf("\'")+1));
-          console.log(arrayGastoBanco[i]);
+          
         };
       },
       error: function(xhr) {

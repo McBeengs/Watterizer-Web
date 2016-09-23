@@ -8,6 +8,8 @@ var aes = require('aes-cross');
 var crypto = require('crypto')
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
+var prefixoDados = "/dados";
+var prefixoPortal = "/portal"
 
 //UPLOAD DE ARQUIVOS
 var multer  =   require('multer');
@@ -19,16 +21,16 @@ var storage =   multer.diskStorage({
 },
 filename: function (req, file, callback) {
 
- var ext = require('path').extname(file.originalname);
- ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
- if (ext=='.png'||ext=='.jpg'||ext=='.jpg') {
-    isvalid=true;
-    callback(null, 'fotoid1'+ext);
-}
-else {
-    isvalid=false;
-    callback(null, 'invalid');
-}
+    var ext = require('path').extname(file.originalname);
+    ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
+    if (ext=='.png'||ext=='.jpg'||ext=='.jpg') {
+        isvalid=true;
+        callback(null, 'fotoid1'+ext);
+    }
+    else {
+        isvalid=false;
+        callback(null, 'invalid');
+    }
 }
 
 });
@@ -48,16 +50,6 @@ var sess;
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
 module.exports = {
   configure: function(app) {
-    app.use('/portal*', function(req,res,next){
-        sess = req.session;
-        if(sess.login) {
-            next();
-        } else {
-            res.redirect('/index')
-            res.end();
-        }
-    });
-
     // ACESSO A PAGINA INICIAL
     app.get('/index',function(req,res){
         sess = req.session;
@@ -67,108 +59,128 @@ module.exports = {
         else {
             res.sendFile(__dirname + "/public/index.html");
         }
-        
     });
 
     // ACESSO AO PORTAL
-    app.get('/portal',function(req,res){
+    app.use(prefixoPortal+'*', function(req,res,next){
+        sess = req.session;
+        if(sess.login) {
+            next();
+        } else {
+            res.redirect('/index')
+            res.end();
+        }
+    });
+
+    app.get(prefixoPortal+'',function(req,res){
         res.sendFile(__dirname + "/public/portal.html");
     });
 
     // ACESSO AOS GASTOS
-    app.get('/portal/gastos', function(req, res) {
+    app.get(prefixoPortal+'/gastos', function(req, res) {
         res.sendFile(__dirname + "/public/sections/gasto.html");
     });
 
     // ACESSO AOS SETORES
-    app.get('/portal/setores', function(req, res) {
+    app.get(prefixoPortal+'/setores', function(req, res) {
         res.sendFile(__dirname + "/public/sections/setor.html");
     });
 
     // ACESSO AOS USUARIOS
-    app.get('/portal/usuarios', function(req, res) {
+    app.get(prefixoPortal+'/usuarios', function(req, res) {
         res.sendFile(__dirname + "/public/sections/usuario.html");
     });
 
     // ACESSO AS ADVERTENCIAS
-    app.get('/portal/advertencias', function(req, res) {
+    app.get(prefixoPortal+'/advertencias', function(req, res) {
         res.sendFile(__dirname + "/public/sections/advertencia.html");
     });
 
     app.post('/upload',function(req,res){
-      upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        else if (isvalid) {
-            res.end("File is uploaded");
-        }
-        else {
-            res.end("File is invalid");
+        upload(req,res,function(err) {
+            if(err) {
+                return res.end("Error uploading file.");
+            }
+            else if (isvalid) {
+                res.end("File is uploaded");
+            }
+            else {
+                res.end("File is invalid");
+            }
+        });
+    });
+
+    // ACESSO AOS DADOS
+    app.use(prefixoDados+'*', function(req,res,next){
+        sess = req.session;
+        if(sess.login) {
+            next();
+        } else {
+            res.redirect('/index')
+            res.end();
         }
     });
-  });
 
     // TESTE
-    app.get('/test/', function(req, res) {
+    app.get(prefixoDados+'/test/', function(req, res) {
         teste.testConnection(res);
     });
 
     /* ADVERTENCIAS */
     // MOSTRA TODAS AS ADVERTENCIAS
-    app.get('/advertencia/', function(req, res){
+    app.get(prefixoDados+'/advertencia/', function(req, res){
         advertencia.listAll(res);
     });
 
     // ADICIONA UMA NOVA ADVERTENCIA
-    app.post('/advertencia/', function(req, res){
+    app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
 
     /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
-    app.get('/arduino/', function(req, res) {
+    app.get(prefixoDados+'/arduino/', function(req, res) {
         arduino.listAll(res);
     });
 
     // MOSTRA UM ARDUINO
-    app.get('/arduino/:id/', function(req, res) {
+    app.get(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.getOne(req.params.id, res);
     });
 
     // ADICIONA UM NOVO ARDUNO
-    app.post('/arduino/', function(req, res) {
+    app.post(prefixoDados+'/arduino/', function(req, res) {
         arduino.create(req.body, res);
     });
 
     // MODIFICA UM ARDUNO
-    app.put('/arduino/', function(req, res) {
+    app.put(prefixoDados+'/arduino/', function(req, res) {
         arduino.update(req.body, res);
     });
 
     // DELETA UM ARDUNO
-    app.delete('/arduino/:id/', function(req, res) {
+    app.delete(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.delete(req.params.id, res);
     });
 
     /* GASTOS */
     // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
-    app.get('/gasto/', function(req, res) {
+    app.get(prefixoDados+'/gasto/', function(req, res) {
         gasto.listAll(res);
     });
 
     // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS
-    app.get('/gasto/hoje', function(req, res) {
+    app.get(prefixoDados+'/gasto/hoje', function(req, res) {
         gasto.listHoje(res);
     });
 
     // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA
-    app.get('/gasto/:id/', function(req, res) {
+    app.get(prefixoDados+'/gasto/:id/', function(req, res) {
         gasto.getOne(req.params.id, res);
     });
     
     // MOSTRA O GASTO DE UM ARDUINO HOJE
-    app.get('/gasto/hoje/:id/', function(req, res) {
+    app.get(prefixoDados+'/gasto/hoje/:id/', function(req, res) {
         gasto.getOneHoje(req.params.id, res);
     });
 
@@ -178,111 +190,111 @@ module.exports = {
     });
 
     // ADICIONA UM NOVO GASTO
-    app.post('/gasto/', function(req, res) {
+    app.post(prefixoDados+'/gasto/', function(req, res) {
         gasto.create(req.body, res);
     });
 
     // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
-    app.post('/gasto/nulo', function(req, res) {
+    app.post(prefixoDados+'/gasto/nulo', function(req, res) {
         gasto.intervalo(req.body, res);
     });
 
 
-    app.delete('/gasto/:id/', function(req, res) {
+    app.delete(prefixoDados+'/gasto/:id/', function(req, res) {
         gasto.delete(req.params.id, res);
     });
 
     /* PERFIL */
-    app.get('/perfil/', function(req, res) {
+    app.get(prefixoDados+'/perfil/', function(req, res) {
         perfil.listAll(res);
     });
 
-    app.get('/perfil/:id/', function(req, res) {
+    app.get(prefixoDados+'/perfil/:id/', function(req, res) {
         perfil.getOne(req.params.id, res);
     });
 
-    app.post('/perfil/', function(req, res) {
+    app.post(prefixoDados+'/perfil/', function(req, res) {
         perfil.create(req.body, res);
     });
 
-    app.put('/perfil/', function(req, res) {
+    app.put(prefixoDados+'/perfil/', function(req, res) {
         perfil.update(req.body, res);
     });
 
-    app.delete('/perfil/:id/', function(req, res) {
+    app.delete(prefixoDados+'/perfil/:id/', function(req, res) {
         perfil.delete(req.params.id, res);
     });
 
     /* PERGUNTAS */
-    app.get('/pergunta/', function(req, res) {
+    app.get(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.listAll(res);
     });
 
-    app.get('/pergunta/:id/', function(req, res) {
+    app.get(prefixoDados+'/pergunta/:id/', function(req, res) {
         pergunta.getOne(req.params.id, res);
     });
 
-    app.post('/pergunta/', function(req, res) {
+    app.post(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.create(req.body, res);
     });
 
-    app.put('/pergunta/', function(req, res) {
+    app.put(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.update(req.body, res);
     });
 
-    app.delete('/pergunta/:id/', function(req, res) {
+    app.delete(prefixoDados+'/pergunta/:id/', function(req, res) {
       pergunta.delete(req.params.id, res);
   });
 
     /* SETORES */
     // MOSTRA TODOS OS SETORES
-    app.get('/setor/', function(req, res) {
+    app.get(prefixoDados+'/setor/', function(req, res) {
         setor.listAll(res);
     });
 
     // MOSTRA UM SETOR
-    app.get('/setor/:id/', function(req, res) {
+    app.get(prefixoDados+'/setor/:id/', function(req, res) {
         setor.getOne(req.params.id, res);
     });
 
     // CRIA UM NOVO SETOR
-    app.post('/setor/', function(req, res) {
+    app.post(prefixoDados+'/setor/', function(req, res) {
         setor.create(req.body, res);
     });
 
     // MODIFICA UM SETOR
-    app.put('/setor/', function(req, res) {
+    app.put(prefixoDados+'/setor/', function(req, res) {
         setor.update(req.body, res);
     });
 
     // DELETA UM SETOR
-    app.delete('/setor/:id/', function(req, res) {
+    app.delete(prefixoDados+'/setor/:id/', function(req, res) {
         setor.delete(req.params.id, res);
     });
 
     /* USUARIOS */
     // MOSTRA TODOS OS USUARIOS
-    app.get('/usuario/', function(req, res) {
+    app.get(prefixoDados+'/usuario/', function(req, res) {
         usuario.listAll(res);
     });
 
     // MOSTRA UM USUARIO
-    app.get('/usuario/:id/', function(req, res) {
+    app.get(prefixoDados+'/usuario/:id/', function(req, res) {
         usuario.getOne(req.params.id, res);
     });
 
     // ADICIONA UM NOVO USUARIO
-    app.post('/usuario/', function(req, res) {
+    app.post(prefixoDados+'/usuario/', function(req, res) {
         usuario.create(req.body, res);
     });
 
     // MODIFICA UM USUARIO
-    app.put('/usuario/', function(req, res) {
+    app.put(prefixoDados+'/usuario/', function(req, res) {
         usuario.update(req.body, res);
     });
 
     // DELETA UM USUARIO
-    app.delete('/usuario/:id/', function(req, res) {
+    app.delete(prefixoDados+'/usuario/:id/', function(req, res) {
         usuario.delete(req.params.id, res);
     });
 
@@ -298,7 +310,7 @@ module.exports = {
     });
     
     // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
-    app.use('/logout', function(req, res) {
+    app.use(prefixoPortal+'/logout', function(req, res) {
         usuario.logout(req.body.token, res);
         req.session.destroy(function(err) {
         });
