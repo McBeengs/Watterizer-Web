@@ -1,0 +1,75 @@
+<div class="container-fluid">
+		<!-- CABEÇALHO -->
+		<nav class="navbar navbar-inverse col-xs-12">
+			<div class="wrapper col-xs-12">
+				<!-- LOGO -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span> 
+				    </button>
+					<a class="navbar-brand" href="">Watterizer</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<!-- BARRA DE NAVEGAÇÃO -->
+				    <ul class="nav navbar-nav">
+					    <li class="active"><a href="#">Home</a></li>
+					    <li><a href="#">Page 1</a></li>
+					    <li><a href="#">Page 2</a></li> 
+					    <li><a href="#">Page 3</a></li> 
+				    </ul>
+					<!-- FORMULARIO DE LOGIN  -->
+					<div id="auth" class="nav navbar-nav navbar-right">
+						<img src="../img/avatar-placeholder.gif">
+						<a id="name" href="#">Includes da Silva Melo</a>
+						<a id="logout" href="#">Log-Out</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+		/* HEADER */
+nav 
+{
+	background: rgba(0, 0, 0, 0.9);
+	position: fixed !important;
+	top: 0;
+	z-index: 10;
+	height: 80px;
+	margin-top: 0 !important;
+}
+
+nav .logo 
+{
+	float: left;
+	z-index: 100;
+	position: relative;
+}
+
+.navbar-brand
+{
+	margin-left: 15px;
+	display: block;
+	color: transparent;
+	width: 400px;
+	height: 75px !important;
+	background: url(../img/logo.png) no-repeat;
+	background-size: cover;
+	background-position: center;
+	text-indent: -9999px;
+}
+
+.navbar
+{
+	margin-left: -15px;
+}
+
+.navbar-nav li, .navbar-nav li a
+{
+	height: 80px;
+}
+
+#auth
+{
+	margin-right: 30px;
+}

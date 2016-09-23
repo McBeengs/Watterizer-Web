@@ -1,0 +1,26 @@
+{
+  "name": "webservice",
+  "version": "1.0.0",
+  "description": "teste1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sdf",
+  "license": "MIT",
+  "dependencies": {
+    "aes-cross": "^1.0.9",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "file-type": "^3.8.0",
+    "http-status-codes": "^1.0.6",
+    "mime": "^1.3.4",
+    "multer": "^1.2.0",
+    "mysql": "^2.11.1",
+    "rand-token": "^0.2.1",
+    "socket.io": "^1.4.8"
+  }
+}
