@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"> <!-- CSS BOOTSTRAP OFFLINE -->
+	<link rel="stylesheet" type="text/css" href="../css/jquery-ui.css"> <!-- CSS BOOTSTRAP OFFLINE -->
 </head>
 <body>
 	<div class="container-fluid">
@@ -34,15 +35,36 @@
 				<div id="mask">
 					<canvas id="canvas" height="450" width="600"></canvas>
 				</div>
+				
 			</div>
 			<!-- RODAPÉ -->
 			<footer class="col-xs-12">Watterizer 2015 - 2016</footer>
 		</div>
+		<div id="progressbar"><div class="progress-label">Loading...</div></div>
 	</body>
 	<!-- IMPORTAÇÕES JAVASCRIPT -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 	<script src="../js/jquery.js"></script> <!-- JS JQUERY OFFLINE -->
+	<script src="../js/jquery-ui.js"></script>
+	<script>
+		var count=0;
+		var progressbar = $( "#progressbar" );
+		var progressLabel = $( ".progress-label" );
+		setInterval(function function_name (argument) {
+			progressbar.progressbar({
+				value: count,
+				change: function() {
+					progressLabel.text( progressbar.progressbar( "value" ) + "%" );
+				},
+				complete: function() {
+					progressLabel.text( "Complete!" );
+				}
+			});
+			count++;
+			$("#progressbar .ui-progressbar-value").css({ 'background': 'yellow' });
+		},250)
+	</script>
 	<script src="../js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP OFFLINE -->
 	<script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
 	<script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
@@ -51,5 +73,6 @@
 	<script src="../js/knockout.js"></script> <!-- API MONITORAMENTO DE DADOS DO GRAFICO -->
 	<script src="../js/chart.js"></script> <!-- API DO GRAFICO -->
 	<script src="../js/grafico.js"></script> <!-- JS DO GRAFICO -->
+	
 
 	</html>
