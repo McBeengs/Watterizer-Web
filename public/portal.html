@@ -50,6 +50,7 @@
 		</div>
 	</div>
 </body>
+
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
@@ -57,4 +58,15 @@
 <script src="js/bootstrap.min.js"></script> -->
 <script src="js/slider.js"></script> <!-- JS DO SLIDER -->
 <script src="js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script type="text/javascript">
+	$.ajax({
+		url: "/dados/sessao",
+		success: function(response) {
+				$( "#name").html(response);
+					},
+		error: function(xhr) {
+//Do Something to handle error
+}
+});
+</script>
 </html>

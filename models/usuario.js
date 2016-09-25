@@ -30,6 +30,15 @@ function Usuario() {
 			});
 		});
 	};
+	// MOSTRA O USUARIO LOGADO
+	this.getLogado = function(login, res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM usuario WHERE username = ? OR email = ?', [login,login], function(err, result) {
+				con.release();
+				res.send(result);
+			});
+		});
+	};
 
 	// ADICIONA UM NOVO USUARIO
 	this.create = function(usuario, res) {
