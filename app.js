@@ -21,11 +21,12 @@ routes.configure(app);
 var server = app.listen(1515, function() {
 	console.log('Server listening on port ' + server.address().port);
 });
-
-
+var ip = require("ip");
 //SERVIDOR NET
-var HOST = '10.0.4.70';
+var HOST = ip.address();
 var PORT = 3000;
+
+
 var arrayIpArduino=[];
 var arrayDadosArduino= new Array(0);
 arrayDadosArduino[0] = new Array(0);
