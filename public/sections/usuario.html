@@ -102,6 +102,7 @@
 			</div>
 		</div>
 	</div>
+	
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
@@ -111,4 +112,17 @@
 <script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
 <script src="../js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script type="text/javascript">
+	$.ajax({
+		url: "/dados/usuario",
+		success: function(response) {
+			for (var i = response.length - 1; i >= 0; i--) {
+				$( "#usuarios").append( "<div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#usuarios' href='#usuario-1"+[i+6]+"'>"+response[i].username+"</a></h4></div><div id='usuario-1"+[i+6]+"' class='panel-collapse collapse'><img src='../img/avatar-placeholder2.png'></div></div>'" );
+			};
+		},
+		error: function(xhr) {
+//Do Something to handle error
+}
+});
+</script>
 </html>
