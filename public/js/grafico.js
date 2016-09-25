@@ -26,7 +26,7 @@ function MainViewModel(data) {
     });
   })
   self.lineChartData = ko.observable({
-    labels : ["January","February","March","April","May","June","July"],
+    labels : ["0s","1s","2s","3s","4s","5s","6s"],
     datasets : [
     {
       fillColor : "rgba(151,187,205,0.5)",
@@ -37,6 +37,7 @@ function MainViewModel(data) {
     }
     ]
   });
+
   socket.on('toClient', function (data) {
     if (data==null) {
       console.log('null');
@@ -54,13 +55,10 @@ function MainViewModel(data) {
         "display" : "none"
       });
     }
-
-
-
     self.initLine();
 
   });
-  socket.on('toClientLoad', function (data) {
+    socket.on('toClientLoad', function (data) {
     if (data==null) {
       console.log('null');
       data=[]
