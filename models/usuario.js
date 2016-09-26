@@ -126,6 +126,7 @@ function Usuario() {
 	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
 	this.login = function(login,senha, krypt,req, res) {
 		connection.acquire(function(err, con) {
+			sess = req.session;
 			token = randtoken.generate(16);
 			var user = [];		
 			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
@@ -145,10 +146,11 @@ function Usuario() {
 						res.send(obj);
 					}
 					else if (obj!='[]') {
+						sess.nome=result[0].nome;
 						res.redirect("/portal");
 					}
 					else {
-						sess = req.session;
+						
         				sess.login=false;
 						res.redirect("/index");		
 					}					

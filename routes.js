@@ -284,12 +284,10 @@ module.exports = {
         usuario.getOne(req.params.id, res);
     });
     app.get(prefixoDados+'/usuariologado/', function(req, res) {
-        sess = req.session;
         usuario.getLogado(sess.login, res);
     });
     app.get(prefixoDados+'/sessao/', function(req, res) {
-        sess = req.session;
-        res.send(sess.login);
+        res.send(sess.nome);
     });
 
     // ADICIONA UM NOVO USUARIO
