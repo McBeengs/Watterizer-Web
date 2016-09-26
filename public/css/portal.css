@@ -26,12 +26,14 @@
 {
 	font-size: 18px;
 	margin-left: 20px;
+	font-family: "featured" !important;
 }
 
 #options
 {
 	display: inline-block;
 	margin-left: 30px;
+	font-family: "featured" !important;
 }
 
 #options button
@@ -105,19 +107,12 @@
 {
 	color: var(--mainGray);
 	margin-left: 20px;
+	font-family: "featured" !important;
 }
 
 #sections-portal div:hover
 {
 	background-color: var(--mainYellow);
-}
-
-#sections-portal div label
-{
-	margin-top: 4px;
-	margin-left: 15px;
-	background: var(--mainGray);
-	font-family: sans-serif;
 }
 
 #sec-gasto

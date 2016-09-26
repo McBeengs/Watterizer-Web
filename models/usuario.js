@@ -14,7 +14,7 @@ function Usuario() {
 	// MOSTRA TODOS OS USUARIOS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario', function(err, result) {
+			con.query('SELECT id, username, email, nome, telefone, hora_entrada, hora_saida, TIMEDIFF(hora_saida, hora_entrada) AS expediente, hora_intervalo FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE usuario.data_exclusao = NULL', function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -24,16 +24,7 @@ function Usuario() {
 	// MOSTRA UM USUARIO
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario WHERE id = ?', [id], function(err, result) {
-				con.release();
-				res.send(result);
-			});
-		});
-	};
-	// MOSTRA O USUARIO LOGADO
-	this.getLogado = function(login, res) {
-		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario WHERE username = ? OR email = ?', [login,login], function(err, result) {
+			con.query('SELECT * FROM usuario WHERE id = ? AND data_exclusao = NULL', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -62,7 +53,7 @@ function Usuario() {
 	// MODIFICA UM USUARIO
 	this.update = function(usuario, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE usuario SET ? WHERE id = ?', [usuario, usuario.id], function(err, result) {
+			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao = NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -80,7 +71,7 @@ function Usuario() {
 	// DELETA UM USUARIO
 	this.delete = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('DELETE FROM usuario WHERE id = ?', [id], function(err, result) {
+			con.query('UPDATE usuario SET data_exclusao = NOW() WHERE id = ?', [id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -129,7 +120,7 @@ function Usuario() {
 			sess = req.session;
 			token = randtoken.generate(16);
 			var user = [];		
-			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
+			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao = NULL', [login,login,senha], function(err, result) {
 				user = JSON.stringify(result);
 			});
 			if (user != null) {
@@ -147,6 +138,7 @@ function Usuario() {
 					}
 					else if (obj!='[]') {
 						sess.nome=result[0].nome;
+						sess.id=result[0].id;
 						res.redirect("/portal");
 					}
 					else {

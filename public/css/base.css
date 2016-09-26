@@ -80,6 +80,14 @@ header, footer
 	background: none !important;
 }
 
+label.badge
+{
+	margin-top: 4px;
+	margin-left: 15px;
+	background: var(--mainGray);
+	font-family: sans-serif;
+}
+
 /* HEADER */
 header 
 {
