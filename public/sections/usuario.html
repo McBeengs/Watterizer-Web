@@ -16,7 +16,7 @@
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
-				<a id="voltar" href="../portal.html">Voltar</a>
+				<a id="voltar" href="/portal">Voltar</a>
 				<!-- LOGO -->
 				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
 					<a class="col-xs-12" href="">Watterizer</a>
@@ -41,7 +41,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="usuarios" class="panel-group">
-				<div class="panel panel-default">
+				<!-- <div class="panel panel-default">
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#usuarios" href="#usuario-11">Includes da Silva Mello</a>
@@ -54,51 +54,7 @@
 							<p>Data de Cadastro: 16/08/2016</p>
 						</div>
 					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#usuarios" href="#usuario-12">Hidroflavio Pereira dos Santos</a>
-						</h4>
-					</div>
-					<div id="usuario-12" class="panel-collapse collapse">
-						<img src="../img/avatar-placeholder2.png">
-					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#usuarios" href="#usuario-13">Badmilton Schwarzenegger</a>
-						</h4>
-					</div>
-					<div id="usuario-13" class="panel-collapse collapse">
-						<img src="../img/avatar-placeholder2.png">
-					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#usuarios" href="#usuario-14">Potato Muller</a>
-						</h4>
-					</div>
-					<div id="usuario-14" class="panel-collapse collapse">
-						<img src="../img/avatar-placeholder2.png">
-					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#usuarios" href="#usuario-15">Fulano Sicrano Beltrano</a>
-						</h4>
-					</div>
-					<div id="usuario-15" class="panel-collapse collapse">
-						<img src="../img/avatar-placeholder2.png">
-					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -117,7 +73,7 @@
 		url: "/dados/usuario",
 		success: function(response) {
 			for (var i = 0; i <= response.length - 1; i++) {
-				$( "#usuarios").append( "<div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#usuarios' href='#usuario-"+response[i].id+"'>"+response[i].username+"</a></h4></div><div id='usuario-"+response[i].id+"' class='panel-collapse collapse'><img src='../img/avatar-placeholder2.png'></div></div>" );
+				$( "#usuarios").append( "<div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#usuarios' href='#usuario-"+response[i].id+"'>"+response[i].username+"</a></h4></div><div id='usuario-"+response[i].id+"' class='panel-collapse collapse'><img src='../img/avatar-placeholder2.png'><div><p>Conta: "+response[i].id_perfil+"</p><p>Email: "+response[i].email+"</p><p>Nome: "+response[i].nome+"</p></div></div></div>" );
 			};
 		},
 		error: function(xhr) {
