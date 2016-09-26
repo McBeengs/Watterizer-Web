@@ -10,3 +10,13 @@ $(document).ready(function() {
 		"order": [[ 0, "desc" ]]        
 	});
 });
+
+$.ajax({
+	url: "/dados/sessao",
+	success: function(response) {
+		$( "#name").html(response);
+	},
+	error: function(xhr) {
+		//Do Something to handle error
+	}	
+});
