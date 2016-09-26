@@ -73,7 +73,8 @@
 		url: "/dados/usuario",
 		success: function(response) {
 			for (var i = 0; i <= response.length - 1; i++) {
-				$( "#usuarios").append( "<div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#usuarios' href='#usuario-"+response[i].id+"'>"+response[i].username+"</a></h4></div><div id='usuario-"+response[i].id+"' class='panel-collapse collapse'><img src='../img/avatar-placeholder2.png'><div><p>Conta: "+response[i].id_perfil+"</p><p>Email: "+response[i].email+"</p><p>Nome: "+response[i].nome+"</p></div></div></div>" );
+				console.log(response[i]);
+				$( "#usuarios").append( "<div class='panel panel-default'><div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#usuarios' href='#usuario-"+response[i].id+"'>"+response[i].username+"</a></h4></div><div id='usuario-"+response[i].id+"' class='panel-collapse collapse'><img src='../img/avatar-placeholder2.png'><div><p>Conta: "+response[i].perfil+"</p><p>Email: "+response[i].email+"</p><p>Nome: "+response[i].nome+"</p></div></div></div>" );
 			};
 		},
 		error: function(xhr) {

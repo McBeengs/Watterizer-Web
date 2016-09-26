@@ -14,7 +14,7 @@ function Usuario() {
 	// MOSTRA TODOS OS USUARIOS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT id, username, email, nome, telefone, hora_entrada, hora_saida, TIMEDIFF(hora_saida, hora_entrada) AS expediente, hora_intervalo FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE usuario.data_exclusao = NULL', function(err, result) {
+			con.query('SELECT usuario.id, username, perfil, email, nome, telefone, hora_entrada, hora_saida, TIMEDIFF(hora_saida, hora_entrada) AS expediente, hora_intervalo FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE usuario.data_exclusao IS NULL', function(err, result) {
 				con.release();
 				res.send(result);
 			});
