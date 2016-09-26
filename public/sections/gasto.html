@@ -17,6 +17,7 @@
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
+				<a id="voltar" href="/portal">Voltar</a>
 				<!-- LOGO -->
 				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
 					<a class="col-xs-12" href="">Watterizer</a>
@@ -25,7 +26,16 @@
 				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
 					<img src="../img/avatar-placeholder.gif">
 					<a id="name" href="#">Includes da Silva Melo</a>
-					<a id="logout" href="#">Log-Out</a>
+					<div id="options" class="dropdown">
+						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a href="#">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
+							<li class="divider"></li>
+							<li><a href="#">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</header>
