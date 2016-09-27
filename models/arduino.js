@@ -12,6 +12,16 @@ function Arduino() {
 		});
 	};
 
+	// MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
+	this.listBySetor = function(idSetor, res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM arduino WHERE id_setor = ?', [idSetor], function(err, result) {
+				con.release();
+				res.send(result);
+			});
+		});
+	};
+
 	// MOSTRA UM ARDUINO
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {

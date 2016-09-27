@@ -144,6 +144,11 @@ module.exports = {
         arduino.listAll(res);
     });
 
+    // MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
+    app.get(prefixoDados+'/arduino/setor/:id/', function(req, res) {
+        arduino.listBySetor(req.params.id, res);
+    });
+
     // MOSTRA UM ARDUINO
     app.get(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.getOne(req.params.id, res);
