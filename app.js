@@ -96,7 +96,14 @@ net.createServer(function(sock) {
     var ultimoEnvioData= new Date();;
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
-
+        var encodedString = String.fromCharCode.apply(null, data),
+        data = decodeURIComponent(escape(encodedString));
+        if (data.localeCompare("test")) {
+            console.log("ok");
+            sock.write(data);
+        }
+        else{
+            console.log(data.localeCompare("test"));
         var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
         // REENVIA O QUE FOI RECEBIDO
         var idArduino = JSON.parse(data).arduino;
@@ -122,10 +129,10 @@ net.createServer(function(sock) {
             }
         };
 
-        var encodedString = String.fromCharCode.apply(null, data),
-        data = decodeURIComponent(escape(encodedString));
         io.sockets.emit('toClient', { array: arrayDadosArduino[idArduino], arduino: idArduino });
         sock.write(data);
+    }
+        
 
     });
     // SE A CONEXÃO FOR FECHADA

@@ -6,7 +6,6 @@ $(document).ready(function() {
 				"url": "https://cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
 			},
 			"dom": '<"top"<"col-xs-6"i>f>tr<"bottom"<"col-xs-6"l><"col-xs-6"p>>',
-			
 			"order": [[ 0, "desc" ]]        
 		});
 		$.ajax({
@@ -19,7 +18,7 @@ $(document).ready(function() {
             response[i].titulo,
             response[i].id_usuario,
             response[i].mensagem
-        ] ).draw( false );
+        ]).draw( false );
 			};
 		},
 		error: function(xhr) {
