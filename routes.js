@@ -123,7 +123,7 @@ module.exports = {
     });
 
     // TESTE
-    app.get(prefixoDados+'/test/', function(req, res) {
+    app.get('/test', function(req, res) {
         teste.testConnection(res);
     });
 
