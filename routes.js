@@ -46,6 +46,7 @@ var perfil = require('./models/perfil');
 var pergunta = require('./models/pergunta');
 var setor = require('./models/setor');
 var usuario = require('./models/usuario');
+var computador = require('./models/computador');
 var token ="h6a44d1g5s5s";
 var sess;
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
@@ -113,13 +114,14 @@ module.exports = {
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
-        sess = req.session;
-        if(sess.login) {
-            next();
-        } else {
-            res.redirect('/index')
-            res.end();
-        }
+        // sess = req.session;
+        // if(sess.login) {
+        //     next();
+        // } else {
+        //     res.redirect('/index')
+        //     res.end();
+        // }
+        next();
     });
 
     // TESTE
@@ -167,6 +169,30 @@ module.exports = {
     // DELETA UM ARDUNO
     app.delete(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.delete(req.params.id, res);
+    });
+
+    app.get(prefixoDados+'/computador/', function(req, res) {
+        computador.listAll(res);
+    });
+
+    // MOSTRA UM computador
+    app.get(prefixoDados+'/computador/:id/', function(req, res) {
+        computador.getOne(req.params.id, res);
+    });
+
+    // ADICIONA UM NOVO ARDUNO
+    app.post(prefixoDados+'/computador/', function(req, res) {
+        computador.create(req.body, res);
+    });
+
+    // MODIFICA UM ARDUNO
+    app.put(prefixoDados+'/computador/', function(req, res) {
+        computador.update(req.body, res);
+    });
+
+    // DELETA UM ARDUNO
+    app.delete(prefixoDados+'/computador/:id/', function(req, res) {
+        computador.delete(req.params.id, res);
     });
 
     /* GASTOS */
@@ -320,6 +346,18 @@ module.exports = {
             usuario.login(req.body.login,aes.encText(req.body.senha,key,init), false,req, res);
         }
     });
+    app.post('/pccheck', function(req, res) {
+     if (req.body.command=="check") {
+        computador.check(req.body.mac,res);
+    }
+    else if(req.body.command=="delete"){
+       computador.delete(req.body.mac,res);
+   }
+   else if(req.body.command=="create"){
+    computador.create(req.body,res);
+   }
+
+});
     
     // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
     app.use(prefixoPortal+'/logout', function(req, res) {
