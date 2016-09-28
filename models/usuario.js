@@ -103,12 +103,13 @@ function Usuario() {
 
 	// AUTENTICA AS REQUISIÇÕES DE UM USUARIO
 	this.autenticacao = function(token, res) {
+		var user;
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE token = ?', [token], function(err, result) {
-				if(result!=null){
-					res.send(true);
+				if(result[0]!=null){
+					return true;
 				} else {
-					res.send(false);
+					return false;
 				}
 			});
 		});
@@ -139,6 +140,7 @@ function Usuario() {
 					else if (obj!='[]') {
 						sess.nome=result[0].nome;
 						sess.id=result[0].id;
+						sess.token=result[0].token;
 						res.redirect("/portal");
 					}
 					else {

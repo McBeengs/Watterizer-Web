@@ -114,14 +114,14 @@ module.exports = {
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
-        // sess = req.session;
-        // if(sess.login) {
-        //     next();
-        // } else {
-        //     res.redirect('/index')
-        //     res.end();
-        // }
-        next();
+        console.log(usuario.autenticacao(req.headers.token, res));
+        if(usuario.autenticacao(req.headers.token, res)) {
+            next();
+        } else {
+            res.redirect('/index')
+            res.end();
+        }
+        console.log(usuario);
     });
 
     // TESTE
