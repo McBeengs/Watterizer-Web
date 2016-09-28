@@ -195,6 +195,15 @@ module.exports = {
         computador.delete(req.params.id, res);
     });
 
+    app.post(prefixoDados+'/pccheck', function(req, res) {
+        if (req.body.command=="check") {
+            computador.check(req.body.mac,res);
+        }
+        else if(req.body.command=="delete"){
+            computador.delete(req.body.mac,res);
+        }
+    });
+
     /* GASTOS */
     // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
     app.get(prefixoDados+'/gasto/', function(req, res) {
@@ -314,9 +323,7 @@ module.exports = {
     app.get(prefixoDados+'/usuario/:id/', function(req, res) {
         usuario.getOne(req.params.id, res);
     });
-    app.get(prefixoDados+'/usuariologado/', function(req, res) {
-        usuario.getLogado(sess.login, res);
-    });
+    
     app.get(prefixoDados+'/sessao/', function(req, res) {
         res.send(sess.nome);
     });
@@ -346,19 +353,7 @@ module.exports = {
             usuario.login(req.body.login,aes.encText(req.body.senha,key,init), false,req, res);
         }
     });
-    app.post('/pccheck', function(req, res) {
-     if (req.body.command=="check") {
-        computador.check(req.body.mac,res);
-    }
-    else if(req.body.command=="delete"){
-       computador.delete(req.body.mac,res);
-   }
-   else if(req.body.command=="create"){
-    computador.create(req.body,res);
-   }
 
-});
-    
     // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
     app.use(prefixoPortal+'/logout', function(req, res) {
         usuario.logout(req.body.token, res);
