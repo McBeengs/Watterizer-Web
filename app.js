@@ -8,6 +8,7 @@ var session = require('express-session');
 var net = require('net');
 var gasto = require('./models/gasto');
 var sess;
+
 // INICIA O EXPRESS E PARSER JSON
 var app = express();
 app.use(bodyparser.urlencoded({extended: true}));
@@ -15,12 +16,29 @@ app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'ssshhhhh'}));
 
+// POSTCSS
+var postcss = require('postcss');
+var cssvariables = require('postcss-css-variables');
+
+var fs = require('fs');
+
+var mycss = fs.readFileSync('public/css/base.css', 'utf8');
+
+// Process your CSS with postcss-css-variables
+var output = postcss([
+        cssvariables(/*options*/)
+    ])
+    .process(mycss)
+    .css;
+console.log(output);
+
 // FAZ A CONEXÃO E DEFINE AS ROTAS
 connection.init();
 routes.configure(app);
 var server = app.listen(1515, function() {
 	console.log('Server listening on port ' + server.address().port);
 });
+
 var ip = require("ip");
 //SERVIDOR NET
 var HOST = ip.address();
