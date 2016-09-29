@@ -93,7 +93,7 @@ app.get('/desliga', function(req, res) {
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
-    var ultimoEnvioData= new Date();;
+    var ultimoEnvioData= new Date();
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
