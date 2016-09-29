@@ -114,14 +114,17 @@ module.exports = {
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
-        console.log(usuario.autenticacao(req.headers.token, res));
-        if(usuario.autenticacao(req.headers.token, res)) {
-            next();
-        } else {
-            res.redirect('/index')
-            res.end();
-        }
-        console.log(usuario);
+        sess=req.session;
+        usuario.autenticacao(req.headers.token,req, res);
+        setTimeout(function() {
+            sess=req.session;
+            if(sess.aut) {
+                sess.aut=false;
+                next();
+            } else {
+                res.end();
+            }
+        }, 100);
     });
 
     // TESTE
@@ -324,8 +327,14 @@ module.exports = {
         usuario.getOne(req.params.id, res);
     });
     
-    app.get(prefixoDados+'/sessao/', function(req, res) {
-        res.send(sess.nome);
+    app.get('/sessao', function(req, res) {
+        var array=[];
+        sess=req.session;
+        console.log(sess);
+            array.push(sess.nome);
+        array.push(sess.token);
+        
+        res.send(array);
     });
 
     // ADICIONA UM NOVO USUARIO
@@ -355,8 +364,14 @@ module.exports = {
     });
 
     // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
-    app.use(prefixoPortal+'/logout', function(req, res) {
+    app.post('/logout', function(req, res) {
         usuario.logout(req.body.token, res);
+        req.session.destroy(function(err) {
+        });
+    });
+    app.get('/logout', function(req, res) {
+        console.log(req.session.token);
+        usuario.logout(req.session.token, res);
         req.session.destroy(function(err) {
         });
     });
