@@ -90,7 +90,10 @@ function Usuario() {
 	this.logout = function(token, res) {
 		connection.acquire(function(err, con) {
 			if (token != undefined){
-				con.query("UPDATE usuario SET token = ? WHERE token = ?", [null, token], function(err, result) {
+				con.query("UPDATE usuario SET token_desktop = ? WHERE token_desktop = ?", [null, token], function(err, result) {
+
+				});
+				con.query("UPDATE usuario SET token_web = ? WHERE token_web = ?", [null, token], function(err, result) {
 					con.release();
 					res.redirect("/index");
 				});
@@ -102,15 +105,19 @@ function Usuario() {
 	};
 
 	// AUTENTICA AS REQUISIÇÕES DE UM USUARIO
-	this.autenticacao = function(token, res) {
+	this.autenticacao = function(token,req, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario WHERE token = ?', [token], function(err, result) {
-				if(result!=null){
-					res.send(true);
+			sess=req.session;
+			con.query('SELECT * FROM usuario WHERE token_web = ? OR token_desktop = ?', [token,token], function(err, result) {
+				if(result[0]!=null){
+					sess.aut=true;
+					return true;
 				} else {
-					res.send(false);
+					sess.aut=false;
+					return false;
 				}
 			});
+			con.release();
 		});
 	}
 
@@ -125,9 +132,14 @@ function Usuario() {
 			});
 			if (user != null) {
 				console.log(token);
-				con.query('UPDATE usuario SET token = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-					
-				});
+				if (krypt) {
+						con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					});
+				}
+				else  {
+						con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					});
+					};
 				con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
 	              
 					var string = JSON.stringify(result);
@@ -137,16 +149,16 @@ function Usuario() {
 						res.send(obj);
 					}
 					else if (obj!='[]') {
+						console.log(result[0].token_web);
 						sess.nome=result[0].nome;
 						sess.id=result[0].id;
+						sess.token=result[0].token_web;
 						res.redirect("/portal");
 					}
 					else {
-						
         				sess.login=false;
 						res.redirect("/index");		
 					}					
-					
 					user = JSON.stringify(result);
 					con.release();
 				});
