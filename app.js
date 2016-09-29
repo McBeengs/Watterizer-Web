@@ -130,7 +130,7 @@ net.createServer(function(sock) {
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
         data = decodeURIComponent(escape(encodedString));
-        if (data.localeCompare("test")) {
+        if (data.trim(data).localeCompare("test")==0) {
             console.log("ok");
             sock.write(data);
         }

@@ -1,47 +1,29 @@
 var connection = require('../connection');
 var HttpStatus = require('http-status-codes');
 
-function Setor() {
-	// MOSTRA TODOS OS SETORES
+function Canvas() {
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM setor', function(err, result) {
+			con.query('SELECT * FROM canvas', function(err, result) {
 				con.release();
 				res.send(result);
 			});
 		});
 	};
-
-	this.check = function(res) {
-		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM setor', function(err, result) {
-				con.release();
-				if (result.toString().localeCompare("")==0) {
-					res.send(false);
-				}
-				else{
-					res.send(true);
-				}
-				
-			});
-		});
-	};
-
-	// MOSTRA UM SETOR
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM setor WHERE id = ?', [id], function(err, result) {
+			con.query('SELECT * FROM canvas WHERE id = ?', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
 		});
 	};
 
-	// CRIA UM NOVO SETOR
-	this.create = function(setor, res) {
+	this.create = function(canvas, res) {
 		connection.acquire(function(err, con) {
-			con.query('INSERT INTO setor SET ?', setor, function(err, result) {
-				con.release();
+			var nome = canvas.nome;
+			delete canvas.nome;
+			con.query('INSERT INTO canvas SET ?', canvas, function(err, result) {
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
@@ -51,14 +33,17 @@ function Setor() {
 					res.status(HttpStatus.CREATED)
 					.send('CREATED');
 				}
+				console.log(result.insertId);
+				con.query('UPDATE computador SET id_canvas=? ,posicionado=1 WHERE nome = ?', [result.insertId,nome], function(err, result) {
+					con.release();
+				});
 			});
 		});
 	};
 
-	// MODIFICA UM SETOR
-	this.update = function(setor, res) {
+	this.update = function(canvas, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE setor SET ? WHERE id = ?', [setor, setor.id], function(err, result) {
+			con.query('UPDATE canvas SET ? WHERE id = ?', [canvas, canvas.id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -72,11 +57,9 @@ function Setor() {
 			});
 		});
 	};
-
-	// DELETA UM SETOR
 	this.delete = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('DELETE FROM setor WHERE id = ?', [id], function(err, result) {
+			con.query('DELETE FROM canvas WHERE id = ?', [id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -92,4 +75,4 @@ function Setor() {
 	};
 } 
 
-module.exports = new Setor();
+module.exports = new Canvas();

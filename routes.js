@@ -47,6 +47,7 @@ var pergunta = require('./models/pergunta');
 var setor = require('./models/setor');
 var usuario = require('./models/usuario');
 var computador = require('./models/computador');
+var canvas = require('./models/canvas');
 var token ="h6a44d1g5s5s";
 var sess;
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
@@ -198,12 +199,15 @@ module.exports = {
         computador.delete(req.params.id, res);
     });
 
-    app.post(prefixoDados+'/pccheck', function(req, res) {
+    app.post('/pccheck', function(req, res) {
         if (req.body.command=="check") {
             computador.check(req.body.mac,res);
         }
-        else if(req.body.command=="delete"){
-            computador.delete(req.body.mac,res);
+        else if(req.body.command=="create"){
+            computador.create(req.body,res);
+        }
+        else if(req.body.command=="update"){
+            computador.update(req.body,res);
         }
     });
 
@@ -269,6 +273,27 @@ module.exports = {
         perfil.delete(req.params.id, res);
     });
 
+    /* CANVAS */
+    app.get('/canvas/', function(req, res) {
+        canvas.listAll(res);
+    });
+
+    app.get('/canvas/:id/', function(req, res) {
+        canvas.getOne(req.params.id, res);
+    });
+
+    app.post('/canvas/', function(req, res) {
+        canvas.create(req.body, res);
+    });
+
+    app.put('/canvas/', function(req, res) {
+        canvas.update(req.body, res);
+    });
+
+    app.delete('/canvas/:id/', function(req, res) {
+        canvas.delete(req.params.id, res);
+    });
+
     /* PERGUNTAS */
     app.get(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.listAll(res);
@@ -304,6 +329,9 @@ module.exports = {
     // CRIA UM NOVO SETOR
     app.post(prefixoDados+'/setor/', function(req, res) {
         setor.create(req.body, res);
+    });
+    app.get('/setorcheck', function(req, res) {
+        setor.check(res);
     });
 
     // MODIFICA UM SETOR
