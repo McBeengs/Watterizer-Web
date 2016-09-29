@@ -45,7 +45,7 @@ function Computador() {
 	};
 	this.update = function(computador, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE computador SET ? WHERE id = ?', [computador, computador.id], function(err, result) {
+			con.query('UPDATE computador SET ? WHERE id = ?', [computador, computador.mac], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
