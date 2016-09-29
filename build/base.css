@@ -1,0 +1,132 @@
+/* GERAL */
+@use cssnext;
+
+:root
+{
+	--mainYellow: rgb(240,190,17);
+	--mainGray: rgb(45,45,45);
+	--lighterGray: rgb(150,150,150);
+	--lightBorder: rgb(224,224,224);
+	--defaultBorderRadius: 20px;
+	--sectionsBorder: 10px;
+}
+
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	font-family: "featured" !important;
+}
+
+@font-face
+{
+	font-family: "featured";
+	src: url("../fonts/featuredItem.ttf") format("truetype");
+}
+
+@font-face
+{
+	font-family: "steinem";
+	src: url("../fonts/STEINEM_.ttf") format("truetype");
+}
+
+@font-face
+{
+	font-family: "quastic";
+	src: url("../fonts/QUASIK__.ttf") format("truetype");
+}
+
+body
+{
+	background: var(--mainGray) !important;
+}
+
+html, body
+{
+	height: 100%;
+}
+
+header, footer
+{
+	margin-left: -15px
+}
+
+/* CLASSES GERAIS */
+.fit-background
+{
+	background-repeat: no-repeat !important;
+	background-size: cover !important;
+	background-position: center center !important;
+}
+
+.watts-box
+{
+	background: var(--lighterGray);
+	/*box-shadow: 7px 8px 20px 3px rgb(66,66,66);*/
+}
+
+.content
+{
+	margin: 0 100px;
+}
+
+/* CORREÇÕES BOOTSTRAP */
+.wrapper
+{
+	background: none !important;
+}
+
+label.badge
+{
+	margin-top: 4px;
+	margin-left: 15px;
+	background: var(--mainGray);
+	font-family: sans-serif;
+}
+
+/* HEADER */
+header 
+{
+	background: black;
+	position: fixed !important;
+	top: 0;
+	z-index: 10;
+	height: 80px;
+	margin-top: 0 !important;
+	border-bottom: var(--mainYellow) solid 3px;
+}
+
+header .logo 
+{
+	float: left;
+	z-index: 100;
+	position: relative;
+}
+
+header .logo a
+{
+	margin-top: 3px;
+	margin-left: 15px;
+	display: block;
+	color: transparent;
+	width: 400px;
+	height: 70px;
+	background: url(../img/logo.png) no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+/* RODAPÉ */
+footer
+{
+	background: var(--mainYellow);
+	position: absolute !important;
+	text-align: center;
+	font-weight: bold;
+	padding: 35px 0;
+	margin-top: 50px;
+}

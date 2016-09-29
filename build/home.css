@@ -1,16 +1,4 @@
 /* FORMULÁRIO DE LOGIN */
-@use cssnext;
-
-:root
-{
-	--mainYellow: rgb(240,190,17);
-	--mainGray: rgb(45,45,45);
-	--lighterGray: rgb(150,150,150);
-	--lightBorder: rgb(224,224,224);
-	--defaultBorderRadius: 20px;
-	--sectionsBorder: 10px;
-}
-
 #auth
 {
 	text-align: center;

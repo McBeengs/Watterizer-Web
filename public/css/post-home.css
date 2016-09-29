@@ -1,16 +1,6 @@
 /* FORMULÁRIO DE LOGIN */
 @use cssnext;
 
-:root
-{
-	--mainYellow: rgb(240,190,17);
-	--mainGray: rgb(45,45,45);
-	--lighterGray: rgb(150,150,150);
-	--lightBorder: rgb(224,224,224);
-	--defaultBorderRadius: 20px;
-	--sectionsBorder: 10px;
-}
-
 #auth
 {
 	text-align: center;
@@ -56,7 +46,7 @@
 	min-height: 635px;
 	text-align: left;
 	position: relative;
-	color: var(--lightBorder);
+	color: rgb(224,224,224);
 	margin-left: 0;
 	background-repeat: no-repeat !important;
 	background-size: cover !important;
@@ -72,6 +62,7 @@
 {
 	margin: 0 auto;
 	font-weight: bold;
+	font-family: "featured" !important;
 }
 
 #title 
@@ -88,7 +79,7 @@
 	margin-top: 20px;
 	margin-left: 40px;
 	position: relative;
-	background: var(--mainYellow);
+	background: rgb(240,190,17);
 }
 
 #text 
@@ -103,13 +94,13 @@
 /* PAINEL DE INTERAÇÃO */
 #mid
 {
-	background: var(--mainYellow);
+	background: rgb(240,190,17);
 }
 
 /* DIFERENCIAIS DO PROJETO */
 #difer
 {
-	background: var(--mainYellow);
+	background: rgb(240,190,17);
 }
 
 #difer-content

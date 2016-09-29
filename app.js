@@ -19,18 +19,31 @@ app.use(session({secret: 'ssshhhhh'}));
 // POSTCSS
 var postcss = require('postcss');
 var cssvariables = require('postcss-css-variables');
+// var autoprefixer = require('autoprefixer');
 
 var fs = require('fs');
 
-var mycss = fs.readFileSync('public/css/base.css', 'utf8');
+var css = [fs.readFileSync('public/css/base.css', 'utf8'), fs.readFileSync('public/css/home.css', 'utf8'), fs.readFileSync('public/css/portal.css', 'utf8')];
+var cssName = ['base', 'home', 'portal']
 
-// Process your CSS with postcss-css-variables
-var output = postcss([
+// postcss([ autoprefixer ]).process(css)
+// .then(function (result) {
+//     result.warnings().forEach(function (warn) {
+//         console.warn(warn.toString());
+//     });
+//     console.log(result.css);
+// });
+
+// PROCESSA OS ARQUIVOS CSS
+var output;
+for (var i = css.length - 1; i >= 0; i--) {
+    var output = postcss([
         cssvariables(/*options*/)
     ])
-    .process(mycss)
+    .process(css[i])
     .css;
-console.log(output);
+    fs.writeFile("public/css/post-"+cssName[i]+".css", output);
+}
 
 // FAZ A CONEXÃO E DEFINE AS ROTAS
 connection.init();
@@ -60,6 +73,7 @@ io.sockets.on('connection', function (socket) {
     });
     
 });
+
 var usuarioDesliga=[];
     app.post('/desliga', function(req, res) {
     var repetido=false;
@@ -111,7 +125,7 @@ app.get('/desliga', function(req, res) {
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
-    var ultimoEnvioData= new Date();
+    var ultimoEnvioData= new Date();;
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
