@@ -317,7 +317,7 @@ module.exports = {
 
     /* SETORES */
     // MOSTRA TODOS OS SETORES
-    app.get(prefixoDados+'/setor/', function(req, res) {
+    app.get('/setor/', function(req, res) {
         setor.listAll(res);
     });
 
