@@ -290,8 +290,8 @@ module.exports = {
         canvas.update(req.body, res);
     });
 
-    app.delete('/canvas/:id/', function(req, res) {
-        canvas.delete(req.params.id, res);
+    app.delete('/canvas/', function(req, res) {
+        canvas.delete(req.body, res);
     });
 
     /* PERGUNTAS */

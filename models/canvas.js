@@ -21,29 +21,42 @@ function Canvas() {
 
 	this.create = function(canvas, res) {
 		connection.acquire(function(err, con) {
-			var nome = canvas.nome;
-			delete canvas.nome;
-			con.query('INSERT INTO canvas SET ?', canvas, function(err, result) {
-				if (err) {
-					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+			var setor = canvas.setor;
+			delete canvas.setor;
+			con.query('SELECT * FROM canvas,setor WHERE setor.setor=? AND setor.id_canvas=canvas.id ', [setor], function(err, result) {
+				var resultado = result;
+				var id;
+				if(resultado.length>0){
+					con.query('DELETE FROM canvas WHERE id = ?', [resultado[0].id_canvas], function(err, result) {
 					});
-				} else {
-					res.status(HttpStatus.CREATED)
-					.send('CREATED');
 				}
-				console.log(result.insertId);
-				con.query('UPDATE computador SET id_canvas=? ,posicionado=1 WHERE nome = ?', [result.insertId,nome], function(err, result) {
-					con.release();
-				});
+
+				con.query('INSERT INTO canvas SET ?', canvas, function(err, result) {
+					id=result.insertId
+					if (err) {
+						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.send({
+							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+						});
+					} else {
+						res.status(HttpStatus.CREATED)
+						.send('CREATED');
+					}
+					console.log(id);
+					console.log(setor)
+					con.query('UPDATE setor SET id_canvas=? WHERE setor = ?', [id,setor], function(err, result) {
+						con.release();
+					});
+				});;
 			});
 		});
 	};
 
 	this.update = function(canvas, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE canvas SET ? WHERE id = ?', [canvas, canvas.id], function(err, result) {
+			var setor = canvas.setor;
+			delete canvas.setor;
+			con.query('UPDATE canvas,setor SET ? WHERE setor.setor=? AND setor.id_canvas=canvas.id', [canvas, setor], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -57,9 +70,14 @@ function Canvas() {
 			});
 		});
 	};
-	this.delete = function(id, res) {
+	this.delete = function(canvas, res) {
 		connection.acquire(function(err, con) {
-			con.query('DELETE FROM canvas WHERE id = ?', [id], function(err, result) {
+			var setor = canvas.setor;
+			delete canvas.setor;
+			con.query('DELETE FROM `canvas`WHERE `id` in (SELECT DISTINCT `id_canvas` FROM `setor`) AND ? in (SELECT DISTINCT `setor` FROM `setor`)', [setor], function(err, result) {
+				
+			});
+			con.query('UPDATE `setor` set id_canvas=0 WHERE setor=?', [setor], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
