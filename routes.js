@@ -278,8 +278,8 @@ module.exports = {
         canvas.listAll(res);
     });
 
-    app.get('/canvas/:id/', function(req, res) {
-        canvas.getOne(req.params.id, res);
+    app.get('/canvas/:setor/', function(req, res) {
+        canvas.getOne(req.params.setor, res);
     });
 
     app.post('/canvas/', function(req, res) {

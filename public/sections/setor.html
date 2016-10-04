@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> <!-- ANGULAR -->
+	<script type="text/javascript" src="../js/fabric.js"></script>
 	<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"> -->
 </head>
 <body>
@@ -49,6 +50,7 @@
 						</h4>
 					</div>
 					<div id="setor-{{setor.id}}" class="panel-collapse collapse">
+						
 						<ul class="list-group">
 							<li class="list-group-item" ng-repeat="arduino in arduinos">
 								<div class="panel panel-default" ng-repeat="x in arduino">
@@ -71,12 +73,47 @@
 						<div class="panel-footer">Footer</div>
 					</div>
 				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#setores" href="#salas">salas<label class="badge">3 arduínos</label></a>
+						</h4>
+					</div>
+					<div id="salas" class="panel-collapse collapse">
+						<canvas id="c" width="2000" height="800"></canvas>
+						<button id="zoomIn">+</button>
+						<button id="zoomOut">-</button>
+						<button id="goLeft"><</button>
+						<button id="goRight">></button>
+						<button id="goUp">Up</button>
+						<button id="goDown">Down</button>
+						<input id="sala" type="button" value="Adicionar Caixa" />
+						<input id="saveImg" type="button" value="Salvar Imagem" />
+						<input id="deleteImg" type="button" value="Deletar Imagem" />
+						<input id="loadImg" type="button" value="Carregar Imagem" />
+						<input id="downloadImg" type="button" value="Download da Imagem" />
+						<input id="porta" type="button" value="Criar porta" />	
+						<input id="pc" type="button" value="Colocar PC" />
+						<input id="texto" type="text"/>
+						<select id="setores">
+							<option value="mc">mc</option>
+							<option value="informatica">informatica</option>
+							<option value="3it">3it</option>
+							<option value="4it">4it</option>
+						</select>
+						
+
+						<p id="janela" style="display: none; position:absolute;"></p>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 		<!-- RODAPÉ -->
 	</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <!-- <script src="../js/jquery.js"></script> -->
@@ -84,21 +121,22 @@
 <script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
 <script src="../js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script type="text/javascript" src="../js/script.js"></script>
 <script type="text/javascript">
 	var app = angular.module('wattzApp', []);
 	app.controller('setoresCtrl', function($scope, $http) {
-	    $http.get("/dados/setor")
-	    .then(function (response) {
-	    	$scope.setores = response.data;
-	    	$scope.arduinos=[]
-	    	angular.forEach($scope.setores, function(value, key) {
-		    	$http.get("/dados/arduino/setor/"+value.id)
-		    	.then(function (response) {
-		    		$scope.arduinos[key] = response.data;
-		    		console.log($scope.arduinos[key]);
-		    	});
-	    	});
-	    });
+		$http.get("/setor")
+		.then(function (response) {
+			$scope.setores = response.data;
+			$scope.arduinos=[]
+			angular.forEach($scope.setores, function(value, key) {
+				$http.get("/dados/arduino/setor/"+value.id)
+				.then(function (response) {
+					$scope.arduinos[key] = response.data;
+					console.log($scope.arduinos[key]);
+				});
+			});
+		});
 	});
 </script>
 </html>

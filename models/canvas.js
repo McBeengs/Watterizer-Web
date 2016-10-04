@@ -4,15 +4,15 @@ var HttpStatus = require('http-status-codes');
 function Canvas() {
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM canvas', function(err, result) {
+			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas)', function(err, result) {
 				con.release();
 				res.send(result);
 			});
 		});
 	};
-	this.getOne = function(id, res) {
+	this.getOne = function(setor, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM canvas WHERE id = ?', [id], function(err, result) {
+			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas) WHERE setor = ?', [setor], function(err, result) {
 				con.release();
 				res.send(result);
 			});
