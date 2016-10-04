@@ -1,6 +1,6 @@
   var canvas = new fabric.Canvas('c');
 
-    $("#sala1").click(function(){
+    $("#sala").click(function(){
        var rect = new fabric.Rect({
           left: 500,
           top: 150,
@@ -16,16 +16,17 @@
        canvas.renderAll();
    });
 
-    $("#pc1").click(function(){
+    $("#pc").click(function(){
 
         fabric.Image.fromURL('../img/images.jpg', function(img){
             img.setWidth(70);
             img.setHeight(70);
-            img.crossOrigin = "Anonymous";
-            img.set("nome",$("#texto1").val());
+            img.set("nome",$("#texto").val());
             canvas.add(img);
+            canvas.renderAll();
         }
         );
+
     });
     canvas.observe('mouse:over', function (evento) {
         showImageTools(evento);
@@ -33,23 +34,23 @@
 
     });
     canvas.observe('mouse:out', function (evento) {
-        $('#janela1').hide();
+        $('#janela').hide();
     });
     function showImageTools (evento) {
-        $("#janela1").html(evento.target.nome);
+        $("#janela").html(evento.target.nome);
 
         moveImageTools(evento);
     };
 
     function moveImageTools (evento) {
-        var w = $('#janela1').width();
-        var h = $('#janela1').height();
+        var w = $('#janela').width();
+        var h = $('#janela').height();
         var e = evento;
-    // -1 because we want to be inside the selection body
+    // - because we want to be inside the selection body
     var top = evento.target.top;
     var left = evento.target.left;
-    $('#janela1').show();
-    $('#janela1').css({top: top, left: left});
+    $('#janela').show();
+    $('#janela').css({top: top, left: left});
 }
 
 
@@ -57,21 +58,21 @@ var saveImg;
 var saveImgJson=[];
 var setores=[];
 
-$("#saveImg1").click(function() {
-	$( "#setores1 option:selected" ).each(function() {
+$("#saveImg").click(function() {
+	$( "#setores option:selected" ).each(function() {
       saveImgJson.push(JSON.stringify(canvas.toDatalessJSON())) ;
       setores.push($( this ).text()) ;
   });
 	saveImg = JSON.stringify(canvas);
 });
 
-$("#loadImg1").click(function(){
+$("#loadImg").click(function(){
 
  console.log("sdfgdfg");
 });
 
 
-$("#downloadImg1").click(function(){
+$("#downloadImg").click(function(){
 
 	/*canvas.deactivateAll().renderAll();  
   window.open(canvas.toDataURL('png')); 
@@ -88,7 +89,7 @@ $("#downloadImg1").click(function(){
 
 
 
-$("#deleteImg1").click(function(){
+$("#deleteImg").click(function(){
     var activeObject = canvas.getActiveObject(),
     activeGroup = canvas.getActiveGroup();
     if (activeObject) {
@@ -114,32 +115,32 @@ $("#deleteImg1").click(function(){
 
 $(function(){
 
-    $('#zoomIn1').click(function(){
+    $('#zoomIn').click(function(){
         canvas.setZoom(canvas.getZoom() * 1.1 ) ;
     }) ;
     
-    $('#zoomOut1').click(function(){
+    $('#zoomOut').click(function(){
         canvas.setZoom(canvas.getZoom() / 1.1 ) ;
     }) ;
     
-    $('#goRight1').click(function(){
+    $('#goRight').click(function(){
         var units = 10 ;
         var delta = new fabric.Point(units,0) ;
         canvas.relativePan(delta) ;
     }) ;
     
-    $('#goLeft1').click(function(){
+    $('#goLeft').click(function(){
         var units = 10 ;
         var delta = new fabric.Point(-units,0) ;
         canvas.relativePan(delta) ;
     }) ;
-    $('#goUp1').click(function(){
+    $('#goUp').click(function(){
         var units = 10 ;
         var delta = new fabric.Point(0,-units) ;
         canvas.relativePan(delta) ;
     }) ;
     
-    $('#goDown1').click(function(){
+    $('#goDown').click(function(){
         var units = 10 ;
         var delta = new fabric.Point(0,units) ;
         canvas.relativePan(delta) ;
@@ -147,7 +148,7 @@ $(function(){
     
 }) ;
 
-$("#porta1").click(function(){
+$("#porta").click(function(){
 	fabric.Image.fromURL('../img/porta.png', function(img){
 		img.setWidth(100);
 		img.setHeight(100);
@@ -157,11 +158,11 @@ $("#porta1").click(function(){
 	});
 });
 
-$( "#setores1" ).change(function() {
+$( "#setores" ).change(function() {
   /*alert( $( "#setores option:selected" ).text());*/
   canvas.clear();
   for (var i = setores.length - 1; i >= 0; i--) {
-    if (setores[i]== $( "#setores1 option:selected" ).text()) {
+    if (setores[i]== $( "#setores option:selected" ).text()) {
         canvas.loadFromJSON(saveImgJson[i]);  
     };
 };
