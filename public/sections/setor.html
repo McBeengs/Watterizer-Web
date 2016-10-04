@@ -87,7 +87,7 @@
 <script type="text/javascript">
 	var app = angular.module('wattzApp', []);
 	app.controller('setoresCtrl', function($scope, $http) {
-	    $http.get("/dados/setor")
+	    $http.get("/setor")
 	    .then(function (response) {
 	    	$scope.setores = response.data;
 	    	$scope.arduinos=[]

@@ -279,6 +279,18 @@
 	border-bottom-right-radius: var(--defaultBorderRadius);
 }
 
+/* MODAL */
+#content-portal button[data-toggle="modal"]
+{
+	margin-top: 30px;
+	border: 1px solid var(--mainYellow);
+	border-radius: var(--defaultBorderRadius);
+	background: var(--lighterGray);
+	color: black;
+	padding: 5px 15px;
+}
+
+/* PANELS */
 #content-portal div.panel-heading a
 {
 	font-size: 20px;

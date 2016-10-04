@@ -275,6 +275,18 @@
 	border-bottom-right-radius: 20px;
 }
 
+/* MODAL */
+#content-portal button[data-toggle="modal"]
+{
+	margin-top: 30px;
+	border: 1px solid rgb(240,190,17);
+	border-radius: 20px;
+	background: rgb(150,150,150);
+	color: black;
+	padding: 5px 15px;
+}
+
+/* PANELS */
 #content-portal div.panel-heading a
 {
 	font-size: 20px;
