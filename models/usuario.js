@@ -44,7 +44,7 @@ function Usuario() {
 					if (result[i].username==user) {
     					count.splice(1, 1);
 						count.push(Math.floor((Math.random() * 9) + 1));
-						user=nome.nome.replace(/ /g,"")+count[count.length-1];
+						user=nome.nome.replace(/ /g,"")+count.toString().replace(/,/g,"");
 					};
 				};
 				con.release();
