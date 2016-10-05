@@ -24,7 +24,7 @@ function Usuario() {
 	// MOSTRA UM USUARIO
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario WHERE id = ? AND data_exclusao = NULL', [id], function(err, result) {
+			con.query('SELECT * FROM usuario WHERE id = ? AND data_exclusao IS NULL', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -32,15 +32,14 @@ function Usuario() {
 	};
 	this.geraUsuario = function(nome, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario WHERE data_exclusao = NULL', function(err, result) {
-				var user = nome.nome.trim();
+			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
+				var user = nome.nome.replace(" ","")
 				var count=1;
 				for (var i = result.length - 1; i >= 0; i--) {
-					if (result[i].username==user) {
+					if (result[i].username==user+count) {
 						count++;
 					};
 				};
-				console.log(user)
 				con.release();
 				res.send(user+count);
 			});
@@ -69,7 +68,7 @@ function Usuario() {
 	// MODIFICA UM USUARIO
 	this.update = function(usuario, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao = NULL', [usuario, usuario.id], function(err, result) {
+			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -124,7 +123,7 @@ function Usuario() {
 	this.autenticacao = function(token,req, res) {
 		connection.acquire(function(err, con) {
 			sess=req.session;
-			con.query('SELECT * FROM usuario WHERE token_web = ? OR token_desktop = ?', [token,token], function(err, result) {
+			con.query('SELECT * FROM usuario WHERE token_web = ? OR token_desktop = ? AND data_exclusao IS NULL', [token,token], function(err, result) {
 				if(result[0]!=null){
 					sess.aut=true;
 					return true;
@@ -143,7 +142,7 @@ function Usuario() {
 			sess = req.session;
 			token = randtoken.generate(16);
 			var user = [];		
-			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao = NULL', [login,login,senha], function(err, result) {
+			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
 				user = JSON.stringify(result);
 			});
 			if (user != null) {
