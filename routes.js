@@ -364,6 +364,9 @@ module.exports = {
         
         res.send(array);
     });
+    app.post('/gerausuario', function(req, res) {
+        usuario.geraUsuario(req.body, res);
+    });
 
     // ADICIONA UM NOVO USUARIO
     app.post(prefixoDados+'/usuario/', function(req, res) {
