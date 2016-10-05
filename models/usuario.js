@@ -30,6 +30,22 @@ function Usuario() {
 			});
 		});
 	};
+	this.geraUsuario = function(nome, res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM usuario WHERE data_exclusao = NULL', function(err, result) {
+				var user = nome.nome.trim();
+				var count=1;
+				for (var i = result.length - 1; i >= 0; i--) {
+					if (result[i].username==user) {
+						count++;
+					};
+				};
+				console.log(user)
+				con.release();
+				res.send(user+count);
+			});
+		});
+	};
 
 	// ADICIONA UM NOVO USUARIO
 	this.create = function(usuario, res) {
