@@ -4,6 +4,7 @@
 :root
 {
 	--mainYellow: rgb(240,190,17);
+	--darkYellow: rgb(200,150,5);
 	--mainGray: rgb(45,45,45);
 	--lighterGray: rgb(150,150,150);
 	--lightBorder: rgb(224,224,224);
@@ -86,6 +87,33 @@ label.badge
 	margin-left: 15px;
 	background: var(--mainGray);
 	font-family: sans-serif;
+}
+
+button.btn
+{
+	border: 1px outset var(--lightBorder);
+	outline: none !important;
+}
+
+button.btn
+{
+	border-style: inset;
+}
+
+button.btn-primary
+{
+	background: var(--mainYellow);
+	color: var(--mainGray);
+}
+
+button.btn-primary:hover
+{
+	background: var(--darkYellow);
+}
+
+button.btn-default
+{
+	background: var(--lightBorder);
 }
 
 /* HEADER */

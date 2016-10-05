@@ -24,15 +24,7 @@ var cssvariables = require('postcss-css-variables');
 var fs = require('fs');
 
 var css = [fs.readFileSync('public/css/base.css', 'utf8'), fs.readFileSync('public/css/home.css', 'utf8'), fs.readFileSync('public/css/portal.css', 'utf8')];
-var cssName = ['base', 'home', 'portal']
-
-// postcss([ autoprefixer ]).process(css)
-// .then(function (result) {
-//     result.warnings().forEach(function (warn) {
-//         console.warn(warn.toString());
-//     });
-//     console.log(result.css);
-// });
+var cssName = ['base', 'home', 'portal'];
 
 // PROCESSA OS ARQUIVOS CSS
 var output;

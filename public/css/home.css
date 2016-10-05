@@ -4,6 +4,7 @@
 :root
 {
 	--mainYellow: rgb(240,190,17);
+	--darkYellow: rgb(200,150,5);
 	--mainGray: rgb(45,45,45);
 	--lighterGray: rgb(150,150,150);
 	--lightBorder: rgb(224,224,224);

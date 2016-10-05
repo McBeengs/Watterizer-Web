@@ -78,6 +78,33 @@ label.badge
 	font-family: sans-serif;
 }
 
+button.btn
+{
+	border: 1px outset rgb(224,224,224);
+	outline: none !important;
+}
+
+button.btn
+{
+	border-style: inset;
+}
+
+button.btn-primary
+{
+	background: rgb(240,190,17);
+	color: rgb(45,45,45);
+}
+
+button.btn-primary:hover
+{
+	background: rgb(200,150,5);
+}
+
+button.btn-default
+{
+	background: rgb(224,224,224);
+}
+
 /* HEADER */
 header 
 {

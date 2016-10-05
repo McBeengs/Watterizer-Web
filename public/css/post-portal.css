@@ -114,7 +114,7 @@
 
 #sections-portal div:hover
 {
-	background-color: rgb(240,190,17);
+	background-color: rgb(200,150,5);
 }
 
 #sec-gasto
@@ -191,7 +191,6 @@
 	width: 100%;
 	margin-top: 30px;
 	color: rgb(45,45,45);
-	border: none !important;
 }
 
 #content-portal table thead
@@ -279,11 +278,21 @@
 #content-portal button[data-toggle="modal"]
 {
 	margin-top: 30px;
-	border: 1px solid rgb(240,190,17);
 	border-radius: 20px;
-	background: rgb(150,150,150);
-	color: black;
+	color: rgb(45,45,45);
 	padding: 5px 15px;
+	font-weight: bold;
+}
+
+#content-portal div.modal-content
+{
+	background: rgb(150,150,150) !important;
+	border: 1px solid rgb(224,224,224);
+}
+
+#content-portal div.modal-content div.body
+{
+	/*background: var(--lightBorder);*/
 }
 
 /* PANELS */
