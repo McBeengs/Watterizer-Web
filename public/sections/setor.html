@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" ng-app="wattzApp">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
@@ -8,9 +8,10 @@
 	<title>Setores - Watterizer</title>
 	<link rel="stylesheet" type="text/css" href="../css/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="../css/post-portal.css"> <!-- CSS DO PORTAL -->
-	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+	<!-- CSS BOOTSTRAP -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> <!-- ANGULAR -->
-	<script type="text/javascript" src="../js/fabric.js"></script>
+	<script src="../js/angularControllers.js"></script> <!-- JS DAS CONTROLLERS DO ANGULAR -->
 	<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"> -->
 </head>
 <body>
@@ -65,7 +66,7 @@
 			</select>
 
 			<p id="janela" style="display: none; position:absolute;"></p>
-			<div id="setores" class="panel-group" ng-app="wattzApp" ng-controller="setoresCtrl">
+			<div id="setores" class="panel-group"  ng-controller="setoresCtrl">
 				<div class="panel panel-default" ng-repeat="setor in setores">
 					<div class="panel-heading">
 						<h4 class="panel-title">
@@ -74,7 +75,7 @@
 					</div>
 					<div id="setor-{{setor.id}}" class="panel-collapse collapse">
 						
-						<ul class="list-group">
+						<!-- <ul class="list-group">
 							<li class="list-group-item" ng-repeat="arduino in arduinos">
 								<div class="panel panel-default" ng-repeat="x in arduino">
 									<div class="panel-heading">
@@ -92,7 +93,7 @@
 									</div>
 								</div>
 							</li>
-						</ul>
+						</ul> -->
 						<div class="panel-footer">Footer</div>
 					</div>
 				</div>
@@ -111,7 +112,6 @@
 	</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <!-- <script src="../js/jquery.js"></script> -->
@@ -119,22 +119,6 @@
 <script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
 <script src="../js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
-<script type="text/javascript" src="../js/script.js"></script>
-<script type="text/javascript">
-	var app = angular.module('wattzApp', []);
-	app.controller('setoresCtrl', function($scope, $http) {
-		$http.get("/setor")
-		.then(function (response) {
-			$scope.setores = response.data;
-			$scope.arduinos=[]
-			angular.forEach($scope.setores, function(value, key) {
-				$http.get("/dados/arduino/setor/"+value.id)
-				.then(function (response) {
-					$scope.arduinos[key] = response.data;
-					console.log($scope.arduinos[key]);
-				});
-			});
-		});
-	});
-</script>
+<script src="../js/script.js"></script>
+<script type="text/javascript" src="../js/fabric.js"></script>
 </html>

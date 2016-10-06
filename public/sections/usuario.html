@@ -82,7 +82,7 @@
 								<label for="txt-email">Email</label>
 								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email">
 							</div>
-							<select ng-model="" ng-options="setores.setor as value">
+							<select ng-model="" ng-options="setores.id as assunto.nome for assunto in assuntos">
 								<option value="">-- Selecione --</option>
 							</select>
 							<div class="form-group col-xs-12">
@@ -125,16 +125,9 @@
 <script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
 <script src="../js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script src="../js/angularControllers.js"></script> <!-- JS DAS CONTROLLERS DO ANGULAR -->
 <script type="text/javascript">
-	var app = angular.module('wattzApp', []);
-	app.controller('usuariosCtrl', function($scope, $http) {
-		$http.get("/setores")
-		.then(function (response) {
-			$scope.setores = response.data;
-		});
-	});
-	$(function() {
-
+	$(function() {²
 		$( "#nome" ).autocomplete({
 			source: function( request, response ) {
 				console.log(request)
@@ -153,15 +146,5 @@
 			minLength: 3
 		});
 	});
-
-	$.ajax({
-		url: "/dados/usuario",
-		success: function(response) {
-			
-		},
-		error: function(xhr) {
-		//Do Something to handle error
-	}
-});
 </script>
 </html>

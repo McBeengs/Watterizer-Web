@@ -330,9 +330,6 @@ module.exports = {
     app.post(prefixoDados+'/setor/', function(req, res) {
         setor.create(req.body, res);
     });
-    app.get('/setorcheck', function(req, res) {
-        setor.check(res);
-    });
 
     // MODIFICA UM SETOR
     app.put(prefixoDados+'/setor/', function(req, res) {
@@ -342,6 +339,11 @@ module.exports = {
     // DELETA UM SETOR
     app.delete(prefixoDados+'/setor/:id/', function(req, res) {
         setor.delete(req.params.id, res);
+    });
+
+    // VERIFICA SE EXISTEM SETORES CADASTRADOS
+    app.get('/setorcheck', function(req, res) {
+        setor.check(res);
     });
 
     /* USUARIOS */
