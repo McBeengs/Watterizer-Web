@@ -33,15 +33,22 @@ function Usuario() {
 	this.geraUsuario = function(nome, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
-				var user = nome.nome.replace(" ","")
-				var count=1;
+				var user = nome.nome.replace(/ /g,"");
+				var count=[];
+
+				for (var i = 0; i <= 3; i++) {
+					count.push(Math.floor((Math.random() * 9) + 1));
+					user += count[i];
+				};
 				for (var i = result.length - 1; i >= 0; i--) {
-					if (result[i].username==user+count) {
-						count++;
+					if (result[i].username==user) {
+    					count.splice(1, 1);
+						count.push(Math.floor((Math.random() * 9) + 1));
+						user=nome.nome.replace(/ /g,"")+count.toString().replace(/,/g,"");
 					};
 				};
 				con.release();
-				res.send(user+count);
+				res.send(user);
 			});
 		});
 	};
