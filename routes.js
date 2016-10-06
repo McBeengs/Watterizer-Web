@@ -333,6 +333,9 @@ module.exports = {
     app.get('/setorcheck', function(req, res) {
         setor.check(res);
     });
+    app.post('/emailcheck', function(req, res) {
+        usuario.checaEmailCadastrado(req.body, res);
+    });
 
     // MODIFICA UM SETOR
     app.put(prefixoDados+'/setor/', function(req, res) {
@@ -342,6 +345,11 @@ module.exports = {
     // DELETA UM SETOR
     app.delete(prefixoDados+'/setor/:id/', function(req, res) {
         setor.delete(req.params.id, res);
+    });
+
+    // VERIFICA SE EXISTEM SETORES CADASTRADOS
+    app.get('/setorcheck', function(req, res) {
+        setor.check(res);
     });
 
     /* USUARIOS */

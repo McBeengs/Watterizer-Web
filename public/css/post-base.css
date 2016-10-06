@@ -1,0 +1,149 @@
+/* GERAL */
+@use cssnext;
+
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	font-family: "featured" !important;
+}
+
+@font-face
+{
+	font-family: "featured";
+	src: url("../fonts/featuredItem.ttf") format("truetype");
+}
+
+@font-face
+{
+	font-family: "steinem";
+	src: url("../fonts/STEINEM_.ttf") format("truetype");
+}
+
+@font-face
+{
+	font-family: "quastic";
+	src: url("../fonts/QUASIK__.ttf") format("truetype");
+}
+
+body
+{
+	background: rgb(45,45,45) !important;
+}
+
+html, body
+{
+	height: 100%;
+}
+
+header, footer
+{
+	margin-left: -15px
+}
+
+/* CLASSES GERAIS */
+.fit-background
+{
+	background-repeat: no-repeat !important;
+	background-size: cover !important;
+	background-position: center center !important;
+}
+
+.watts-box
+{
+	background: rgb(150,150,150);
+	/*box-shadow: 7px 8px 20px 3px rgb(66,66,66);*/
+}
+
+.content
+{
+	margin: 0 100px;
+}
+
+/* CORREÇÕES BOOTSTRAP */
+.wrapper
+{
+	background: none !important;
+}
+
+label.badge
+{
+	margin-top: 4px;
+	margin-left: 15px;
+	background: rgb(45,45,45);
+	font-family: sans-serif;
+}
+
+button.btn
+{
+	border: 1px outset rgb(224,224,224);
+	outline: none !important;
+}
+
+button.btn
+{
+	border-style: inset;
+}
+
+button.btn-primary
+{
+	background: rgb(240,190,17);
+	color: rgb(45,45,45);
+}
+
+button.btn-primary:hover
+{
+	background: rgb(200,150,5);
+}
+
+button.btn-default
+{
+	background: rgb(224,224,224);
+}
+
+/* HEADER */
+header 
+{
+	background: black;
+	position: fixed !important;
+	top: 0;
+	z-index: 10;
+	height: 80px;
+	margin-top: 0 !important;
+	border-bottom: rgb(240,190,17) solid 3px;
+}
+
+header .logo 
+{
+	float: left;
+	z-index: 100;
+	position: relative;
+}
+
+header .logo a
+{
+	margin-top: 3px;
+	margin-left: 15px;
+	display: block;
+	color: transparent;
+	width: 400px;
+	height: 70px;
+	background: url(../img/logo.png) no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+/* RODAPÉ */
+footer
+{
+	background: rgb(240,190,17);
+	position: absolute !important;
+	text-align: center;
+	font-weight: bold;
+	padding: 35px 0;
+	margin-top: 50px;
+}
