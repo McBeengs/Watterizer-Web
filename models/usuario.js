@@ -5,6 +5,7 @@ var session = require('express-session');
 var aes = require('aes-cross');
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
+var nodemailer = require('nodemailer');
 var sess;
 // var enc = aes.encText('testTxt',key,init);
 // var dec = aes.decText('testTxt',key,init);
@@ -42,7 +43,7 @@ function Usuario() {
 				};
 				for (var i = result.length - 1; i >= 0; i--) {
 					if (result[i].username==user) {
-    					count.splice(1, 1);
+						count.splice(1, 1);
 						count.push(Math.floor((Math.random() * 9) + 1));
 						user=nome.nome.replace(/ /g,"")+count.toString().replace(/,/g,"");
 					};
@@ -52,10 +53,50 @@ function Usuario() {
 			});
 		});
 	};
+	this.checaEmailCadastrado = function(email, res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
+				var isCadastrado=false;
+				for (var i = result.length - 1; i >= 0; i--) {
+					if (result[i].email==email.email) {
+						isCadastrado=true;
+					};
+				};
+				con.release();
+				res.send(isCadastrado);
+			});
+		});
+	};
 
 	// ADICIONA UM NOVO USUARIO
 	this.create = function(usuario, res) {
 		connection.acquire(function(err, con) {
+			var senha = randtoken.generate(8);
+			usuario.senha=aes.encText(senha,key,init);
+			var text = 'Senha '+senha;
+			var transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				auth: {
+            user: 'watterizer@gmail.com', // Your email id
+            pass: 'senairianos115' // Your password
+        		}
+    		});
+			var mailOptions = {
+			    from: 'watterizer@gmail.com', // sender address
+			    to: 'watterizer@gmail.com', // list of receivers
+			    subject: 'Email Example', // Subject line
+			    text: text //, // plaintext body
+			    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+			};
+			transporter.sendMail(mailOptions, function(error, info){
+				if(error){
+					console.log(error);
+					
+				}else{
+					console.log('Message sent: ' + info.response);
+					
+				};
+			});
 			con.query('INSERT INTO usuario SET ?', usuario, function(err, result) {
 				con.release();
 
@@ -69,8 +110,36 @@ function Usuario() {
 					.send('CREATED');
 				}
 			});
-		});
-	};
+			});
+};
+this.testEmail = function(res) {
+			var senha = randtoken.generate(8);
+			var text = 'Senha '+senha
+			var transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				auth: {
+            user: 'watterizer@gmail.com', // Your email id
+            pass: 'senairianos115' // Your password
+        		}
+    		});
+			var mailOptions = {
+			    from: 'watterizer@gmail.com', // sender address
+			    to: 'watterizer@gmail.com', // list of receivers
+			    subject: 'Email Example', // Subject line
+			    text: text //, // plaintext body
+			    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+			};
+			transporter.sendMail(mailOptions, function(error, info){
+				if(error){
+					console.log(error);
+					res.send(error);
+				}else{
+					console.log('Message sent: ' + info.response);
+					res.send('Message sent: ' + info.response)
+				};
+			});
+};
+
 
 	// MODIFICA UM USUARIO
 	this.update = function(usuario, res) {
@@ -155,15 +224,15 @@ function Usuario() {
 			if (user != null) {
 				console.log(token);
 				if (krypt) {
-						con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 					});
 				}
 				else  {
-						con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 					});
-					};
+				};
 				con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
-	              
+
 					var string = JSON.stringify(result);
 					var obj = string;
 					if (krypt) {
@@ -178,7 +247,7 @@ function Usuario() {
 						res.redirect("/portal");
 					}
 					else {
-        				sess.login=false;
+						sess.login=false;
 						res.redirect("/index");		
 					}					
 					user = JSON.stringify(result);
@@ -187,7 +256,7 @@ function Usuario() {
 			}
 			token = null;
 		});
-	};
+};
 } 
 
 module.exports = new Usuario();
