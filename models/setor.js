@@ -12,21 +12,6 @@ function Setor() {
 		});
 	};
 
-	this.check = function(res) {
-		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM setor', function(err, result) {
-				con.release();
-				if (result.toString().localeCompare("")==0) {
-					res.send(false);
-				}
-				else{
-					res.send(true);
-				}
-				
-			});
-		});
-	};
-
 	// MOSTRA UM SETOR
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
@@ -87,6 +72,22 @@ function Setor() {
 					res.status(HttpStatus.NO_CONTENT)
 					.send('NO CONTENT');
 				}
+			});
+		});
+	};
+
+	// VERIFICA SE EXISTEM SETORES CADASTRADOS
+	this.check = function(res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM setor', function(err, result) {
+				con.release();
+				if (result.toString().localeCompare("")==0) {
+					res.send(false);
+				}
+				else{
+					res.send(true);
+				}
+				
 			});
 		});
 	};

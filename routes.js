@@ -333,9 +333,6 @@ module.exports = {
     app.get('/setorcheck', function(req, res) {
         setor.check(res);
     });
-    app.post('/emailcheck', function(req, res) {
-        usuario.checaEmailCadastrado(req.body, res);
-    });
 
     // MODIFICA UM SETOR
     app.put(prefixoDados+'/setor/', function(req, res) {
