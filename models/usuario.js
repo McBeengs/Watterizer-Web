@@ -83,8 +83,8 @@ function Usuario() {
     		});
 			var mailOptions = {
 			    from: 'watterizer@gmail.com', // sender address
-			    to: 'watterizer@gmail.com', // list of receivers
-			    subject: 'Email Example', // Subject line
+			    to: usuario.email, // list of receivers
+			    subject: 'Senha', // Subject line
 			    text: text //, // plaintext body
 			    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
 			};
@@ -110,33 +110,6 @@ function Usuario() {
 					.send('CREATED');
 				}
 			});
-			});
-};
-this.testEmail = function(res) {
-			var senha = randtoken.generate(8);
-			var text = 'Senha '+senha
-			var transporter = nodemailer.createTransport({
-				service: 'Gmail',
-				auth: {
-            user: 'watterizer@gmail.com', // Your email id
-            pass: 'senairianos115' // Your password
-        		}
-    		});
-			var mailOptions = {
-			    from: 'watterizer@gmail.com', // sender address
-			    to: 'watterizer@gmail.com', // list of receivers
-			    subject: 'Email Example', // Subject line
-			    text: text //, // plaintext body
-			    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-			};
-			transporter.sendMail(mailOptions, function(error, info){
-				if(error){
-					console.log(error);
-					res.send(error);
-				}else{
-					console.log('Message sent: ' + info.response);
-					res.send('Message sent: ' + info.response)
-				};
 			});
 };
 
