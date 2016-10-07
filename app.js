@@ -22,8 +22,7 @@ var cssvariables = require('postcss-css-variables');
 // var autoprefixer = require('autoprefixer');
 
 var fs = require('fs');
-
-var css = [fs.readFileSync('public/css/base.css', 'utf8'), fs.readFileSync('public/css/home.css', 'utf8'), fs.readFileSync('public/css/portal.css', 'utf8')];
+var css = [fs.readFileSync('public/css/raw/base.css', 'utf8'), fs.readFileSync('public/css/raw/home.css', 'utf8'), fs.readFileSync('public/css/raw/portal.css', 'utf8')];
 var cssName = ['base', 'home', 'portal'];
 
 // PROCESSA OS ARQUIVOS CSS
@@ -34,7 +33,7 @@ for (var i = css.length - 1; i >= 0; i--) {
     ])
     .process(css[i])
     .css;
-    fs.writeFile("public/css/post-"+cssName[i]+".css", output);
+    fs.writeFile("public/css/post-processed/post-"+cssName[i]+".css", output);
 }
 
 // FAZ A CONEXÃO E DEFINE AS ROTAS

@@ -6,11 +6,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Usuários - Watterizer</title>
-	<link rel="stylesheet" type="text/css" href="../css/base.css"> <!-- CSS BASE -->
-	<link rel="stylesheet" type="text/css" href="../css/portal.css"> <!-- CSS DO PORTAL --> 
-	<link rel="stylesheet" type="text/css" href="../css/jquery-ui.min.css"><!-- CSS BASE -->
-	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
-	<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
+	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
+	<link rel="stylesheet" type="text/css" href="../css/library/jquery-ui.min.css"><!-- CSS DO JQUERY UI -->
+	<link rel="stylesheet" type="text/css" href="../css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 </head>
 <body>
 	<div class="container-fluid">
@@ -117,17 +116,13 @@
 	</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- JS JQUERY -->
-<script src="../js/jquery-ui.min.js"></script> <!-- JS DO PORTAL -->
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
-<!-- <script src="../js/jquery.js"></script> -->
-<!-- <script src="../js/bootstrap.min.js"></script> -->
-<script src="../js/portal.js"></script> <!-- JS DO PORTAL -->
-<script src="../js/slider.js"></script> <!-- JS DO SLIDER -->
-<script src="../js/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
-<script src="../js/angularControllers.js"></script> <!-- JS DAS CONTROLLERS DO ANGULAR -->
+<script src="../js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+<script src="../js/jquery/jquery-ui.min.js"></script> <!-- JS DO JQUERY UI -->
+<script src="../js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
+<script src="../js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script src="../js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 <script type="text/javascript">
-	$(function() {²
+	$(function() {
 		$( "#nome" ).autocomplete({
 			source: function( request, response ) {
 				console.log(request)

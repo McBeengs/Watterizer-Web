@@ -1,17 +1,6 @@
 /* DADOS DO USUÁRIO LOGADO */
 @use cssnext;
 
-:root
-{
-	--mainYellow: rgb(240,190,17);
-	--darkYellow: rgb(200,150,5);
-	--mainGray: rgb(45,45,45);
-	--lighterGray: rgb(150,150,150);
-	--lightBorder: rgb(224,224,224);
-	--defaultBorderRadius: 20px;
-	--sectionsBorder: 10px;
-}
-
 #auth
 {
 	text-align: center;
@@ -54,7 +43,7 @@
 	background-color: transparent;
 	border: none;
 	outline: none; 
-	background-image: url("../img/config.png");
+	background-image: url("../../img/config.png");
 	background-repeat: no-repeat;
 	background-size: 30px;
 	background-position: left;
@@ -68,7 +57,7 @@
 
 #options .divider
 {
-	background: var(--lighterGray);
+	background: rgb(150,150,150);
 }
 
 #options ul li a
@@ -90,7 +79,7 @@
 	top: 25px;
 	height: 25px;
 	transform: rotate(180deg);
-	background: url(../img/back.png) no-repeat;
+	background: url(../../img/back.png) no-repeat;
 	background-size: contain;
 	background-position: center;
 	z-index: 500;
@@ -109,7 +98,7 @@
 
 #sections-portal div
 {
-	margin-top: var(--sectionsBorder);
+	margin-top: 10px;
 	padding-top: 10px;
 	font-size: 32px;
 	cursor: pointer;
@@ -118,43 +107,43 @@
 
 #sections-portal div a
 {
-	color: var(--mainGray);
+	color: rgb(45,45,45);
 	margin-left: 20px;
 	font-family: "featured" !important;
 }
 
 #sections-portal div:hover
 {
-	background-color: var(--darkYellow);
+	background-color: rgb(200,150,5);
 }
 
 #sec-gasto
 {
-	border-right: calc(var(--sectionsBorder)/2) solid var(--mainGray);
+	border-right: calc(10px/2) solid rgb(45,45,45);
 	height: 300px;
 }
 
 #sec-setor
 {
-	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
+	border-left: calc(10px/2) solid rgb(45,45,45);
 	height: 145px;
 }
 
 #sec-usuario
 {
-	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
+	border-left: calc(10px/2) solid rgb(45,45,45);
 	height: 145px;
 }
 
 #sec-advertencia
 {
-	border-right: calc(var(--sectionsBorder)/2) solid var(--mainGray);
+	border-right: calc(10px/2) solid rgb(45,45,45);
 	height: 145px;
 }
 
 #sec-computador
 {
-	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
+	border-left: calc(10px/2) solid rgb(45,45,45);
 	height: 145px;
 }
 
@@ -164,9 +153,12 @@
 	margin-top: 30px;
 }
 
-#DataTables_Table_0_wrapper select, #DataTables_Table_0_wrapper input
-{
-	border-radius: var(--defaultBorderRadius); 
+#DataTables_Table_0_wrapper select{
+	border-radius: 20px;
+}
+
+#DataTables_Table_0_wrapper input{
+	border-radius: 20px;
 }
 
 #DataTables_Table_0_info
@@ -177,33 +169,33 @@
 
 #DataTables_Table_0_wrapper ul.pagination li:first-of-type a
 {
-	border-top-left-radius: var(--defaultBorderRadius);
-	border-bottom-left-radius: var(--defaultBorderRadius);
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
 }
 
 #DataTables_Table_0_wrapper ul.pagination li:last-of-type a
 {
-	border-top-right-radius: var(--defaultBorderRadius);
-	border-bottom-right-radius: var(--defaultBorderRadius);
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 
 #DataTables_Table_0_paginate ul li.paginate_button.active a
 {
-	background: var(--mainYellow) !important;
-	border-color: var(--mainYellow);
-	color: var(--mainGray);
+	background: rgb(240,190,17) !important;
+	border-color: rgb(240,190,17);
+	color: rgb(45,45,45);
 }
 
 #content-portal table
 {
 	width: 100%;
 	margin-top: 30px;
-	color: var(--mainGray);
+	color: rgb(45,45,45);
 }
 
 #content-portal table thead
 {
-	background: var(--mainYellow);
+	background: rgb(240,190,17);
 	font-size: 18px;
 }
 
@@ -222,9 +214,12 @@
 	padding-left: 10px;
 }
 
-#content-portal th:not(:last-of-type), #content-portal td:not(:last-of-type)
-{
-	border-right: 1px solid var(--lightBorder);
+#content-portal th:not(:last-of-type){
+	border-right: 1px solid rgb(224,224,224);
+}
+
+#content-portal td:not(:last-of-type){
+	border-right: 1px solid rgb(224,224,224);
 }
 
 #content-portal th
@@ -241,12 +236,12 @@
 
 #content-portal table thead tr:first-of-type th:first-of-type
 {
-	border-top-left-radius: var(--defaultBorderRadius);
+	border-top-left-radius: 20px;
 }
 
 #content-portal table thead tr:last-of-type th:last-of-type
 {
-	border-top-right-radius: var(--defaultBorderRadius);
+	border-top-right-radius: 20px;
 }
 
 #content-portal table tbody
@@ -256,7 +251,7 @@
 
 #content-portal table tbody tr:not(:last-of-type) td
 {
-	border-bottom: 1px solid var(--lightBorder);
+	border-bottom: 1px solid rgb(224,224,224);
 }
 
 #content-portal table tbody tr:nth-of-type(odd)
@@ -266,33 +261,33 @@
 
 #content-portal table tbody tr:nth-of-type(even)
 {
-	background: var(--lighterGray);
+	background: rgb(150,150,150);
 }
 
 #content-portal table tbody tr:last-of-type td:first-of-type
 {
-	border-bottom-left-radius: var(--defaultBorderRadius);
+	border-bottom-left-radius: 20px;
 }
 
 #content-portal table tbody tr:last-of-type td:last-of-type
 {
-	border-bottom-right-radius: var(--defaultBorderRadius);
+	border-bottom-right-radius: 20px;
 }
 
 /* MODAL */
 #content-portal button[data-toggle="modal"]
 {
 	margin-top: 30px;
-	border-radius: var(--defaultBorderRadius);
-	color: var(--mainGray);
+	border-radius: 20px;
+	color: rgb(45,45,45);
 	padding: 5px 15px;
 	font-weight: bold;
 }
 
 #content-portal div.modal-content
 {
-	background: var(--lighterGray) !important;
-	border: 1px solid var(--lightBorder);
+	background: rgb(150,150,150) !important;
+	border: 1px solid rgb(224,224,224);
 }
 
 #content-portal div.modal-content div.body
@@ -313,7 +308,7 @@
 
 #content-portal div.panel-group div.panel-heading
 {
-	background: var(--lighterGray);
+	background: rgb(150,150,150);
 }
 
 #content-portal div.panel-group div.panel
@@ -321,9 +316,12 @@
 	border-color: white;
 }
 
-#content-portal div.panel-group ul.list-group li, #content-portal div.panel-group div.panel-footer
-{
-	background: var(--lighterGray);
+#content-portal div.panel-group ul.list-group li{
+	background: rgb(150,150,150);
+}
+
+#content-portal div.panel-group div.panel-footer{
+	background: rgb(150,150,150);
 }
 
 #usuarios div.panel-collapse img

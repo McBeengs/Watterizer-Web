@@ -1,5 +1,5 @@
 
-$(document).ready(function() {
+function startTable() {
 	$.ajax({
 		url: "/sessao",
 		success: function(response) {
@@ -28,17 +28,17 @@ $(document).ready(function() {
 						};
 					},
 					error: function(xhr) {
-							//Do Something to handle error
-						}
-					});
+							
+					}
+				});
 
 			},200);
 		},
 		error: function(xhr) {
-		//Do Something to handle error
-	}	
-});	
-});
+		
+		}	
+	});	
+}
 
 $.ajax({
 	url: "/sessao",
