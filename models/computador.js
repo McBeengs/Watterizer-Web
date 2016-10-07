@@ -28,24 +28,44 @@ function Computador() {
 	};
 	this.create = function(computador, res) {
 		connection.acquire(function(err, con) {
-			 delete computador.command;
-			con.query('INSERT INTO computador SET ?', [computador], function(err, result) {
-				con.release();
-				if (err) {
-					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+			delete computador.command;
+			con.query('SELECT id FROM computador WHERE mac = ?', [computador.mac], function(err, result) {
+				if (result[0]==null) {
+					con.query('INSERT INTO computador SET ?', [computador], function(err, result) {
+						con.release();
+						if (err) {
+							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+							.send({
+								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+							});
+						} else {
+							res.status(HttpStatus.CREATED)
+							.send('CREATED');
+						}
 					});
-				} else {
-					res.status(HttpStatus.CREATED)
-					.send('CREATED');
 				}
+				else{
+					con.query('UPDATE computador SET ? WHERE mac = ?', [computador, computador.mac], function(err, result) {
+						con.release();
+						if (err) {
+							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+							.send({
+								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+							});
+						} else {
+							res.status(HttpStatus.OK)
+							.send('UPDATED');
+						}
+					});
+				}
+
 			});
+			
 		});
 	};
 	this.update = function(computador, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE computador SET ? WHERE id = ?', [computador, computador.mac], function(err, result) {
+			con.query('UPDATE computador SET ? WHERE mac = ?', [computador, computador.mac], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)

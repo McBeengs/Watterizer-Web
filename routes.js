@@ -206,9 +206,10 @@ module.exports = {
         else if(req.body.command=="create"){
             computador.create(req.body,res);
         }
-        else if(req.body.command=="update"){
-            computador.update(req.body,res);
+        else{
+            res.send("INVALID COMMAND");
         }
+        
     });
 
     /* GASTOS */
