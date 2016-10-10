@@ -116,6 +116,7 @@ module.exports = {
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
         sess=req.session;
+        
         usuario.autenticacao(req.headers.token,req, res);
         setTimeout(function() {
             sess=req.session;
@@ -234,7 +235,7 @@ module.exports = {
     });
 
     // MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA
-    app.get('/gasto/:data', function(req, res) {
+    app.get(prefixoDados+'/gasto/:data', function(req, res) {
         gasto.listData(req.params.data,res);
     });
 
