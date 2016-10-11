@@ -1,5 +1,5 @@
 
-$("#mid").css({"margin-top":$("#mid").height()*0.25+"px"});
+$("#bot").css({"margin-top":$("#bot").height()*0.25+"px"});
 $("html").height(window.innerHeight); // AJUSTE DE TAMANHO DO DOCUMENTO
 
 // // ANIMAÇÕES DE INÍCIO

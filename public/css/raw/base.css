@@ -75,7 +75,8 @@ header, footer
 	margin: 0 100px;
 }
 
-.centered {
+.centered 
+{
     margin: 0 auto !important;
     float: none !important;
 }
@@ -114,16 +115,19 @@ label.badge
 .btn-primary:hover
 {
 	background: var(--mainYellow);
+	color: black;
 }
 
 .btn-primary:active
 {
 	background: var(--darkYellow) !important;
+	color: black;
 }
 
 .btn-primary:focus
 {
 	background: var(--mainYellow);
+	color: black;
 }
 
 .btn-default
