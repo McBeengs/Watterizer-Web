@@ -46,8 +46,9 @@ var perfil = require('./models/perfil');
 var pergunta = require('./models/pergunta');
 var setor = require('./models/setor');
 var usuario = require('./models/usuario');
-var computador = require('./models/computador');
 var canvas = require('./models/canvas');
+var equipamento = require('./models/equipamento');
+var gastoespecifico = require('./models/gastoespecifico');
 var token ="h6a44d1g5s5s";
 var sess;
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
@@ -116,14 +117,16 @@ module.exports = {
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
         sess=req.session;
-        
+
         usuario.autenticacao(req.headers.token,req, res);
         setTimeout(function() {
             sess=req.session;
             if(sess.aut) {
+                console.log(req.headers);
                 sess.aut=false;
                 next();
             } else {
+                console.log(req.headers);
                 res.end();
             }
         }, 100);
@@ -176,43 +179,46 @@ module.exports = {
         arduino.delete(req.params.id, res);
     });
 
-    app.get(prefixoDados+'/computador/', function(req, res) {
-        computador.listAll(res);
-    });
-
-    // MOSTRA UM computador
-    app.get(prefixoDados+'/computador/:id/', function(req, res) {
-        computador.getOne(req.params.id, res);
-    });
-
-    // ADICIONA UM NOVO ARDUNO
-    app.post(prefixoDados+'/computador/', function(req, res) {
-        computador.create(req.body, res);
-    });
-
-    // MODIFICA UM ARDUNO
-    app.put(prefixoDados+'/computador/', function(req, res) {
-        computador.update(req.body, res);
-    });
-
-    // DELETA UM ARDUNO
-    app.delete(prefixoDados+'/computador/:id/', function(req, res) {
-        computador.delete(req.params.id, res);
-    });
-
     app.post('/pccheck', function(req, res) {
         if (req.body.command=="check") {
-            computador.check(req.body.mac,res);
+            equipamento.check(req.body.mac,res);
         }
         else if(req.body.command=="create"){
-            computador.create(req.body,res);
+            equipamento.create(req.body,res);
         }
         else{
             res.send("INVALID COMMAND");
         }
         
     });
+    app.post(prefixoDados+'/equipamentocheck', function(req, res) {
+        equipamento.checkArduino(req.body.mac,res);
+    });
+    /* EQUIPAMENTOS */
+    // MOSTRA TODOS OS EQUIPAMENTOS
+    app.get(prefixoDados+'/equipamento/', function(req, res) {
+        equipamento.listAll(res);
+    });
 
+    // MOSTRA UM EQUIPAMENTO
+    app.get(prefixoDados+'/equipamento/:id/', function(req, res) {
+        equipamento.getOne(req.params.id, res);
+    });
+
+    // ADICIONA UM NOVO EQUIPAMENTO
+    app.post(prefixoDados+'/equipamento/', function(req, res) {
+        equipamento.create(req.body, res);
+    });
+
+    // MODIFICA UM EQUIPAMENTO
+    app.put(prefixoDados+'/equipamento/', function(req, res) {
+        equipamento.update(req.body, res);
+    });
+
+    // DELETA UM EQUIPAMENTO
+    app.delete(prefixoDados+'/equipamento/:id/', function(req, res) {
+        equipamento.delete(req.params.id, res);
+    });
     /* GASTOS */
     // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
     app.get(prefixoDados+'/gasto/', function(req, res) {
@@ -253,7 +259,45 @@ module.exports = {
     app.delete(prefixoDados+'/gasto/:id/', function(req, res) {
         gasto.delete(req.params.id, res);
     });
+    //GASTO ESPECIFICO
+    app.get(prefixoDados+'/gastoespecifico/', function(req, res) {
+        gastoespecifico.listAll(res);
+    });
 
+    // MOSTRA TODOS OS gastoespecificoS DE HOJE DE TODOS OS ARDUINOS
+    app.get(prefixoDados+'/gastoespecifico/hoje', function(req, res) {
+        gastoespecifico.listHoje(res);
+    });
+
+    // MOSTRA O gastoespecifico DE UM ARDUINO EM UMA DATA ESPECIFICADA
+    app.get(prefixoDados+'/gastoespecifico/:id/', function(req, res) {
+        gastoespecifico.getOne(req.params.id, res);
+    });
+    
+    // MOSTRA O gastoespecifico DE UM ARDUINO HOJE
+    app.get(prefixoDados+'/gastoespecifico/hoje/:id/', function(req, res) {
+        gastoespecifico.getOneHoje(req.params.id, res);
+    });
+
+    // MOSTRA TODOS OS gastoespecificoS DE UMA DATA ESPECIFICADA
+    app.get(prefixoDados+'/gastoespecifico/:data', function(req, res) {
+        gastoespecifico.listData(req.params.data,res);
+    });
+
+    // ADICIONA UM NOVO gastoespecifico
+    app.post(prefixoDados+'/gastoespecifico/', function(req, res) {
+        gastoespecifico.create(req.body, res);
+    });
+
+    // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
+    app.post(prefixoDados+'/gastoespecifico/nulo', function(req, res) {
+        gastoespecifico.intervalo(req.body, res);
+    });
+
+
+    app.delete(prefixoDados+'/gastoespecifico/:id/', function(req, res) {
+        gastoespecifico.delete(req.params.id, res);
+    });
     /* PERFIL */
     app.get(prefixoDados+'/perfil/', function(req, res) {
         perfil.listAll(res);
@@ -321,6 +365,10 @@ module.exports = {
     // MOSTRA TODOS OS SETORES
     app.get('/setor/', function(req, res) {
         setor.listAll(res);
+    });
+
+    app.get('/setor/arduino', function(req, res) {
+        setor.listAllWArduino(res);
     });
 
     // MOSTRA UM SETOR

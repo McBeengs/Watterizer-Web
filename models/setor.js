@@ -12,6 +12,26 @@ function Setor() {
 		});
 	};
 
+	// MOSTRA TODOS OS SETORES COM SEUS RESPECTIVOS ARDUINOS
+	this.listAllWArduino = function(res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM setor', function(err, result) {
+				var setores=result;
+				con.query('SELECT * FROM arduino', function(err, result) {
+					
+					for (var i = arduino.length - 1; i >= 0; i--) {
+						if (arduino[i].id_setor==setores[i].id) {
+							setores[i].arduinos=[];
+							setores[i].arduinos.push(arduino[i]);
+						}
+					};
+					con.release();
+					res.send(result);
+				});
+			});
+		});
+	};
+
 	// MOSTRA UM SETOR
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {

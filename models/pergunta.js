@@ -4,7 +4,7 @@ var HttpStatus = require('http-status-codes');
 function Pergunta() {
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM perguntaseguranca', function(err, result) {
+			con.query('SELECT * FROM perguntasecreta', function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -12,7 +12,7 @@ function Pergunta() {
 	};
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM perguntaseguranca WHERE id = ?', [id], function(err, result) {
+			con.query('SELECT * FROM perguntasecreta WHERE id = ?', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -20,7 +20,7 @@ function Pergunta() {
 	};
 	this.create = function(pergunta, res) {
 		connection.acquire(function(err, con) {
-			con.query('INSERT INTO perguntaseguranca SET ?', pergunta, function(err, result) {
+			con.query('INSERT INTO perguntasecreta SET ?', pergunta, function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -36,7 +36,7 @@ function Pergunta() {
 	};
 	this.update = function(pergunta, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE perguntaseguranca SET ? WHERE id = ?', [pergunta, pergunta.id], function(err, result) {
+			con.query('UPDATE perguntasecreta SET ? WHERE id = ?', [pergunta, pergunta.id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -52,7 +52,7 @@ function Pergunta() {
 	};
 	this.delete = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('DELETE FROM perguntaseguranca WHERE id = ?', [id], function(err, result) {
+			con.query('DELETE FROM perguntasecreta WHERE id = ?', [id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -1,10 +1,10 @@
 var connection = require('../connection');
 var HttpStatus = require('http-status-codes');
 
-function Computador() {
+function Equipamento() {
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM computador', function(err, result) {
+			con.query('SELECT * FROM equipamento', function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -12,7 +12,7 @@ function Computador() {
 	};
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM computador WHERE id = ?', [id], function(err, result) {
+			con.query('SELECT * FROM equipamento WHERE id = ?', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -20,18 +20,36 @@ function Computador() {
 	};
 	this.check = function(mac, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT *,setor FROM computador INNER JOIN setor ON(computador.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
+			con.query('SELECT *,setor FROM equipamento INNER JOIN setor ON(equipamento.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
 				con.release();
 				res.send(result);
 			});
 		});
 	};
-	this.create = function(computador, res) {
+	this.checkArduino = function(mac, res) {
 		connection.acquire(function(err, con) {
-			delete computador.command;
-			con.query('SELECT id FROM computador WHERE mac = ?', [computador.mac], function(err, result) {
+			var idArduino=0;
+			con.query('SELECT * FROM equipamento WHERE mac = ?', [mac], function(err, result) {
+
+				if (result[0]!=null) {
+					idArduino=result[0].id_arduino;
+				}
+				con.query('SELECT * FROM equipamento WHERE id_arduino = ?', idArduino, function(err, result) {
+				
+				con.release();
+				res.send(result);
+			});
+
+			});
+			
+		});
+	};
+	this.create = function(equipamento, res) {
+		connection.acquire(function(err, con) {
+			delete equipamento.command;
+			con.query('SELECT id FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
 				if (result[0]==null) {
-					con.query('INSERT INTO computador SET ?', [computador], function(err, result) {
+					con.query('INSERT INTO equipamento SET ?', [equipamento], function(err, result) {
 						con.release();
 						if (err) {
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -45,7 +63,7 @@ function Computador() {
 					});
 				}
 				else{
-					con.query('UPDATE computador SET ? WHERE mac = ?', [computador, computador.mac], function(err, result) {
+					con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
 						con.release();
 						if (err) {
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -63,9 +81,9 @@ function Computador() {
 			
 		});
 	};
-	this.update = function(computador, res) {
+	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE computador SET ? WHERE mac = ?', [computador, computador.mac], function(err, result) {
+			con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -81,7 +99,7 @@ function Computador() {
 	};
 	this.delete = function(mac, res) {
 		connection.acquire(function(err, con) {
-			con.query('DELETE FROM computador WHERE mac = ?', [mac], function(err, result) {
+			con.query('DELETE FROM equipamento WHERE mac = ?', [mac], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -97,4 +115,4 @@ function Computador() {
 	};
 } 
 
-module.exports = new Computador();
+module.exports = new Equipamento();
