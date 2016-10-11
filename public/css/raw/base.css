@@ -75,6 +75,11 @@ header, footer
 	margin: 0 100px;
 }
 
+.centered {
+    margin: 0 auto !important;
+    float: none !important;
+}
+
 /* CORREÇÕES BOOTSTRAP */
 .wrapper
 {
@@ -89,29 +94,39 @@ label.badge
 	font-family: sans-serif;
 }
 
-button.btn
+.btn
 {
 	border: 1px outset var(--lightBorder);
 	outline: none !important;
 }
 
-button.btn
+.btn:hover
 {
 	border-style: inset;
 }
 
-button.btn-primary
+.btn-primary
 {
 	background: var(--mainYellow);
 	color: var(--mainGray);
 }
 
-button.btn-primary:hover
+.btn-primary:hover
 {
-	background: var(--darkYellow);
+	background: var(--mainYellow);
 }
 
-button.btn-default
+.btn-primary:active
+{
+	background: var(--darkYellow) !important;
+}
+
+.btn-primary:focus
+{
+	background: var(--mainYellow);
+}
+
+.btn-default
 {
 	background: var(--lightBorder);
 }

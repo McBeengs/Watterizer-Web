@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app="wattzApp">
+<head>
+	<title></title>
+	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+	<script src="../js/angular/wattzApp.js"></script> <!-- JS DO APP ANGULAR -->
+	<script src="../js/angular/controllers/usuarioCtrl.js"></script> <!-- JS DA CONTROLLER -->
+</head>
+<body ng-controller="usuarioCtrl">
+	<form>
+		<select ng-model="usuario.id_setor" ng-options="setor.id as setor.setor for setor in setores" class="form-control" id="txt-id_setor">
+			<option value="">-- Selecione --</option>
+		</select>
+	</form>
+</body>
+</html>

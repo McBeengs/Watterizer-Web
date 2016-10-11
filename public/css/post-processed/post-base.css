@@ -78,29 +78,39 @@ label.badge
 	font-family: sans-serif;
 }
 
-button.btn
+.btn
 {
 	border: 1px outset rgb(224,224,224);
 	outline: none !important;
 }
 
-button.btn
+.btn:hover
 {
 	border-style: inset;
 }
 
-button.btn-primary
+.btn-primary
 {
 	background: rgb(240,190,17);
 	color: rgb(45,45,45);
 }
 
-button.btn-primary:hover
+.btn-primary:hover
 {
-	background: rgb(200,150,5);
+	background: rgb(240,190,17);
 }
 
-button.btn-default
+.btn-primary:active
+{
+	background: rgb(200,150,5) !important;
+}
+
+.btn-primary:focus
+{
+	background: rgb(240,190,17);
+}
+
+.btn-default
 {
 	background: rgb(224,224,224);
 }

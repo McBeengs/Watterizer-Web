@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" ng-app="wattzApp">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Usuários - Watterizer</title>
-	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
-	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
 	<link rel="stylesheet" type="text/css" href="../css/library/jquery-ui.min.css"><!-- CSS DO JQUERY UI -->
 	<link rel="stylesheet" type="text/css" href="../css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
+	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
+	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+	<script src="../js/angular/wattzApp.js"></script> <!-- JS DO APP ANGULAR -->
+	<script src="../js/angular/controllers/usuarioCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
-<body>
+<body ng-controller="usuarioCtrl">
 	<div class="container-fluid">
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
@@ -40,7 +43,7 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<div id="usuarios" ng-app="wattzApp" ng-controller="usuariosCtrl">
+			<div id="usuarios" >
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 					Novo Usuário
 				</button>
@@ -69,22 +72,19 @@
 					</div>
 					<div class="modal-body">
 						<form action="" method="POST" >
-							<div class="form-group col-xs-12">
+							<div class="form-group col-sm-6">
 								<label for="txt-nome">Nome:</label>
 								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome">
 							</div>
-							<div class="form-group col-xs-12">
+							<div class="form-group col-sm-6">
 								<label for="txt-username">Nome de Usuário</label>
 								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" readonly>
 							</div>
-							<div class="form-group col-xs-12">
+							<div class="form-group col-sm-6">
 								<label for="txt-email">Email</label>
 								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email">
 							</div>
-							<select ng-model="" ng-options="setores.id as assunto.nome for assunto in assuntos">
-								<option value="">-- Selecione --</option>
-							</select>
-							<div class="form-group col-xs-12">
+							<div class="form-group col-sm-6">
 								<label for="txt-telefone">Telefone</label>
 								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone">
 							</div>
@@ -100,11 +100,18 @@
 								<label for="txt-hr-saida">Hora de Saída</label>
 								<input type="time" class="form-control" id="txt-hr-saida">
 							</div>
+							<div class="form-group col-xs-12">
+								<label for="txt-id_setor">Setor</label>
+								<select ng-model="usuario.id_setor" ng-options="setor.id as setor.setor for setor in setores" class="form-control" id="txt-id_setor">
+									<option value="">-- Selecione --</option>
+								</select>
+							</div>
+							<div class="col-sm-5 text-center">
+								<input type="submit" value="Cadastrar" class="form-control btn-primary">
+							</div>
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
 					</div>
 				</div>
 			</div>

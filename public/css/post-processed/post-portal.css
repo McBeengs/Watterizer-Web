@@ -275,7 +275,7 @@
 }
 
 /* MODAL */
-#content-portal button[data-toggle="modal"]
+#content-portal button[data-toggle=modal]
 {
 	margin-top: 30px;
 	border-radius: 20px;
@@ -293,6 +293,12 @@
 #content-portal div.modal-content div.body
 {
 	/*background: var(--lightBorder);*/
+}
+
+#content-portal form input[type=submit]
+{
+	margin: 0 auto;
+	float: none;
 }
 
 /* PANELS */
