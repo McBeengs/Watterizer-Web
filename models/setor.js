@@ -17,11 +17,13 @@ function Setor() {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM setor', function(err, result) {
 				var setores=result;
+				console.log(setores);
 				con.query('SELECT * FROM arduino', function(err, result) {
-					
+					for (var j = setores.length - 1; j >= 0; j--) {
+							setores[j].arduinos=[];
+						};
 					for (var i = result.length - 1; i >= 0; i--) {
 						for (var j = setores.length - 1; j >= 0; j--) {
-							setores[j].arduinos=[];
 							if (result[i].id_setor==setores[j].id) {
 								setores[j].arduinos.push(result[i]);
 							}
