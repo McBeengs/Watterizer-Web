@@ -19,14 +19,16 @@ function Setor() {
 				var setores=result;
 				con.query('SELECT * FROM arduino', function(err, result) {
 					
-					for (var i = arduino.length - 1; i >= 0; i--) {
-						if (arduino[i].id_setor==setores[i].id) {
-							setores[i].arduinos=[];
-							setores[i].arduinos.push(arduino[i]);
-						}
+					for (var i = result.length - 1; i >= 0; i--) {
+						for (var j = setores.length - 1; j >= 0; j--) {
+							setores[j].arduinos=[];
+							if (result[i].id_setor==setores[j].id) {
+								setores[j].arduinos.push(result[i]);
+							}
+						};
 					};
 					con.release();
-					res.send(result);
+					res.send(setores);
 				});
 			});
 		});
