@@ -195,7 +195,7 @@ function Usuario() {
 				user = JSON.stringify(result);
 			});
 			if (user != null) {
-				console.log(token);
+				
 				if (krypt) {
 					con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 					});
@@ -213,7 +213,7 @@ function Usuario() {
 						res.send(obj);
 					}
 					else if (obj!='[]') {
-						console.log(result[0].token_web);
+						
 						sess.nome=result[0].nome;
 						sess.id=result[0].id;
 						sess.token=result[0].token_web;

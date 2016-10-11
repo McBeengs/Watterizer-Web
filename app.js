@@ -116,7 +116,7 @@ app.get('/desliga', function(req, res) {
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
-    var ultimoEnvioData= new Date();;
+    var ultimoEnvioData= new Date();
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
@@ -126,11 +126,12 @@ net.createServer(function(sock) {
             sock.write(data);
         }
         else{
-            console.log(data.localeCompare("test"));
+            
         var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
         // REENVIA O QUE FOI RECEBIDO
         var idArduino = JSON.parse(data).arduino;
         var gastoRecebido = JSON.parse(data).gasto;
+        console.log(gastoRecebido);
 
         if (arrayDadosArduino[idArduino] == undefined) {
             arrayDadosArduino[idArduino] = new Array(0);
@@ -170,6 +171,7 @@ net.createServer(function(sock) {
             }
         };
         gasto.create(arrayDadosArduino[idArduino],idArduino, null);
+        
         arrayDadosArduino[idArduino] = new Array(0);
         io.sockets.emit('noConnection',data);
     });
