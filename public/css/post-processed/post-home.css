@@ -91,30 +91,28 @@
 }
 
 /* PAINEL DE INTERAÇÃO */
-#mid
-{
-	background: rgb(240,190,17);
-}
 
 /* DIFERENCIAIS DO PROJETO */
-#difer
+#bot
 {
 	background: rgb(240,190,17);
+	width: 100% !important;
+	padding: 0 15px !important;
 }
 
-#difer-content
+#bot-content
 {
 	margin: 20px;
 }
 
-#difer h2
+#bot h2
 {
 	border-right: inset rgba(66,66,66,0.3) 1px;
 	font-size: 34px;
 	font-weight: normal;
 }
 
-#difer p
+#bot p
 {
 	padding-top: 10px;
 }

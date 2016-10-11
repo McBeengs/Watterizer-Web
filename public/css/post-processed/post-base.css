@@ -64,6 +64,12 @@ header, footer
 	margin: 0 100px;
 }
 
+.centered 
+{
+    margin: 0 auto !important;
+    float: none !important;
+}
+
 /* CORREÇÕES BOOTSTRAP */
 .wrapper
 {
@@ -78,29 +84,42 @@ label.badge
 	font-family: sans-serif;
 }
 
-button.btn
+.btn
 {
 	border: 1px outset rgb(224,224,224);
 	outline: none !important;
 }
 
-button.btn
+.btn:hover
 {
 	border-style: inset;
 }
 
-button.btn-primary
+.btn-primary
 {
 	background: rgb(240,190,17);
 	color: rgb(45,45,45);
 }
 
-button.btn-primary:hover
+.btn-primary:hover
 {
-	background: rgb(200,150,5);
+	background: rgb(240,190,17);
+	color: black;
 }
 
-button.btn-default
+.btn-primary:active
+{
+	background: rgb(200,150,5) !important;
+	color: black;
+}
+
+.btn-primary:focus
+{
+	background: rgb(240,190,17);
+	color: black;
+}
+
+.btn-default
 {
 	background: rgb(224,224,224);
 }
