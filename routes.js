@@ -380,9 +380,7 @@ module.exports = {
     app.post(prefixoDados+'/setor/', function(req, res) {
         setor.create(req.body, res);
     });
-    app.get('/setorcheck', function(req, res) {
-        setor.check(res);
-    });
+    
     app.post('/emailcheck', function(req, res) {
         usuario.checaEmailCadastrado(req.body, res);
     });
@@ -416,7 +414,6 @@ module.exports = {
     app.get('/sessao', function(req, res) {
         var array=[];
         sess=req.session;
-        console.log(sess);
             array.push(sess.nome);
         array.push(sess.token);
         
