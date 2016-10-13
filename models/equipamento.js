@@ -20,7 +20,7 @@ function Equipamento() {
 	};
 	this.check = function(mac, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT *,setor FROM equipamento INNER JOIN setor ON(equipamento.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
+			con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
 				con.release();
 				res.send(result);
 			});
