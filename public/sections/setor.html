@@ -42,30 +42,31 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<canvas id="c" width="2000" height="800"></canvas>
-			<button id="zoomIn">+</button>
-			<button id="zoomOut">-</button>
-			<button id="goLeft"><</button>
-			<button id="goRight">></button>
-			<button id="goUp">Up</button>
-			<button id="goDown">Down</button>
-			<input id="sala" type="button" value="Adicionar Caixa" />
-			<input id="saveImg" type="button" value="Salvar Imagem" />
-			<input id="deleteImg" type="button" value="Deletar Imagem" />
-			<input id="loadImg" type="button" value="Carregar Imagem" />
-			<input id="downloadImg" type="button" value="Download da Imagem" />
-			<input id="porta" type="button" value="Criar porta" />	
-			<input id="pc" type="button" value="Colocar PC" />
-			<input id="texto" type="text"/>
-			<select id="setores">
-				<option value="mc">mc</option>
-				<option value="informatica">informatica</option>
-				<option value="3it">3it</option>
-				<option value="4it">4it</option>
-			</select>
-
-			<p id="janela" style="display: none; position:absolute;"></p>
-			<div id="setores" class="panel-group"  ng-controller="setoresCtrl">
+			<div id="container-canvas">
+				<canvas id="c" width="2000" height="800"></canvas>
+				<button id="zoomIn">+</button>
+				<button id="zoomOut">-</button>
+				<button id="goLeft"><</button>
+				<button id="goRight">></button>
+				<button id="goUp">Up</button>
+				<button id="goDown">Down</button>
+				<input id="sala" type="button" value="Adicionar Caixa" />
+				<input id="saveImg" type="button" value="Salvar Imagem" />
+				<input id="deleteImg" type="button" value="Deletar Imagem" />
+				<input id="loadImg" type="button" value="Carregar Imagem" />
+				<input id="downloadImg" type="button" value="Download da Imagem" />
+				<input id="porta" type="button" value="Criar porta" />	
+				<input id="pc" type="button" value="Colocar PC" />
+				<input id="texto" type="text"/>
+				<select id="setores">
+					<option value="mc">mc</option>
+					<option value="informatica">informatica</option>
+					<option value="3it">3it</option>
+					<option value="4it">4it</option>
+				</select>
+				<p id="janela" style="display: none; position:absolute;"></p>
+			</div>
+			<div id="setores" class="panel-group" ng-controller="setorCtrl">
 				<div class="panel panel-default" ng-repeat="setor in setores">
 					<div class="panel-heading">
 						<h4 class="panel-title">
@@ -73,13 +74,12 @@
 						</h4>
 					</div>
 					<div id="setor-{{setor.id}}" class="panel-collapse collapse">
-						
-						<!-- <ul class="list-group">
-							<li class="list-group-item" ng-repeat="arduino in arduinos">
-								<div class="panel panel-default" ng-repeat="x in arduino">
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="arduino in setor.arduinos">
+								<div class="panel panel-default"">
 									<div class="panel-heading">
 										<h4 class="panel-title" >
-											<a data-toggle="collapse" href="#arduino-{{setor.id}}-{{x.id}}">{{x.id}}</a>
+											<a data-toggle="collapse" href="#arduino-{{setor.id}}-{{arduino.id}}">{{arduino.id}}</a>
 										</h4>
 									</div>
 									<div id="arduino-{{setor.id}}-{{arduino.id}}" class="panel-collapse collapse">
@@ -92,19 +92,10 @@
 									</div>
 								</div>
 							</li>
-						</ul> -->
+						</ul>
 						<div class="panel-footer">Footer</div>
 					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#setores" href="#salas">salas<label class="badge">3 arduínos</label></a>
-						</h4>
-					</div>
-					
-				</div>
-				
+				</div>				
 			</div>
 		</div>
 		<!-- RODAPÉ -->
