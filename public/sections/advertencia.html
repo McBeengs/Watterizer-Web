@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" ng-app="watterizerApp">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
@@ -9,9 +9,13 @@
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="../css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/library/data-tables.min.css"> <!-- CSS DATATABLES -->
+	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+	<script src="../js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
+	<script src="../js/angular/controllers/advertenciaCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
-<body>
+<body  ng-controller="advertenciaCtrl">
 	<div class="container-fluid">
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
@@ -24,7 +28,7 @@
 				<!-- FORMULARIO DE LOGIN  -->
 				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
 					<img src="../img/avatar-placeholder.gif">
-					<a id="name" href="#">Includes da Silva Melo</a>
+					<a id="name" href="#">Carregando...</a>
 					<div id="options" class="dropdown">
 						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 							<span class="caret"></span>
@@ -51,7 +55,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+					<tr ng-repeat="advertencia in advertencias">
+						<td>{{advertencia.data}}</td>
+						<td>{{advertencia.setor}}</td>
+						<td>{{advertencia.titulo}}</td>
+						<td>{{advertencia.nome}}</td>
+						<td>{{advertencia.mensagem.substring(0,15)}}...</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
