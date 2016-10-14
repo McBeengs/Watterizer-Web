@@ -22,7 +22,7 @@ function Setor() {
 					for (var j = setores.length - 1; j >= 0; j--) {
 						setores[j].arduinos=[];
 					}
-					for (var i = result.length - 1; i >= 0; i--) {
+					for (var i = 0; i <= result.length - 1; i++) {
 						for (var j = 0; j <= setores.length - 1; j++) {
 							if (result[i].id_setor==setores[j].id) {
 								setores[j].arduinos.push(result[i]);
