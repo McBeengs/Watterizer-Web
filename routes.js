@@ -122,11 +122,11 @@ module.exports = {
         setTimeout(function() {
             sess=req.session;
             if(sess.aut) {
-                console.log(req.headers);
+                
                 sess.aut=false;
                 next();
             } else {
-                console.log(req.headers);
+                
                 res.end();
             }
         }, 100);
