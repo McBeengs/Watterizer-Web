@@ -1,5 +1,5 @@
-var connection = require('../connection');
-var HttpStatus = require('http-status-codes');
+const connection = require('../connection');
+const HttpStatus = require('http-status-codes');
 
 function Perfil() {
 	this.listAll = function(res) {

@@ -1,11 +1,11 @@
 // BASE
-var express = require('express');
+const express = require('express');
 var app = express();
-var session = require('express-session');
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var aes = require('aes-cross');
-var crypto = require('crypto')
+const session = require('express-session');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const aes = require('aes-cross');
+const crypto = require('crypto')
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 var prefixoDados = "/dados";
@@ -13,9 +13,9 @@ var prefixoPortal = "/portal"
 
 
 //UPLOAD DE ARQUIVOS
-var multer  =   require('multer');
+const multer  =   require('multer');
 var isvalid;
-var mime = require('mime');
+const mime = require('mime');
 var storage =   multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, './img');
@@ -38,17 +38,17 @@ filename: function (req, file, callback) {
 var upload = multer({ storage : storage}).single('userPhoto');
 
 // MODELS
-var teste = require('./models/teste');
-var advertencia = require('./models/advertencia');
-var arduino = require('./models/arduino');
-var gasto = require('./models/gasto');
-var perfil = require('./models/perfil');
-var pergunta = require('./models/pergunta');
-var setor = require('./models/setor');
-var usuario = require('./models/usuario');
-var canvas = require('./models/canvas');
-var equipamento = require('./models/equipamento');
-var gastoespecifico = require('./models/gastoespecifico');
+const teste = require('./models/teste');
+const advertencia = require('./models/advertencia');
+const arduino = require('./models/arduino');
+const gasto = require('./models/gasto');
+const perfil = require('./models/perfil');
+const pergunta = require('./models/pergunta');
+const setor = require('./models/setor');
+const usuario = require('./models/usuario');
+const canvas = require('./models/canvas');
+const equipamento = require('./models/equipamento');
+const gastoespecifico = require('./models/gastoespecifico');
 var token ="h6a44d1g5s5s";
 var sess;
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS

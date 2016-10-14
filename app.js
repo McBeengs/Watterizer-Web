@@ -1,12 +1,12 @@
 //webservice
 // BASE
-var express = require('express');
-var bodyparser = require('body-parser');
-var connection = require('./connection');
-var routes = require('./routes');
-var session = require('express-session');
-var net = require('net');
-var gasto = require('./models/gasto');
+const express = require('express');
+const bodyparser = require('body-parser');
+const connection = require('./connection');
+const routes = require('./routes');
+const session = require('express-session');
+const net = require('net');
+const gasto = require('./models/gasto');
 var sess;
 
 // INICIA O EXPRESS E PARSER JSON
@@ -17,11 +17,11 @@ app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'ssshhhhh'}));
 
 // POSTCSS
-var postcss = require('postcss');
-var cssvariables = require('postcss-css-variables');
+const postcss = require('postcss');
+const cssvariables = require('postcss-css-variables');
 // var autoprefixer = require('autoprefixer');
 
-var fs = require('fs');
+const fs = require('fs');
 var css = [fs.readFileSync('public/css/raw/base.css', 'utf8'), fs.readFileSync('public/css/raw/home.css', 'utf8'), fs.readFileSync('public/css/raw/portal.css', 'utf8')];
 var cssName = ['base', 'home', 'portal'];
 

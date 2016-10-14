@@ -1,11 +1,11 @@
-var connection = require('../connection');
-var HttpStatus = require('http-status-codes');
-var randtoken = require('rand-token');
-var session = require('express-session');
-var aes = require('aes-cross');
+const connection = require('../connection');
+const HttpStatus = require('http-status-codes');
+const randtoken = require('rand-token');
+const session = require('express-session');
+const aes = require('aes-cross');
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 var sess;
 // var enc = aes.encText('testTxt',key,init);
 // var dec = aes.decText('testTxt',key,init);
