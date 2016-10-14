@@ -18,7 +18,7 @@ function Setor() {
 			con.query('SELECT * FROM setor', function(err, result) {
 				var setores=result;
 				console.log(setores);
-				con.query('SELECT * FROM arduino', function(err, result) {
+				con.query('SELECT * FROM arduino INNER JOIN setor ON(arduino.id_setor=setor.id)', function(err, result) {
 					for (var j = setores.length - 1; j >= 0; j--) {
 						setores[j].arduinos=[];
 					}
