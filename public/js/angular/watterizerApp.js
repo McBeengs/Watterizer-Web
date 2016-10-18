@@ -1,9 +1,11 @@
 // APP BASE
 var app = angular.module('watterizerApp', []);
-app.run(function ($scope, $http) {
+var config;
+app.run(['$rootScope', '$http', function ($rootScope, $http) {
 	$http.get("/sessao")
 	.then(function (response){
-		$scope.token = response.data[1];
+		$rootScope.token = response.data[1];
+		config = { headers: { 'token':$rootScope.token }}
+		console.log($rootScope.token);
 	});
-	console.log($scope.token);
-});
+}]);

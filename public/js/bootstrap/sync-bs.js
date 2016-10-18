@@ -1,8 +1,8 @@
 var screenW = $(window).width();
 var secsPortal = $("#sections-portal");
 var secsPortalDivs = $("#sections-portal div");
-var footer = $("footer");
-var title = $("#title");
+// var footer = $("footer");
+// var title = $("#title");
 
 function adjusts() {
 	screenW = $(window).width();
@@ -50,21 +50,21 @@ function adjusts() {
 			"margin-top":"20px"
 		});
 
-		title.css({
-			"font-size":"28px",
-			"margin-left":"7%"
-		});
+		// title.css({
+		// 	"font-size":"28px",
+		// 	"margin-left":"7%"
+		// });
 	}
 };
 
 $(window).resize(function (){adjusts()});
 
 if (screenW >= 768) { // PARA TELAS PEQUENAS OU MAIORES
-	footer.css({
-		"top":$(document).height() - 140
-	});
+	// footer.css({
+	// 	"top":$(document).height() - 140
+	// });
 } else {
-	footer.css({
-		"top":$(document).height() - 60
-	});
+	// footer.css({
+	// 	"top":$(document).height() - 60
+	// });
 }
