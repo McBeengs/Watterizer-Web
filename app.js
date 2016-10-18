@@ -7,6 +7,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const net = require('net');
 const gasto = require('./models/gasto');
+var helmet = require('helmet');
 var sess;
 
 // INICIA O EXPRESS E PARSER JSON
@@ -14,7 +15,9 @@ var app = express();
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
-app.use(session({secret: 'ssshhhhh'}));
+app.use(session({secret: 'ssshhhhh',name : 'sessionId'}));
+
+app.use(helmet());
 
 // POSTCSS
 const postcss = require('postcss');
