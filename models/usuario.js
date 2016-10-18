@@ -212,7 +212,7 @@ function Usuario() {
 						obj = aes.encText(string,key,init);
 						res.send(obj);
 					}
-					else if (obj!='[]') {
+					else if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
 						
 						sess.nome=result[0].nome;
 						sess.id=result[0].id;

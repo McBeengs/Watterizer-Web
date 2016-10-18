@@ -7,13 +7,4 @@ app.controller("usuarioCtrl", function($scope, $http) {
 	}, function(response){
 		console.log("Falhou")
 	});
-	
-	//LISTA TODOS OS SETORES
-	$http.get("/setor")
-	.then(function (response) {
-		$scope.setores = response.data;
-		console.log($scope.setores);
-	}, function(response){
-		console.log("Falhou");
-	});
 });

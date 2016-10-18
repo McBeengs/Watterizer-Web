@@ -145,9 +145,10 @@ net.createServer(function(sock) {
         arrayDadosArduino[idEquipamento].push(gastoRecebido);
         gasto.intervalo(ultimoEnvio,idEquipamento);
         var isCheia = false;
+        
         for (var i = 0; i <= arrayDadosArduino[idEquipamento].length - 1; i++) {
             if (i==599) {
-                console.log("Inseriu");
+                
                 gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
                 arrayDadosArduino[idEquipamento] = new Array(0);
             }

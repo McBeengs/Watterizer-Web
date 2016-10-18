@@ -179,7 +179,7 @@ module.exports = {
         arduino.delete(req.params.id, res);
     });
 
-    app.post('/pccheck', function(req, res) {
+    app.post('/equipamentocheck', function(req, res) {
         if (req.body.command=="check") {
             equipamento.check(req.body.mac,res);
         }
@@ -191,7 +191,7 @@ module.exports = {
         }
         
     });
-    app.post(prefixoDados+'/equipamentocheck', function(req, res) {
+    app.post(prefixoDados+'/equipamentocheckarduino', function(req, res) {
         equipamento.checkArduino(req.body.mac,res);
     });
     /* EQUIPAMENTOS */
