@@ -44,7 +44,7 @@ function Arduino() {
 					});
 				} else {
 					res.status(HttpStatus.CREATED)
-					.send('CREATED');
+					.send(result.insertId.toString());
 				}
 			});
 		});

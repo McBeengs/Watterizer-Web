@@ -1,12 +1,15 @@
 // CONTROLLER DE ADVERTENCIAS
-		console.log(config);
 app.controller('advertenciaCtrl', function($scope, $http) {
 	// LISTA TODAS AS ADVERTENCIAS
-	$http.get("/dados/advertencia", config)
+	setTimeout(function (arguments) {
+		$http.get("/dados/advertencia")
 	.then(function (response) {
+		// console.log(.token);
 		$scope.advertencias = response.data;
 		console.log(response);
 	}, function(response){
 		console.log("Falhou");
-	});
+	})
+	}, 0);
+	
 });

@@ -5,7 +5,7 @@ function Advertencia() {
 	// MOSTRA TODAS AS ADVERTENCIAS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query("SELECT DATE_FORMAT(data, '%Y/%m/%d') AS data, titulo, setor, nome, mensagem FROM advertencia INNER JOIN setor ON (setor.id=advertencia.id_setor) INNER JOIN usuario ON (advertencia.id_usuario=usuario.id)", function(err, result) {
+			con.query("SELECT DATE_FORMAT(data, '%Y/%m/%d') AS data, titulo, setor, nome, mensagem FROM advertencia INNER JOIN usuario ON(advertencia.id_usuario=usuario.id) INNER JOIN setor ON (usuario.id_setor=setor.id)", function(err, result) {
 				con.release();
 				res.send(result);
 			});

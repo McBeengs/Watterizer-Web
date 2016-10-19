@@ -113,17 +113,17 @@ module.exports = {
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
+        console.log(req.headers.token);
         sess=req.session;
-
         usuario.autenticacao(req.headers.token,req, res);
         setTimeout(function() {
             sess=req.session;
             if(sess.aut) {
-
+                console.log("next");
                 sess.aut=false;
                 next();
             } else {
-
+                console.log("prev");
                 res.end();
             }
         }, 100);
@@ -162,7 +162,7 @@ module.exports = {
     });
 
     // ADICIONA UM NOVO ARDUNO
-    app.post(prefixoDados+'/arduino/', function(req, res) {
+    app.post('/arduino/', function(req, res) {
         arduino.create(req.body, res);
     });
 
