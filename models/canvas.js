@@ -42,8 +42,6 @@ function Canvas() {
 						res.status(HttpStatus.CREATED)
 						.send('CREATED');
 					}
-					console.log(id);
-					console.log(setor)
 					con.query('UPDATE setor SET id_canvas=? WHERE setor = ?', [id,setor], function(err, result) {
 						con.release();
 					});

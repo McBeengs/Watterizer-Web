@@ -7,6 +7,7 @@ var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 const nodemailer = require('nodemailer');
 var sess;
+var autoUser='';
 // var enc = aes.encText('testTxt',key,init);
 // var dec = aes.decText('testTxt',key,init);
 
@@ -31,6 +32,7 @@ function Usuario() {
 			});
 		});
 	};
+
 	this.geraUsuario = function(nome, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
@@ -49,10 +51,12 @@ function Usuario() {
 					};
 				};
 				con.release();
+				autoUser=user;
 				res.send(user);
 			});
 		});
 	};
+
 	this.checaEmailCadastrado = function(email, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
@@ -73,45 +77,56 @@ function Usuario() {
 		connection.acquire(function(err, con) {
 			var senha = randtoken.generate(8);
 			usuario.senha=aes.encText(senha,key,init);
-			var text = 'Senha '+senha;
-			var transporter = nodemailer.createTransport({
-				service: 'Gmail',
-				auth: {
-            user: 'watterizer@gmail.com', // Your email id
-            pass: 'senairianos115' // Your password
-        		}
-    		});
-			var mailOptions = {
-			    from: 'watterizer@gmail.com', // sender address
-			    to: usuario.email, // list of receivers
-			    subject: 'Senha', // Subject line
-			    text: text //, // plaintext body
-			    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-			};
-			transporter.sendMail(mailOptions, function(error, info){
-				if(error){
-					console.log(error);
-					
-				}else{
-					console.log('Message sent: ' + info.response);
-					
-				};
-			});
-			con.query('INSERT INTO usuario SET ?', usuario, function(err, result) {
-				con.release();
+			if (autoUser!='') {
+				usuario.username=autoUser;
+				con.query('INSERT INTO usuario SET ?', usuario, function(err, result) {
+					con.release();
 
-				if (err) {
-					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					if (err) {
+						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.send({
+							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+						});
+					} else {
+
+						var text = 'Senha '+senha;
+						var transporter = nodemailer.createTransport({
+							service: 'Gmail',
+							auth: {
+					            user: 'watterizer@gmail.com', // Your email id
+					            pass: 'senairianos115' // Your password
+			        		}
+			    		});
+						var mailOptions = {
+						    from: 'watterizer@gmail.com', // sender address
+						    to: usuario.email, // list of receivers
+						    subject: 'Senha', // Subject line
+						    text: text //, // plaintext body
+						    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+						};
+						transporter.sendMail(mailOptions, function(error, info){
+							if(error) {
+								console.log(error);
+								
+							} else {
+								console.log('Message sent: ' + info.response);
+								
+							};
+						});
+							res.status(HttpStatus.CREATED)
+							.send('CREATED');
+					}
+				});
+			}
+			else{
+				res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 					});
-				} else {
-					res.status(HttpStatus.CREATED)
-					.send('CREATED');
-				}
-			});
-			});
-};
+			}
+			
+		});
+	};
 
 
 	// MODIFICA UM USUARIO
@@ -229,7 +244,7 @@ function Usuario() {
 			}
 			token = null;
 		});
-};
+	};
 } 
 
 module.exports = new Usuario();

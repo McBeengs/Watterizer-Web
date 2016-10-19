@@ -172,11 +172,11 @@ function Gasto() {
 				if (result[0]!=null) {
 					idArduino=result[0].id_arduino;
 					if (result[0].mac!=null) {
-					especifico=false;
-				}
-				else{
-					especifico=true;
-				}
+						especifico=false;
+					}
+					else {
+						especifico=true;
+					}
 				}
 
 			});
@@ -189,13 +189,13 @@ function Gasto() {
 							if (i!=arrayGasto.length - 1) {
 								gastos+=arrayGasto[i]+',';
 							}
-							else{
+							else {
 								gastos+=arrayGasto[i];
 							}
 							
 						};
 						console.log("insert");
-						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?, ultimo_update=CURTIME()',[gastos,idArduino]);
+						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=? ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento]);
 					}
 					else {
 						con.query('SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE()  AND id_arduino=?',[idArduino], function(err, result) {
@@ -204,7 +204,7 @@ function Gasto() {
 								if (i!=arrayGasto.length - 1) {
 									gastos+=arrayGasto[i]+',';
 								}
-								else{
+								else {
 									gastos+=arrayGasto[i];
 								}
 
