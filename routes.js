@@ -5,37 +5,11 @@ const session = require('express-session');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const aes = require('aes-cross');
-const crypto = require('crypto')
+const crypto = require('crypto');
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 var prefixoDados = "/dados";
-var prefixoPortal = "/portal"
-
-
-//UPLOAD DE ARQUIVOS
-const multer  =   require('multer');
-var isvalid;
-const mime = require('mime');
-var storage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './img');
-},
-filename: function (req, file, callback) {
-
-    var ext = require('path').extname(file.originalname);
-    ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
-    if (ext=='.png'||ext=='.jpg'||ext=='.jpg') {
-        isvalid=true;
-        callback(null, 'fotoid1'+ext);
-    }
-    else {
-        isvalid=false;
-        callback(null, 'invalid');
-    }
-}
-
-});
-var upload = multer({ storage : storage}).single('userPhoto');
+var prefixoPortal = "/portal";
 
 // MODELS
 const teste = require('./models/teste');
@@ -48,9 +22,32 @@ const setor = require('./models/setor');
 const usuario = require('./models/usuario');
 const canvas = require('./models/canvas');
 const equipamento = require('./models/equipamento');
-const gastoespecifico = require('./models/gastoespecifico');
-var token ="h6a44d1g5s5s";
+
+//UPLOAD DE ARQUIVOS
+const multer  =   require('multer');
+var isvalid;
+const mime = require('mime');
+var storage =   multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './img');
+    },
+    filename: function (req, file, callback) {
+        var ext = require('path').extname(file.originalname);
+        ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
+        if (ext=='.png'||ext=='.jpg'||ext=='.gif') {
+            isvalid=true;
+            callback(null, 'fotoid1'+ext);
+        }
+        else {
+            isvalid=false;
+            callback(null, 'invalid');
+        }
+    }
+});
+
+var upload = multer({ storage : storage}).single('userPhoto');
 var sess;
+
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
 module.exports = {
   configure: function(app) {
@@ -122,11 +119,11 @@ module.exports = {
         setTimeout(function() {
             sess=req.session;
             if(sess.aut) {
-                
+
                 sess.aut=false;
                 next();
             } else {
-                
+
                 res.end();
             }
         }, 100);
@@ -414,7 +411,7 @@ module.exports = {
     app.get('/sessao', function(req, res) {
         var array=[];
         sess=req.session;
-            array.push(sess.nome);
+        array.push(sess.nome);
         array.push(sess.token);
         
         res.send(array);
@@ -456,7 +453,6 @@ module.exports = {
         });
     });
     app.get('/logout', function(req, res) {
-        console.log(req.session.token);
         usuario.logout(req.session.token, res);
         req.session.destroy(function(err) {
         });
