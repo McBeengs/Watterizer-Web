@@ -113,20 +113,17 @@ module.exports = {
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
-        console.log(req.headers.token);
         sess=req.session;
         usuario.autenticacao(req.headers.token,req, res);
         setTimeout(function() {
             sess=req.session;
             if(sess.aut) {
-                console.log("next");
                 sess.aut=false;
                 next();
             } else {
-                console.log("prev");
                 res.end();
             }
-        }, 100);
+        }, 30);
     });
 
     // TESTE
@@ -448,12 +445,12 @@ module.exports = {
 
     // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
     app.post('/logout', function(req, res) {
-        usuario.logout(req.body.token, res);
+        usuario.logoutDesktop(req.body.token, res);
         req.session.destroy(function(err) {
         });
     });
     app.get('/logout', function(req, res) {
-        usuario.logout(req.session.token, res);
+        usuario.logoutWeb(req.session.token, res);
         req.session.destroy(function(err) {
         });
     });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" ng-app="wattzApp">
+<html lang="zxx" ng-app="watterizerApp">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
 	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
-	<script src="../js/angular/wattzApp.js"></script> <!-- JS DO APP ANGULAR -->
+	<script src="../js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
 	<script src="../js/angular/controllers/usuarioCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
 <body ng-controller="usuarioCtrl">
@@ -71,43 +71,43 @@
 						<h4 class="modal-title" id="myModalLabel">Novo Usuário</h4>
 					</div>
 					<div class="modal-body">
-						<form action="/dados/usuario" method="POST" >
+						<form>
 							<div class="form-group col-sm-6">
 								<label for="txt-nome">Nome:</label>
-								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome">
+								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome" ng-model="usuario.nome">
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-username">Nome de Usuário</label>
-								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" readonly>
+								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" ng-model="usuario.username" readonly>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-email">Email</label>
-								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email">
+								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" ng-model="usuario.email">
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-telefone">Telefone</label>
-								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone">
+								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone" ng-model="usuario.telefone">
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-entrada">Hora de Entrada</label>
-								<input type="time" class="form-control" id="txt-hr-entrada">
+								<input type="time" class="form-control" id="txt-hr-entrada" ng-model="usuario.hora_entrada">
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-intervalo">Hora de Intervalo</label>
-								<input type="time" class="form-control" id="txt-hr-intervalo">
+								<input type="time" class="form-control" id="txt-hr-intervalo" ng-model="usuario.hora_intervalo">
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-saida">Hora de Saída</label>
-								<input type="time" class="form-control" id="txt-hr-saida">
+								<input type="time" class="form-control" id="txt-hr-saida" ng-model="usuario.hora_saida">
 							</div>
 							<div class="form-group col-xs-12">
 								<label for="txt-id_setor">Setor</label>
-								<select ng-model="usuario.id_setor" ng-options="setor.id as setor.setor for setor in setores" class="form-control" id="txt-id_setor">
+								<select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" class="form-control" id="txt-id_setor">
 									<option value="">-- Selecione --</option>
 								</select>
 							</div>
 							<div class="col-sm-5 centered">
-								<input type="submit" value="Cadastrar" class="form-control btn-primary">
+								<input type="submit" value="Cadastrar" class="form-control btn-primary" ng-click="create()">
 							</div>
 						</form>
 					</div>
@@ -116,10 +116,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="ui-widget">
-		<input id="nome">
-		<input id="user">
 	</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
@@ -130,9 +126,9 @@
 <script src="../js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 <script type="text/javascript">
 	$(function() {
-		$( "#nome" ).autocomplete({
+		$( "#txt-nome" ).autocomplete({
 			source: function( request, response ) {
-				console.log(request)
+				
 				$.ajax({
 					type: 'POST',
 					url: "/gerausuario",
@@ -140,7 +136,7 @@
 						nome: request.term
 					},
 					success: function( data ) {
-						$("#user").val(data);
+						$("#txt-username").val(data);
 
 					}
 				});

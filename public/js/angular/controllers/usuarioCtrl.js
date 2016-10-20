@@ -7,4 +7,13 @@ app.controller("usuarioCtrl", function($scope, $http) {
 	}, function(response){
 		console.log("Falhou")
 	});
+
+	$scope.create = function() {
+		$http.post("/dados/usuario", $scope.usuario)
+		.then(function (response) {
+			console.log($scope.usuario);
+		}, function(response){
+			console.log("Falhou")
+		});
+	}
 });

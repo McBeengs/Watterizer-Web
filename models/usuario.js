@@ -74,6 +74,7 @@ function Usuario() {
 
 	// ADICIONA UM NOVO USUARIO
 	this.create = function(usuario, res) {
+
 		connection.acquire(function(err, con) {
 			var senha = randtoken.generate(8);
 			usuario.senha=aes.encText(senha,key,init);
@@ -166,12 +167,9 @@ function Usuario() {
 	};
 
 	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN
-	this.logout = function(token, res) {
+	this.logoutWeb = function(token, res) {
 		connection.acquire(function(err, con) {
 			if (token != undefined){
-				con.query("UPDATE usuario SET token_desktop = ? WHERE token_desktop = ?", [null, token], function(err, result) {
-
-				});
 				con.query("UPDATE usuario SET token_web = ? WHERE token_web = ?", [null, token], function(err, result) {
 					con.release();
 					res.redirect("/index");
@@ -179,6 +177,20 @@ function Usuario() {
 			} else {
 				con.release();
 				res.redirect("/index");
+			}
+		});
+	};
+	this.logoutDesktop = function(token, res) {
+		connection.acquire(function(err, con) {
+			if (token != undefined){
+				con.query("UPDATE usuario SET token_desktop = ? WHERE token_desktop = ?", [null, token], function(err, result) {
+					con.release();
+					res.end();
+				});
+				
+			} else {
+				con.release();
+					res.end();
 			}
 		});
 	};
