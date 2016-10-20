@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 20-Out-2016 às 18:54
+-- Generation Time: 20-Out-2016 às 19:56
 -- Versão do servidor: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -181,10 +181,10 @@ CREATE TABLE `usuario` (
   `hora_entrada` time DEFAULT NULL,
   `id_perfil` int(11) NOT NULL,
   `id_setor` int(11) NOT NULL,
-  `id_pergunta` int(11) NOT NULL,
+  `id_pergunta` int(11) DEFAULT NULL,
   `resposta_pergunta` varchar(140) DEFAULT NULL,
-  `token_web` varchar(16) NOT NULL,
-  `token_desktop` varchar(16) NOT NULL,
+  `token_web` varchar(16) DEFAULT NULL,
+  `token_desktop` varchar(16) DEFAULT NULL,
   `hora_saida` time NOT NULL,
   `hora_intervalo` time NOT NULL,
   `data_exclusao` datetime DEFAULT NULL
@@ -195,7 +195,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `username`, `senha`, `email`, `nome`, `telefone`, `hora_entrada`, `id_perfil`, `id_setor`, `id_pergunta`, `resposta_pergunta`, `token_web`, `token_desktop`, `hora_saida`, `hora_intervalo`, `data_exclusao`) VALUES
-(2, 'admin', 'WCwLwn04k8xqKrTWuBCx8Q==', 'asd', 'asd', 'asd', '03:00:00', 1, 1, 1, 'asd', 'TbHnCQjPAshFetTM', '5mdMoZeQoE2Elz8i', '02:00:00', '02:00:00', NULL);
+(2, 'admin', 'WCwLwn04k8xqKrTWuBCx8Q==', 'asd', 'asd', 'asd', '13:00:00', 1, 1, 1, 'asd', 'TbHnCQjPAshFetTM', 'yECAlQw5D8kvLca0', '17:00:00', '15:00:00', NULL);
 
 --
 -- Indexes for dumped tables
@@ -313,7 +313,7 @@ ALTER TABLE `setor`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- Constraints for dumped tables
 --

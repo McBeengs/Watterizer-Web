@@ -80,10 +80,11 @@ function Usuario() {
 			usuario.senha=aes.encText(senha,key,init);
 			if (autoUser!='') {
 				usuario.username=autoUser;
-				con.query('INSERT INTO usuario SET ?', usuario, function(err, result) {
+				con.query('INSERT INTO usuario SET username=?,senha=?,email=?,nome=?,telefone=?,hora_entrada=?,hora_saida=?,hora_intervalo=?,id_perfil=?,id_setor=?', [usuario.username,usuario.senha,usuario.email,usuario.nome,usuario.telefone,usuario.hora_entrada,usuario.hora_saida,usuario.hora_intervalo,usuario.id_perfil,usuario.id_setor], function(err, result) {
 					con.release();
 
 					if (err) {
+						console.log(err);
 						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 						.send({
 							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
