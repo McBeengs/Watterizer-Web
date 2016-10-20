@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="../css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
+	<link rel="stylesheet" type="text/css" href="../css/raw/canvas.css">
 	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
 	<script src="../js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
 	<script src="../js/angular/controllers/setorCtrl.js"></script> <!-- JS DA CONTROLLER -->
@@ -42,29 +43,38 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<div id="container-canvas">
-				<canvas id="c" width="2000" height="800"></canvas>
-				<button id="zoomIn">+</button>
-				<button id="zoomOut">-</button>
-				<button id="goLeft"><</button>
-				<button id="goRight">></button>
-				<button id="goUp">Up</button>
-				<button id="goDown">Down</button>
-				<input id="sala" type="button" value="Adicionar Caixa" />
-				<input id="saveImg" type="button" value="Salvar Imagem" />
-				<input id="deleteImg" type="button" value="Deletar Imagem" />
-				<input id="loadImg" type="button" value="Carregar Imagem" />
-				<input id="downloadImg" type="button" value="Download da Imagem" />
-				<input id="porta" type="button" value="Criar porta" />	
-				<input id="pc" type="button" value="Colocar PC" />
-				<input id="texto" type="text"/>
-				<select id="setores">
-					<option value="mc">mc</option>
-					<option value="informatica">informatica</option>
-					<option value="3it">3it</option>
-					<option value="4it">4it</option>
-				</select>
-				<p id="janela" style="display: none; position:absolute;"></p>
+			<div id="canvas">
+	        	<canvas id="canvas-drawer"></canvas>
+	        
+		        <div id="controles">
+		            <div id="btns-zoom">
+		                <button class="btn btn-default" id="btn-zoom-in">+</button>
+		                <button class="btn btn-default" id="btn-zoom-out">-</button>
+		            </div>
+		            <div id="btns-create">
+		                <button class="btn btn-default" id="btn-create-box">Adicionar Divisor</button>
+		                <button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
+		                <button class="btn btn-default" id="btn-create-pc">Adicionar PC</button>
+		                <input id="txt-pc-name" type="text" required="true"/>
+		            </div>
+		            <div id="btns-canvas">
+		                <button class="btn btn-default" id="btn-canvas-obj-delete">Remover Objeto</button>
+		                <button class="btn btn-primary" id="btn-canvas-save">Salvar Planta</button>
+		                <button class="btn btn-default" id="btn-canvas-download">Download como Imagem</button>
+		                <select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores">
+		                </select>
+		            </div>
+		        </div>
+
+		        <div style="display:none;" id="context-menu">
+		            <ul>
+		                <li><button>Desligar</button></li>
+		                <li><button>Editar</button></li>
+		                <li><button>Remover</button></li>
+		                <li><button>Girar 90° para a direita</button></li>
+		                <li><button>Girar 90° para a esquerda</button></li>
+		            </ul>
+		        </div>
 			</div>
 			<div id="setores" class="panel-group">
 				<div class="panel panel-default" ng-repeat="setor in setores">

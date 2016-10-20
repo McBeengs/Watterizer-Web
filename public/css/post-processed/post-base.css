@@ -40,11 +40,6 @@ html, body
 	height: 100%;
 }
 
-header, footer
-{
-	margin-left: -15px
-}
-
 /* CLASSES GERAIS */
 .fit-background
 {

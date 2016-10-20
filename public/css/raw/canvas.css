@@ -1,0 +1,113 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+:root
+{
+	--mainYellow: rgb(240,190,17);
+	--darkYellow: rgb(200,150,5);
+	--mainGray: rgb(45,45,45);
+	--lighterGray: rgb(150,150,150);
+	--lightBorder: rgb(224,224,224);
+	--defaultBorderRadius: 20px;
+	--sectionsBorder: 10px;
+}
+
+#canvas
+{
+	
+}
+
+#canvas-drawer
+{
+	border-bottom: var(--mainYellow) solid 3px;
+}
+
+.canvas-container
+{
+	margin-left: -40px;
+}
+
+.canvas-container canvas
+{
+	width: 100%;
+}
+
+#controles
+{
+	padding: 15px;
+	border: var(--mainYellow) solid 3px;
+	border-radius: var(--defaultBorderRadius);
+	background: var(--lighterGray);
+	text-align: center;
+}
+
+#controles *
+{
+	display: inline-block;
+	outline: none;
+}
+
+#controles div *
+{
+	border: var(--mainYellow) outset 2px;
+	border-radius: var(--defaultBorderRadius);
+	padding: 6px;
+}
+
+#controles button
+{
+	color: white;
+	height: 30px;
+	cursor: pointer;
+}
+
+#btns-create button, #btns-canvas button
+{
+	background: var(--mainGray);
+}
+
+#btns-create button:hover, #btns-canvas button:hover
+{
+	background: var(--darkYellow);
+	color: var(--mainGray);
+}
+
+#controles button:active
+{
+	border-style: inset;
+}
+
+#controles input:focus, #controles select:focus
+{
+	border-style: inset;
+}
+
+#btns-zoom button
+{
+	border-radius: 100%;
+	font-weight: bold;
+	text-align: center;
+	width: 30px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+}
+
+#btns-zoom button:hover
+{
+	background-color: var(--darkYellow);	
+}
+
+#btn-zoom-in
+{
+	background-image: url("../../img/canvas-icons/zoom-in-icon.png");
+}
+
+#btn-zoom-out
+{
+	background-image: url("../../img/canvas-icons/zoom-out-icon.png");
+}
