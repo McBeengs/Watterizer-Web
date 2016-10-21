@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" ng-app="watterizerApp">
+<html lang="zxx" ng-app="watterizerApp" ng-jq="$">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
@@ -11,9 +11,11 @@
 	<link rel="stylesheet" type="text/css" href="../css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/library/data-tables.min.css"> <!-- CSS DATATABLES -->
+	<script src="../js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 	<script src="../js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
 	<script src="../js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
 	<script src="../js/angular/controllers/advertenciaCtrl.js"></script> <!-- JS DA CONTROLLER -->
+
 </head>
 <body  ng-controller="advertenciaCtrl">
 	<div class="container-fluid">
@@ -44,7 +46,7 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<table class="table-striped">
+			<table class="table-striped" datatable="ng">
 				<thead>
 					<tr>
 						<th>Data</th>
@@ -69,14 +71,13 @@
 	</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
-<script src="../js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+
 <script src="../js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <script src="../js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
 <script src="../js/data-tables/data-tables-jquery.min.js"></script> <!-- JS DATATABLE JQUERY -->
-<script src="../js/data-tables/data-tables-bootstrap.min.js"></script> <!-- JS DATATABLE BOOTSTRAP -->
+<!-- <script src="../js/data-tables/data-tables-bootstrap.min.js"></script> <!-- JS DATATABLE BOOTSTRAP --> -->
 <script src="../js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="../js/custom/slider.js"></script> <!-- JS DO SLIDER -->
-<script type="text/javascript">
-	startTable();
-</script>
+<script src="../js/angular/angular-datatables.min.js"></script> <!-- JS DO ANGULAR DATATABLES-->
+
 </html>

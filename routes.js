@@ -114,6 +114,7 @@ module.exports = {
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
         sess=req.session;
+        console.log("token "+req.headers.token)
         usuario.autenticacao(req.headers.token,req, res);
         setTimeout(function() {
             sess=req.session;

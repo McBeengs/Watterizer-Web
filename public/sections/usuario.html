@@ -103,7 +103,7 @@
 							<div class="form-group col-xs-12">
 								<label for="txt-id_setor">Setor</label>
 								<select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" class="form-control" id="txt-id_setor">
-									<option value="">-- Selecione --</option>
+									<option value="">{{setor.id}}</option>
 								</select>
 							</div>
 							<div class="col-sm-5 centered">
