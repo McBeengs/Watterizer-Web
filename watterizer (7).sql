@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 20-Out-2016 às 18:54
+-- Generation Time: 20-Out-2016 às 20:29
 -- Versão do servidor: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -92,8 +92,9 @@ CREATE TABLE `equipamento` (
 --
 
 INSERT INTO `equipamento` (`id`, `mac`, `nome`, `descricao`, `posicionado`, `id_arduino`) VALUES
-(1, 'A1:B2:C3:D4:E5:F6', 'Touro Mecanico', 'adfas', 0, 1),
-(8, '70-54-D2-C6-A7-7E', 'LAB10-07', '', 0, NULL);
+(1, '70-54-D2-C6-A7-7E', 'LAB10-07', '', 0, 1),
+(9, 'asdasdasd', 'asdasd', 'asdasd', 0, 1),
+(11, 'drtydrty', 'yryh', 'dfyhdy', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -181,10 +182,10 @@ CREATE TABLE `usuario` (
   `hora_entrada` time DEFAULT NULL,
   `id_perfil` int(11) NOT NULL,
   `id_setor` int(11) NOT NULL,
-  `id_pergunta` int(11) NOT NULL,
+  `id_pergunta` int(11) DEFAULT NULL,
   `resposta_pergunta` varchar(140) DEFAULT NULL,
-  `token_web` varchar(16) NOT NULL,
-  `token_desktop` varchar(16) NOT NULL,
+  `token_web` varchar(16) DEFAULT NULL,
+  `token_desktop` varchar(16) DEFAULT NULL,
   `hora_saida` time NOT NULL,
   `hora_intervalo` time NOT NULL,
   `data_exclusao` datetime DEFAULT NULL
@@ -195,7 +196,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `username`, `senha`, `email`, `nome`, `telefone`, `hora_entrada`, `id_perfil`, `id_setor`, `id_pergunta`, `resposta_pergunta`, `token_web`, `token_desktop`, `hora_saida`, `hora_intervalo`, `data_exclusao`) VALUES
-(2, 'admin', 'WCwLwn04k8xqKrTWuBCx8Q==', 'asd', 'asd', 'asd', '03:00:00', 1, 1, 1, 'asd', 'TbHnCQjPAshFetTM', '5mdMoZeQoE2Elz8i', '02:00:00', '02:00:00', NULL);
+(2, 'admin', 'WCwLwn04k8xqKrTWuBCx8Q==', 'asd', 'asd', 'asd', '13:00:00', 1, 1, 1, 'asd', 'TbHnCQjPAshFetTM', 'wICNSR971fuRzORe', '17:00:00', '15:00:00', NULL);
 
 --
 -- Indexes for dumped tables
@@ -288,7 +289,7 @@ ALTER TABLE `canvas`
 -- AUTO_INCREMENT for table `equipamento`
 --
 ALTER TABLE `equipamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `gasto`
 --
@@ -313,7 +314,7 @@ ALTER TABLE `setor`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- Constraints for dumped tables
 --
@@ -329,7 +330,7 @@ ALTER TABLE `advertencia`
 --
 ALTER TABLE `arduino`
   ADD CONSTRAINT `arduino_ibfk_1` FOREIGN KEY (`id_setor`) REFERENCES `setor` (`id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `arduino_ibfk_2` FOREIGN KEY (`id_computador_responsavel`) REFERENCES `equipamento` (`id`) ON UPDATE NO ACTION;
+  ADD CONSTRAINT `arduino_ibfk_2` FOREIGN KEY (`id_computador_responsavel`) REFERENCES `equipamento` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `equipamento`
