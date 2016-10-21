@@ -15,9 +15,14 @@
 	--sectionsBorder: 10px;
 }
 
-#canvas
+#canvas-holder
 {
 	
+}
+
+canvas
+{
+	width: 100%;
 }
 
 #canvas-drawer
@@ -27,7 +32,7 @@
 
 .canvas-container
 {
-	margin-left: -40px;
+	margin-left: -30px;
 }
 
 .canvas-container canvas

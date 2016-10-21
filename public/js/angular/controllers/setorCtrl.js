@@ -5,7 +5,6 @@ app.controller('setorCtrl', function($scope, $http) {
 		$http.get("/setor/arduino")
 	.then(function (response) {
 		$scope.setores = response.data;
-		console.log($scope.setores);
 	}, function(response){
 		console.log("Falhou")
 	});
