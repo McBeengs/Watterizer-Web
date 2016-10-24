@@ -132,19 +132,18 @@ net.createServer(function(sock) {
             
         var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
         // REENVIA O QUE FOI RECEBIDO
-        var idEquipamento = JSON.parse(data).arduino;
-        var gastoRecebido = JSON.parse(data).gasto;
-        
+        var idEquipamento = JSON.parse(data).equipamento;
+        var gastoRecebido = JSON.parse(data).gasto;      
 
         if (arrayDadosArduino[idEquipamento] == undefined) {
             arrayDadosArduino[idEquipamento] = new Array(0);
         }
         for (var i = 0; i <= arrayIpArduino.length - 1; i++) {
-            if (i!=idEquipamento && arrayIpArduino[i]==sock.remoteAddress) {
+            if (i!=idEquipamento && arrayIpArduino[i]==sock.remoteAddress +':'+ sock.remotePort) {
                 arrayIpArduino[i]=null;
             }
         };
-        arrayIpArduino[idEquipamento]=sock.remoteAddress;
+        arrayIpArduino[idEquipamento]=sock.remoteAddress +':'+ sock.remotePort;
         arrayDadosArduino[idEquipamento].push(gastoRecebido);
         gasto.intervalo(ultimoEnvio,idEquipamento);
         var isCheia = false;
@@ -169,13 +168,12 @@ net.createServer(function(sock) {
         // INFORMA A DESCONEXÃO
         var idEquipamento=0;
         for (var i = 0; i <= arrayIpArduino.length - 1; i++) {
-            if (arrayIpArduino[i]==sock.remoteAddress) {
+            if (arrayIpArduino[i]==sock.remoteAddress +':'+ sock.remotePort) {
                 idEquipamento=i;
-                console.log("ip: "+sock.remoteAddress+" desconectou,idEquipamento= "+i);
+                console.log("ip: "+sock.remoteAddress +':'+ sock.remotePort+" desconectou,idEquipamento= "+i);
             }
         };
         gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
-        
         arrayDadosArduino[idEquipamento] = new Array(0);
         io.sockets.emit('noConnection',data);
     });

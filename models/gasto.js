@@ -131,6 +131,7 @@ function Gasto() {
 				
 
 			});
+
 });
 };
 
@@ -180,10 +181,11 @@ function Gasto() {
 				}
 
 			});
-				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=?',[idArduino], function(err, result) {
+
+				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
 
 					var gastos='';
-					if (JSON.stringify(result)=='[]') {
+					if (result[0]!=null) {
 
 						for (var i = 0; i <= arrayGasto.length - 1; i++) {
 							if (i!=arrayGasto.length - 1) {
@@ -195,11 +197,13 @@ function Gasto() {
 							
 						};
 						console.log("insert");
-						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=? ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento]);
+						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento]);
 					}
 					else {
 						con.query('SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE()  AND id_arduino=?',[idArduino], function(err, result) {
-							gastos+=result[0].gasto+',';
+							if (result[0]!=null) {
+								gastos+=result[0].gasto+',';
+							}
 							for (var i = 0; i <= arrayGasto.length - 1; i++) {
 								if (i!=arrayGasto.length - 1) {
 									gastos+=arrayGasto[i]+',';
@@ -215,7 +219,7 @@ function Gasto() {
 							for (var i = arraygastos.length - 1; i >= 0; i--) {
 								soma+=Number(arraygastos[i]);
 							};
-
+							console.log("update");
 							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=CURTIME() WHERE data = CURDATE() AND id_arduino=?', [gastos,idArduino]);
 
 						});  
