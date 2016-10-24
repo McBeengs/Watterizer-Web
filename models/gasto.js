@@ -182,7 +182,7 @@ function Gasto() {
 
 			});
 
-				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=?',[idArduino], function(err, result) {
+				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
 
 					var gastos='';
 					if (result[0]!=null) {
