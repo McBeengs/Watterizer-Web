@@ -12,7 +12,12 @@ app.controller("usuarioCtrl", function($scope, $http) {
 	$http.get("/setor/arduino")
 	.then(function (response) {
 		$scope.setores = response.data;
-		console.log($scope.setores);
+	}, function(response){
+		console.log("Falhou")
+	});
+	$http.get("/dados/perfil")
+	.then(function (response) {
+		$scope.perfis = response.data;
 	}, function(response){
 		console.log("Falhou")
 	});
