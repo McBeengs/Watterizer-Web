@@ -59,5 +59,14 @@
 	$("#sections-portal div").click(function () {
 		window.location.href = $(this).find("a").attr("href")
 	});
+	$.ajax({
+	url: "/sessao",
+	success: function(response) {
+		$( "#name").html(response[0]);
+	},
+	error: function(xhr) {
+		
+	}	
+});
 </script>
 </html>

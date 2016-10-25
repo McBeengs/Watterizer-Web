@@ -9,13 +9,13 @@
 // 	});
 // }
 
-$.ajax({
-	url: "/sessao",
-	success: function(response) {
-		console.log(response);
-		$( "#name").html(response[0]);
-	},
-	error: function(xhr) {
+// $.ajax({
+// 	url: "/sessao",
+// 	success: function(response) {
+// 		console.log(response);
+// 		$( "#name").html(response[0]);
+// 	},
+// 	error: function(xhr) {
 		
-	}	
-});
+// 	}	
+// });
