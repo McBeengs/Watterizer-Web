@@ -58,7 +58,13 @@
 						</tr>
 					</thead>
 					<tbody>
-
+						<tr ng-repeat="usuario in usuarios">
+						<td>{{usuario.nome}}</td>
+						<td>{{usuario.username}}</td>
+						<td>{{usuario.email}}</td>
+						<td>{{usuario.perfil}}</td>
+						<td>{{usuario.telefone}}</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
@@ -129,7 +135,10 @@
 <script src="../js/jquery/jquery-ui.min.js"></script> <!-- JS DO JQUERY UI -->
 <script src="../js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <script src="../js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+<script src="../js/data-tables/data-tables-jquery.min.js"></script> <!-- JS DATATABLE JQUERY -->
+<script src="../js/data-tables/data-tables-bootstrap.min.js"></script> <!-- JS DATATABLE BOOTSTRAP -->
 <script src="../js/custom/portal.js"></script> <!-- JS DO PORTAL -->
+<script src="../js/angular/angular-datatables.min.js"></script> <!-- JS DO ANGULAR DATATABLES-->
 <script type="text/javascript">
 	$(function() {
 		$( "#txt-nome" ).autocomplete({

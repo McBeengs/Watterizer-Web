@@ -17,12 +17,10 @@ function Setor() {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM setor', function(err, result) {
 				var setores=result;
-				console.log(setores);
 				con.query('SELECT arduino.id, localizacao, mac, nome, id_setor FROM arduino INNER JOIN equipamento ON(arduino.id_computador_responsavel=equipamento.id)', function(err, result) {
 					for (var j = setores.length - 1; j >= 0; j--) {
 						setores[j].arduinos=[];
 					}
-					console.log(result.length);
 					for (var i = 0; i <= result.length - 1; i++) {
 						for (var j = 0; j <= setores.length - 1; j++) {
 							if (result[i].id_setor==setores[j].id) {
