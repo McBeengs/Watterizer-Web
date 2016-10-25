@@ -178,13 +178,10 @@ function Gasto() {
 						especifico=true;
 					}
 				}
-
-			});
-
-			con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
+				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
 				
 				var gastos='';
-				if (result[0]==undefined) {
+				if (JSON.stringify(result)=='[]') {
 
 					for (var i = 0; i <= arrayGasto.length - 1; i++) {
 						if (i!=arrayGasto.length - 1) {
@@ -196,7 +193,8 @@ function Gasto() {
 
 					};
 					console.log("insert");
-					con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento]);
+					con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento], function(err, result) {
+			})
 				}
 				else {
 					con.query('SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE()  AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
@@ -239,23 +237,26 @@ function Gasto() {
 
 			});
 
+			});
+			
+
 });
 };
 	// ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
-	this.intervalo = function(data,idArduino, res) {
+	this.intervalo = function(data,idEquipamento, res) {
 		connection.acquire(function(err, con) {
 			
-			con.query('SELECT * FROM gasto WHERE data = CURDATE()', function(err, result) {
+			con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
 
 				if (JSON.stringify(result)=='[]') {
 					
 				} else {
-					con.query('SELECT CONVERT(gasto USING utf8) as gasto,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE()',[data], function(err, result) {
-						
+					con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[data,idEquipamento], function(err, result) {
 						var gastos='';
 						var intervalo = result[0].intervalo;
 						intervalo = intervalo.split(':'); // split it at the colons
 						var segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
+						console.log(intervalo);
 						if (segundos>1) {
 							gastos+=result[0].gasto+','
 							for (var i = segundos -1 ; i >= 0; i--) {
@@ -268,8 +269,8 @@ function Gasto() {
 							for (var i = arraygastos.length - 1; i >= 0; i--) {
 								soma+=Number(arraygastos[i]);
 							};
-
-							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=CURTIME() WHERE data = CURDATE()', gastos);
+							
+							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=? WHERE data = CURDATE()  AND id_equipamento=?', [data,gastos,idEquipamento]);
 						}
 					});
 
