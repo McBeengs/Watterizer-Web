@@ -111,14 +111,14 @@
 							</div>
 							<div class="form-group col-xs-6">
 								<label for="txt-id_setor">Setor</label>
-								<select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" ng-bind="usuario.id_setor" class="form-control" id="txt-id_setor" required>
-									<option value="">{{setor.id}}</option>
+								<select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" class="form-control" id="txt-id_setor" required>
+									<option value="usuario.id_setor">{{setor.id}}</option>
 								</select>
 							</div>
 							<div class="form-group col-xs-6">
 								<label for="txt-id_perfil">Perfil</label>
-								<select ng-options="perfil.id as perfil.perfil for perfil in perfis" ng-model="usuario.id_perfil" ng-bind="usuario.id_perfil" class="form-control" id="txt-id_perfil" required>
-									<option value="">{{perfil.id}}</option>
+								<select ng-options="perfil.id as perfil.perfil for perfil in perfis" ng-model="usuario.id_perfil"  class="form-control" id="txt-id_perfil" required>
+									<option value="usuario.id_perfil">{{perfil.id}}</option>
 								</select>
 							</div>
 							<div class="col-sm-5 centered">

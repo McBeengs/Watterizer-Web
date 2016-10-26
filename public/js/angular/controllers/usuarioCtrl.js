@@ -26,14 +26,7 @@ app.controller("usuarioCtrl", function($scope, $http) {
 
 }, 0);
 	
-	$scope.create = function() {
-		$http.post("/dados/usuario", $scope.usuario)
-		.then(function (response) {
-			console.log($scope.usuario);
-		}, function(response){
-			console.log("Falhou")
-		});
-	}
+
 	$scope.editar = function(usuario) {
 		var date;
 		$scope.usuario = {};
@@ -48,9 +41,29 @@ app.controller("usuarioCtrl", function($scope, $http) {
 		$scope.usuario.hora_intervalo=date;
 		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_saida+" GMT");
 		$scope.usuario.hora_saida=date;
-		// $scope.usuario.id_setor=usuario.id_setor;
-		// $scope.usuario.id_perfil=usuario.id_perfil;
+		$scope.usuario.id_setor=usuario.id_setor;
+		$scope.usuario.id_perfil=usuario.id_perfil;
+
 		
+	}
+	$scope.create = function() {
+		if ($scope.usuario.id==undefined) {
+			console.log("create");
+			$http.post("/dados/usuario", $scope.usuario)
+		.then(function (response) {
+			console.log($scope.usuario);
+		}, function(response){
+			console.log("Falhou")
+		});
+		}
+		else{
+			console.log("edit");
+			$http.put("/dados/usuario", $scope.usuario)
+		.then(function (response) {
+		}, function(response){
+			console.log("Falhou")
+		});
+		}
 		
 	}
 });

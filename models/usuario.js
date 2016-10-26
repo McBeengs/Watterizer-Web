@@ -26,7 +26,7 @@ function Usuario() {
 	// MOSTRA UM USUARIO
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id)  WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
+			con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) INNER JOIN setor ON(usuario.id_setor=setor.id) WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
