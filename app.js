@@ -22,8 +22,6 @@ app.use(session({secret: 'ssshhhhh',name : 'sessionId',resave:true,saveUninitial
 // POSTCSS
 const postcss = require('postcss');
 const cssvariables = require('postcss-css-variables');
-const angular_chart = require('angular-chart');
-const chart_js = require('chart.js');
 // var autoprefixer = require('autoprefixer');
 
 const fs = require('fs');

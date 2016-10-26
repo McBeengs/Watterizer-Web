@@ -47,6 +47,16 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 	    	$scope.chart.labels = $scope.prepareChart.labels;
 	    	$scope.chart.data = [];
 	    	$scope.chart.data.push($scope.prepareChart.data);
+	    	console.log($scope.chart.data);
+	    	setInterval(function () {
+	    		$scope.chart.data[0].push("2")
+	    		$scope.chart.labels.push(j)
+	    		$scope.chart.data[0].shift();
+	    		$scope.chart.labels.shift();
+	    		document.getElementById('line').style.display = 'none';
+				document.getElementById('line').style.display = 'block';
+	    		j++;
+	    	}, 1000);
 		});
 	}, 100);
 

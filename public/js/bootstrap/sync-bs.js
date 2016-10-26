@@ -13,9 +13,9 @@ function adjusts() {
 		
 
 	} else if (screenW >= 768) { // SOMENTE PARA TELAS PEQUENAS (TABLETS)
-		title.css({
-			"font-size":"28px"
-		});
+		// title.css({
+		// 	"font-size":"28px"
+		// });
 
 		secsPortal.css({
 			"margin-top":"180px"
@@ -56,6 +56,8 @@ function adjusts() {
 		// });
 	}
 };
+
+adjusts();
 
 $(window).resize(function (){adjusts()});
 
