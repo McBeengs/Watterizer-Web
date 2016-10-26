@@ -15,7 +15,7 @@ var app = express();
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
-app.use(session({secret: 'ssshhhhh',name : 'sessionId'}));
+app.use(session({secret: 'ssshhhhh',name : 'sessionId',resave:true,saveUninitialized:false}));
 
 app.use(helmet());
 
@@ -131,10 +131,12 @@ net.createServer(function(sock) {
         else{
             
         var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
-        var gastoRecebido = JSON.parse(data).gasto;      
-
+        var gastoRecebido = JSON.parse(data).gasto;
+        gasto.intervalo(ultimoEnvio,idEquipamento);    
+        // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosArduino[idEquipamento] == undefined) {
             arrayDadosArduino[idEquipamento] = new Array(0);
         }
@@ -145,13 +147,14 @@ net.createServer(function(sock) {
         };
         arrayIpArduino[idEquipamento]=sock.remoteAddress +':'+ sock.remotePort;
         arrayDadosArduino[idEquipamento].push(gastoRecebido);
-        gasto.intervalo(ultimoEnvio,idEquipamento);
+        
         var isCheia = false;
         
         for (var i = 0; i <= arrayDadosArduino[idEquipamento].length - 1; i++) {
-            if (i==599) {
-                
+            if (i==10) {
+
                 gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
+                ultimoEnvioData= new Date();
                 arrayDadosArduino[idEquipamento] = new Array(0);
             }
         };
@@ -173,6 +176,7 @@ net.createServer(function(sock) {
                 console.log("ip: "+sock.remoteAddress +':'+ sock.remotePort+" desconectou,idEquipamento= "+i);
             }
         };
+
         gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
         arrayDadosArduino[idEquipamento] = new Array(0);
         io.sockets.emit('noConnection',data);

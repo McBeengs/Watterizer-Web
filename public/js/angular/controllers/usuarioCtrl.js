@@ -1,6 +1,8 @@
 // CONTROLLER DE USUARIOS
+app.requires.push('datatables');
 app.controller("usuarioCtrl", function($scope, $http) {
 	// LISTA TODOS OS USUARIOS
+	$scope.showDT = true;
 	setTimeout(function() {
 		$http.get("/dados/usuario")
 	.then(function (response) {
@@ -21,7 +23,8 @@ app.controller("usuarioCtrl", function($scope, $http) {
 	}, function(response){
 		console.log("Falhou")
 	});
-}, 10);
+
+}, 0);
 	
 	$scope.create = function() {
 		$http.post("/dados/usuario", $scope.usuario)
