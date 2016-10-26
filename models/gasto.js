@@ -269,8 +269,9 @@ function Gasto() {
 							for (var i = arraygastos.length - 1; i >= 0; i--) {
 								soma+=Number(arraygastos[i]);
 							};
-							
-							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=? WHERE data = CURDATE()  AND id_equipamento=?', [data,gastos,idEquipamento]);
+							console.log('intervalo');
+							console.log('segundos'+segundos);
+							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=? WHERE data = CURDATE()  AND id_equipamento=?', [gastos,data,idEquipamento]);
 						}
 					});
 

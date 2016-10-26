@@ -34,4 +34,23 @@ app.controller("usuarioCtrl", function($scope, $http) {
 			console.log("Falhou")
 		});
 	}
+	$scope.editar = function(usuario) {
+		var date;
+		$scope.usuario = {};
+		$scope.usuario.id=usuario.id;
+		$scope.usuario.nome=usuario.nome;
+		$scope.usuario.username=usuario.username;
+		$scope.usuario.email=usuario.email;
+		$scope.usuario.telefone=usuario.telefone;
+		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_entrada+" GMT");
+		$scope.usuario.hora_entrada=date;
+		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_intervalo+" GMT");
+		$scope.usuario.hora_intervalo=date;
+		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_saida+" GMT");
+		$scope.usuario.hora_saida=date;
+		// $scope.usuario.id_setor=usuario.id_setor;
+		// $scope.usuario.id_perfil=usuario.id_perfil;
+		
+		
+	}
 });

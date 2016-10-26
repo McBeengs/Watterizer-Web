@@ -2,9 +2,9 @@
 app.requires.push('datatables');
 app.controller('advertenciaCtrl', function($scope, $http) {
 	// LISTA TODAS AS ADVERTENCIAS
-		$scope.showDT = true;
-		setTimeout(function() {
-			$http.get("/dados/advertencia")
+	$scope.showDT = true;
+	setTimeout(function() {
+		$http.get("/dados/advertencia")
 		.then(function (response) {
 			// console.log(.token);
 			$scope.advertencias = response.data;
@@ -12,6 +12,5 @@ app.controller('advertenciaCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou");
 		})
-		}, 0);
-
+	}, 0);
 });
