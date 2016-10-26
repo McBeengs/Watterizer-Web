@@ -6,13 +6,32 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 		$http.get("/dados/gasto/hoje")
 		.then(function (response) {
 			$scope.prepareChart = {};
-	    	$scope.prepareChart.series = ['Hoje'];
+	    	$scope.prepareChart.series = ['Hoje', 'Semana Passada'];
 	    	$scope.prepareChart.data = [];
 	    	$scope.prepareChart.labels = [];
+	    	$scope.prepareChart.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+	    	$scope.prepareChart.options = {
+				scales: {
+					yAxes: [
+						{
+							id: 'y-axis-1',
+							type: 'linear',
+							display: true,
+							position: 'left'
+						},
+						{
+							id: 'y-axis-2',
+							type: 'linear',
+							display: true,
+							position: 'right'
+						}
+					]
+				}
+			};
 			$scope.gastos = response.data;
 			var j = 0;
 			for (var i = $scope.gastos.length - 41; i <= $scope.gastos.length - 1; i++) {
-		    	$scope.prepareChart.data.push($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1));
+		    	$scope.prepareChart.data.push(Number($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1)));
 		    	// if(i % 5 == 0){
 		      		$scope.prepareChart.labels.push(j);
 		      	// } else {
@@ -30,7 +49,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 					data=[]
 				}
 				for (var i = 0; i <= data.length - 1; i++) {
-		    		$scope.prepareChart.data.push(data[i].substr(data[i].lastIndexOf("\'")+1));
+		    		$scope.prepareChart.data.push(Number(data[i].substr(data[i].lastIndexOf("\'")+1)));
 		    		// if(i % 5 == 0){
 		      			$scope.prepareChart.labels.push(j);
 		      		// } else {
@@ -40,23 +59,26 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 				}
 				$scope.prepareChart.data.splice(0, $scope.prepareChart.data.length - 41);
 				$scope.prepareChart.labels.splice(0, $scope.prepareChart.labels.length - 41);
-				console.log($scope.prepareChart.labels)
 			});
 			$scope.chart = {};
 	    	$scope.chart.series = $scope.prepareChart.series;
 	    	$scope.chart.labels = $scope.prepareChart.labels;
+	    	$scope.chart.datasetOverride = $scope.prepareChart.datasetOverride;
+	    	$scope.chart.options = $scope.prepareChart.options;
 	    	$scope.chart.data = [];
 	    	$scope.chart.data.push($scope.prepareChart.data);
-	    	console.log($scope.chart.data);
+	    	$scope.chart.data.push($scope.prepareChart.data);
 	    	setInterval(function () {
-	    		$scope.chart.data[0].push("2")
-	    		$scope.chart.labels.push(j)
+	    		var random = (Math.floor((Math.random() * 10)));
+	    		$scope.chart.data[0].push(random);
+	    		$scope.chart.data[1].push(random+2);
+	    		$scope.chart.labels.push(j);
 	    		$scope.chart.data[0].shift();
+	    		$scope.chart.data[1].shift();
 	    		$scope.chart.labels.shift();
-	    		document.getElementById('line').style.display = 'none';
-				document.getElementById('line').style.display = 'block';
 	    		j++;
 	    	}, 1000);
+	    	console.log($scope.chart.data)
 		});
 	}, 100);
 
