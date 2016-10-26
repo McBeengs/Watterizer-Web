@@ -1,5 +1,5 @@
 // APP BASE
-var app = angular.module('watterizerApp', [/*'datatables'*/]);
+var app = angular.module('watterizerApp', [/*'datatables'*/"chart.js"]);
 app.run(function ($http) {
 	$http.get("/sessao")
 	.then(function (response){

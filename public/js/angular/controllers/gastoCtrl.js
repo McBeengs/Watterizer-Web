@@ -1,15 +1,44 @@
 // CONTROLLER DE GASTOS
-angular.module("watterizerApp", ["chart.js"]).controller("gastoCtrl", function ($scope, $http, $interval) {
-	$http.get("/setor/")
-	.then(function (response) {
-		$scope.gastos = response.data;
-		console.log($scope.gastos)
-	});
-	for (var i = 0; i <= $scope.gastos.length - 1; i++) {
-    	$scope.graph.data.push($scope.gastos[i]);
-      	$scope.graph.labels.push(i);
-	}
-    $scope.graph.series = ['Series A'];
+app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
+	setTimeout(function() {
+		var socket = io.connect('localhost:1515');
+		$http.get("/dados/gasto/hoje")
+		.then(function (response) {
+			$scope.chart = {};
+	    	$scope.chart.series = ['Series A'];
+	    	$scope.chart.data = [];
+	    	$scope.chart.labels = [];
+			$scope.gastos = response.data;
+			var j = 0;
+			for (var i = $scope.gastos.length - 40; i <= $scope.gastos.length - 1; i++) {
+		    	$scope.chart.data.push($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1));
+		    	if(i % 5 == 0){
+		      		$scope.chart.labels.push(j);
+		      	} else {
+		      		$scope.chart.labels.push(" ");
+		      	}
+		      	j++;
+			}
+
+			socket.emit("load",2);
+			socket.on('toClientLoad', function (data) {
+				if (data==null) {
+					console.log('null');
+					data=[]
+				}
+				for (var i = data.length - 40; i <= data.length - 1; i++) {
+		    		$scope.chart.data.push(data[i].substr(data[i].lastIndexOf("\'")+1));
+		    		if(i % 5 == 0){
+		      			$scope.chart.labels.push(j);
+		      		} else {
+		      			$scope.chart.labels.push(" ");
+		      		}
+				}
+				$scope.chart.data.splice(0, $scope.chart.data.length - 40);
+	    		j++;
+			});
+		});
+	}, 10);
 
     // $scope.update = function() {
     //   var random = (Math.floor((Math.random() * 10) + 1));
