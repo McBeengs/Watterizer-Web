@@ -7,7 +7,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const net = require('net');
 const gasto = require('./models/gasto');
-var helmet = require('helmet');
+// var helmet = require('helmet');
 var sess;
 
 // INICIA O EXPRESS E PARSER JSON
@@ -17,11 +17,13 @@ app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'ssshhhhh',name : 'sessionId',resave:true,saveUninitialized:false}));
 
-app.use(helmet());
+// app.use(helmet());
 
 // POSTCSS
 const postcss = require('postcss');
 const cssvariables = require('postcss-css-variables');
+const angular_chart = require('angular-chart');
+const chart_js = require('chart.js');
 // var autoprefixer = require('autoprefixer');
 
 const fs = require('fs');

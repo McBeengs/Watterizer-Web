@@ -11,38 +11,44 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 	    	$scope.prepareChart.labels = [];
 			$scope.gastos = response.data;
 			var j = 0;
-			for (var i = $scope.gastos.length - 40; i <= $scope.gastos.length - 1; i++) {
+			for (var i = $scope.gastos.length - 41; i <= $scope.gastos.length - 1; i++) {
 		    	$scope.prepareChart.data.push($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1));
-		    	if(i % 5 == 0){
+		    	// if(i % 5 == 0){
 		      		$scope.prepareChart.labels.push(j);
-		      	} else {
-		      		$scope.prepareChart.labels.push(" ");
-		      	}
+		      	// } else {
+		      		// $scope.prepareChart.labels.push(" ");
+		      	// }
 		      	j++;
 			}
+	      	j++;
 
 			socket.emit("load",2);
 			socket.on('toClientLoad', function (data) {
-				data=["1':'1","2':'2","3':'3","4':'4"];
+				data=["1':'1","2':'2","3':'3","4':'4","5':'5","6':'2","7':'3","8':'4","9':'1","10':'2","11':'3","12':'4"];
 				if (data==null) {
 					console.log('null');
 					data=[]
 				}
 				for (var i = 0; i <= data.length - 1; i++) {
 		    		$scope.prepareChart.data.push(data[i].substr(data[i].lastIndexOf("\'")+1));
-					console.log(data)
-		    		if(i % 5 == 0){
+		    		// if(i % 5 == 0){
 		      			$scope.prepareChart.labels.push(j);
-		      		} else {
-		      			$scope.prepareChart.labels.push(" ");
-		      		}
+		      		// } else {
+		      			// $scope.prepareChart.labels.push(" ");
+		      		// }
+	    			j++;
 				}
-				$scope.prepareChart.data.splice(0, $scope.prepareChart.data.length - 40);
-	    		j++;
+				$scope.prepareChart.data.splice(0, $scope.prepareChart.data.length - 41);
+				$scope.prepareChart.labels.splice(0, $scope.prepareChart.labels.length - 41);
+				console.log($scope.prepareChart.labels)
 			});
-			$scope.chart = $scope.prepareChart;
+			$scope.chart = {};
+	    	$scope.chart.series = $scope.prepareChart.series;
+	    	$scope.chart.labels = $scope.prepareChart.labels;
+	    	$scope.chart.data = [];
+	    	$scope.chart.data.push($scope.prepareChart.data);
 		});
-	}, 10);
+	}, 100);
 
     // $scope.update = function() {
     //   var random = (Math.floor((Math.random() * 10) + 1));

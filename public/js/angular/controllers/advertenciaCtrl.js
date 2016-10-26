@@ -8,7 +8,6 @@ app.controller('advertenciaCtrl', function($scope, $http) {
 		.then(function (response) {
 			// console.log(.token);
 			$scope.advertencias = response.data;
-			
 		}, function(response){
 			console.log("Falhou");
 		})
