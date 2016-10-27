@@ -8,5 +8,5 @@ app.controller('setorCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou")
 		});
-	}, 10);
+	}, 50);
 });

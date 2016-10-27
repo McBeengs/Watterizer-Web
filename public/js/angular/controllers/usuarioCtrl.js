@@ -24,7 +24,7 @@ app.controller("usuarioCtrl", function($scope, $http) {
 		console.log("Falhou")
 	});
 
-}, 0);
+}, 50);
 	
 
 	$scope.editar = function(usuario) {

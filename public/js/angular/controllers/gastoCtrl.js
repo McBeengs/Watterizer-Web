@@ -68,7 +68,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 	    	$scope.chart.data = [];
 	    	$scope.chart.data.push($scope.prepareChart.data);
 	    	$scope.chart.data.push($scope.prepareChart.data);
-	    	setInterval(function () {
+	    	$interval(function () {
 	    		var random = (Math.floor((Math.random() * 10)));
 	    		$scope.chart.data[0].push(random);
 	    		$scope.chart.data[1].push(random+2);

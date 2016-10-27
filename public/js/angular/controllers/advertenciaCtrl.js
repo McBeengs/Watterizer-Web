@@ -11,5 +11,5 @@ app.controller('advertenciaCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou");
 		})
-	}, 0);
+	}, 50);
 });
