@@ -68,10 +68,13 @@ module.exports = {
         if(sess.login) {
             next();
         } else {
-            res.redirect('/index')
+            res.redirect('/sessaoExpirada')
             res.end();
         }
     });
+    app.get("/sessaoExpirada",function(req,res) {
+        res.sendFile(__dirname + "/public/sessaoExpirada.html");
+    })
 
     app.get(prefixoPortal+'',function(req,res){
         res.sendFile(__dirname + "/public/portal.html");

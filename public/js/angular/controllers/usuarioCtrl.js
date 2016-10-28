@@ -1,6 +1,36 @@
 // CONTROLLER DE USUARIOS
 app.requires.push('datatables');
-app.controller("usuarioCtrl", function($scope, $http) {
+app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumnBuilder) {
+	var language = {
+		"sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+        "sNext": "Próximo",
+        "sPrevious": "Anterior",
+        "sFirst": "Primeiro",
+        "sLast": "Último"
+    },
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
+    }
+	}
+	$scope.dtOptions = DTOptionsBuilder.newOptions()
+	.withLanguage(language)
+	// .withPaginationType('full_numbers')
+	// .withDisplayLength(2)
+	// .withOption('order', [1, 'desc'])
+
+
 	// LISTA TODOS OS USUARIOS
 	$scope.showDT = true;
 	setTimeout(function() {
@@ -24,7 +54,7 @@ app.controller("usuarioCtrl", function($scope, $http) {
 			console.log("Falhou")
 		});
 
-	}, 50);
+	}, 100);
 	
 
 	$scope.editar = function(usuario) {
@@ -43,10 +73,12 @@ app.controller("usuarioCtrl", function($scope, $http) {
 		$scope.usuario.hora_saida=date;
 		$scope.usuario.id_setor=usuario.id_setor;
 		$scope.usuario.id_perfil=usuario.id_perfil;
+		$scope.titulo="Editar Usuário"
 		
 	}
 	$scope.novo = function() {
 		$scope.usuario = {};
+		$scope.titulo="Novo Usuário";
 	}
 	$scope.desliga = function() {
 		var pcsligados;
@@ -55,15 +87,15 @@ app.controller("usuarioCtrl", function($scope, $http) {
 		.then(function (response) {
 			pcsligados=response.data;
 			for (var i = pcsligados.length - 1; i >= 0; i--) {
-			if (pcsligados[i]=="70-54-D2-C6-A7-7E") {
-				pcligado.mac="70-54-D2-C6-A7-7E"
-				$http.post("/desligapc", pcligado)
-				.then(function (response) {
-				}, function(response){
-					console.log("Falhou")
-				});
-			}
-		};
+				if (pcsligados[i]=="70-54-D2-C6-A7-7E") {
+					pcligado.mac="70-54-D2-C6-A7-7E"
+					$http.post("/desligapc", pcligado)
+					.then(function (response) {
+					}, function(response){
+						console.log("Falhou")
+					});
+				}
+			};
 		}, function(response){
 			console.log("Falhou")
 		});

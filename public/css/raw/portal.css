@@ -163,6 +163,10 @@
 {
 	margin-top: 30px;
 }
+#DataTables_Table_0_wrapper label
+{
+	color: white;
+}
 
 #DataTables_Table_0_wrapper select, #DataTables_Table_0_wrapper input
 {
