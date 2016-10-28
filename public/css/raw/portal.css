@@ -166,6 +166,8 @@
 #DataTables_Table_0_wrapper label
 {
 	color: white;
+	margin-right: 10px;
+	font-family: "featured" !important;
 }
 
 #DataTables_Table_0_wrapper select, #DataTables_Table_0_wrapper input

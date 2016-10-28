@@ -26,6 +26,7 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 	}
 	$scope.dtOptions = DTOptionsBuilder.newOptions()
 	.withLanguage(language)
+	// .withDOM('<"top"<"col-xs-6"i>f>tr<"bottom"<"col-xs-6"l><"col-xs-6"p>>');
 	// .withPaginationType('full_numbers')
 	// .withDisplayLength(2)
 	// .withOption('order', [1, 'desc'])
