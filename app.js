@@ -33,7 +33,7 @@ var output;
 for (var i = css.length - 1; i >= 0; i--) {
     var output = postcss([
         cssvariables(/*options*/)
-    ])
+        ])
     .process(css[i])
     .css;
     fs.writeFile("public/css/post-processed/post-"+cssName[i]+".css", output);
@@ -68,54 +68,44 @@ io.sockets.on('connection', function (socket) {
     
 });
 
-var usuarioDesliga=[];
-    app.post('/desliga', function(req, res) {
-    var repetido=false;
-    sess = req.session;
-    for (var i = usuarioDesliga.length - 1; i >= 0; i--) {
-        if (usuarioDesliga[i]==sess.login) {
-            repetido=true;
-        };
-    };
-    if (!repetido) {
-        usuarioDesliga.push(sess.login);
-    };
-    res.redirect('/portal')
-    console.log(usuarioDesliga);
-
-    });
-    app.post('/desligaconf', function(req, res) {
-    if (req.body.confirm==true) {
-        for (var i = usuarioDesliga.length - 1; i >= 0; i--) {
-           if (usuarioDesliga[i]==req.body.user) {
-            res.send("desligar "+usuarioDesliga[i]);
-             usuarioDesliga.splice(i,1);
-           };
-        };
-    }
-    else{
-        for (var i = usuarioDesliga.length - 1; i >= 0; i--) {
-           if (usuarioDesliga[i]==req.body.user) {
-            res.send("nao desligar "+usuarioDesliga[i]);
-            usuarioDesliga.splice(i,1);
-           };
-        };
-        
-    }
-    try{
-        res.send("sem confirmacoes");
-    }
-    catch(e){
-
-    }
-    
-
-    });
-app.get('/desliga', function(req, res) {
-    res.send(usuarioDesliga);
-    console.log(usuarioDesliga);
+var macDesliga=[];
+var pcsLigados=[];
+app.post('/desligaconf', function(req, res) {
+    var index = macDesliga.indexOf(req.body.mac);
+    macDesliga.splice(index, 1);
+    console.log(macDesliga);
+    res.send(macDesliga);
 
 });
+app.post('/pcdesligado', function(req, res) {
+    var index = macDesliga.indexOf(req.body.mac);
+    pcsLigados.splice(index, 1);
+    console.log(pcsLigados);
+    res.send(macDesliga);
+
+});
+app.post('/pcligado', function(req, res) {
+    pcsLigados.push(req.body.mac);
+    console.log(pcsLigados);
+    res.send(pcsLigados);
+
+});
+app.get('/pcligado', function(req, res) {
+    res.send(pcsLigados);
+
+});
+app.post('/desligapc', function(req, res) {
+     macDesliga.push({
+            mac: req.body.mac
+        });
+    console.log(macDesliga);
+    res.send(macDesliga);
+
+});
+app.get('/desligapc', function(req, res) {
+    res.send(macDesliga);
+});
+
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
@@ -123,13 +113,7 @@ net.createServer(function(sock) {
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
-        data = decodeURIComponent(escape(encodedString));
-        if (data.trim(data).localeCompare("test")==0) {
-            console.log("ok");
-            sock.write(data);
-        }
-        else{
-            
+        data = decodeURIComponent(escape(encodedString));               
         var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
@@ -151,7 +135,7 @@ net.createServer(function(sock) {
         var isCheia = false;
         
         for (var i = 0; i <= arrayDadosArduino[idEquipamento].length - 1; i++) {
-            if (i==10) {
+            if (i==599) {
 
                 gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
                 ultimoEnvioData= new Date();
@@ -161,7 +145,7 @@ net.createServer(function(sock) {
 
         io.sockets.emit('toClient', { array: arrayDadosArduino[idEquipamento], arduino: idEquipamento });
         sock.write(data);
-    }
+
         
 
     });

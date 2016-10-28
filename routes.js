@@ -411,6 +411,8 @@ module.exports = {
         sess=req.session;
         array.push(sess.nome);
         array.push(sess.token);
+        array.push(sess.idUser);
+        array.push(sess.perfil);
         
         res.send(array);
     });
@@ -425,12 +427,12 @@ module.exports = {
 
     // MODIFICA UM USUARIO
     app.put(prefixoDados+'/usuario/', function(req, res) {
-        usuario.update(req.body, res);
+        usuario.update(req.body,req, res);
     });
 
     // DELETA UM USUARIO
     app.delete(prefixoDados+'/usuario/:id/', function(req, res) {
-        usuario.delete(req.params.id, res);
+        usuario.delete(req.params.id,req, res);
     });
 
     // CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO

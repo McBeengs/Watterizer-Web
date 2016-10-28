@@ -256,7 +256,7 @@ function Gasto() {
 						var intervalo = result[0].intervalo;
 						intervalo = intervalo.split(':'); // split it at the colons
 						var segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
-						console.log(intervalo);
+
 						if (segundos>1) {
 							gastos+=result[0].gasto+','
 							for (var i = segundos -1 ; i >= 0; i--) {
@@ -269,8 +269,7 @@ function Gasto() {
 							for (var i = arraygastos.length - 1; i >= 0; i--) {
 								soma+=Number(arraygastos[i]);
 							};
-							console.log('intervalo');
-							console.log('segundos'+segundos);
+
 							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=? WHERE data = CURDATE()  AND id_equipamento=?', [gastos,data,idEquipamento]);
 						}
 					});
