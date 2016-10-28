@@ -45,7 +45,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="usuarios" >
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 					Novo Usuário
 				</button>
 				<table class="table-striped">
@@ -66,7 +66,10 @@
 						<td>{{usuario.email}}</td>
 						<td>{{usuario.perfil}}</td>
 						<td>{{usuario.telefone}}</td>
-						<td><button ng-click="editar(usuario)" data-toggle="modal" data-target="#myModal">Editar</button></td>
+						<td>
+							<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#myModal">Editar</button>
+							<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modalExcluir">Excluir</button>
+						</td>
 					</tr>
 					</tbody>
 				</table>
@@ -125,6 +128,28 @@
 								<input type="submit" value="Cadastrar" class="form-control btn-primary" ng-click="create()">
 							</div>
 						</form>
+						<form>
+							<div class="col-sm-5 centered">
+								<input type="submit" value="Desligar" class="form-control btn-primary" ng-click="desliga()">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Novo Usuário</h4>
+					</div>
+					<div class="modal-body">
+						<p>Tem certeza que deseja excluir o usuario {{usuarioExclusao.nome}}?</p>
+						<button ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
+						<button data-toggle="modal" data-target="#modalExcluir">Não</button>
 					</div>
 					<div class="modal-footer">
 					</div>

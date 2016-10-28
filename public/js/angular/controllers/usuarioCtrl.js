@@ -5,26 +5,26 @@ app.controller("usuarioCtrl", function($scope, $http) {
 	$scope.showDT = true;
 	setTimeout(function() {
 		$http.get("/dados/usuario")
-	.then(function (response) {
-		console.log(response.data)
-		$scope.usuarios = response.data;
-	}, function(response){
-		console.log("Falhou")
-	});
-	$http.get("/setor/arduino")
-	.then(function (response) {
-		$scope.setores = response.data;
-	}, function(response){
-		console.log("Falhou")
-	});
-	$http.get("/dados/perfil")
-	.then(function (response) {
-		$scope.perfis = response.data;
-	}, function(response){
-		console.log("Falhou")
-	});
+		.then(function (response) {
+			console.log(response.data)
+			$scope.usuarios = response.data;
+		}, function(response){
+			console.log("Falhou")
+		});
+		$http.get("/setor/arduino")
+		.then(function (response) {
+			$scope.setores = response.data;
+		}, function(response){
+			console.log("Falhou")
+		});
+		$http.get("/dados/perfil")
+		.then(function (response) {
+			$scope.perfis = response.data;
+		}, function(response){
+			console.log("Falhou")
+		});
 
-}, 50);
+	}, 50);
 	
 
 	$scope.editar = function(usuario) {
@@ -43,26 +43,69 @@ app.controller("usuarioCtrl", function($scope, $http) {
 		$scope.usuario.hora_saida=date;
 		$scope.usuario.id_setor=usuario.id_setor;
 		$scope.usuario.id_perfil=usuario.id_perfil;
-
 		
+	}
+	$scope.novo = function() {
+		$scope.usuario = {};
+	}
+	$scope.desliga = function() {
+		var pcsligados;
+		var pcligado={};
+		$http.get("/pcligado")
+		.then(function (response) {
+			pcsligados=response.data;
+			for (var i = pcsligados.length - 1; i >= 0; i--) {
+			if (pcsligados[i]=="70-54-D2-C6-A7-7E") {
+				pcligado.mac="70-54-D2-C6-A7-7E"
+				$http.post("/desligapc", pcligado)
+				.then(function (response) {
+				}, function(response){
+					console.log("Falhou")
+				});
+			}
+		};
+		}, function(response){
+			console.log("Falhou")
+		});
+		
+	}
+	$scope.excluir = function(id) {
+		$scope.usuarioExclusao={};
+		$http.delete("/dados/usuario/"+id, $scope.usuario)
+		.then(function (response) {
+		}, function(response){
+			console.log("Falhou")
+		});
+	}
+	$scope.preparaExclusao = function(nome,id) {
+		$scope.usuarioExclusao={}
+		$scope.usuarioExclusao.nome=nome;
+		$scope.usuarioExclusao.id=id;
+	}
+	$scope.autoExclusao = function(id) {
+		if (id!=$scope.usuarioLogado.data[2]) {
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	$scope.create = function() {
 		if ($scope.usuario.id==undefined) {
 			console.log("create");
 			$http.post("/dados/usuario", $scope.usuario)
-		.then(function (response) {
-			console.log($scope.usuario);
-		}, function(response){
-			console.log("Falhou")
-		});
+			.then(function (response) {
+				console.log($scope.usuario);
+			}, function(response){
+				console.log("Falhou")
+			});
 		}
 		else{
-			console.log("edit");
 			$http.put("/dados/usuario", $scope.usuario)
-		.then(function (response) {
-		}, function(response){
-			console.log("Falhou")
-		});
+			.then(function (response) {
+			}, function(response){
+				console.log("Falhou")
+			});
 		}
 		
 	}

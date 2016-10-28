@@ -132,8 +132,10 @@ function Usuario() {
 
 
 	// MODIFICA UM USUARIO
-	this.update = function(usuario, res) {
-		connection.acquire(function(err, con) {
+	this.update = function(usuario,req, res) {
+		var sess = req.session;
+		if (usuario.id!=sess.idUser) {
+			connection.acquire(function(err, con) {
 			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
 				if (err) {
@@ -147,10 +149,20 @@ function Usuario() {
 				}
 			});
 		});
+		}
+		else{
+			res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+		}
+		
 	};
 
 	// DELETA UM USUARIO
-	this.delete = function(id, res) {
+	this.delete = function(id,req, res) {
+		var sess = req.session;
+		if (id!=sess.idUser) {
 		connection.acquire(function(err, con) {
 			con.query('UPDATE usuario SET data_exclusao = NOW() WHERE id = ?', [id], function(err, result) {
 				con.release();
@@ -165,6 +177,12 @@ function Usuario() {
 				}
 			});
 		});
+	}else{
+		res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+	}
 	};
 
 	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN
@@ -232,7 +250,7 @@ function Usuario() {
 					con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 					});
 				};
-				con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
+				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
 
 					var string = JSON.stringify(result);
 					var obj = string;
@@ -243,7 +261,8 @@ function Usuario() {
 					else if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
 						
 						sess.nome=result[0].nome;
-						sess.id=result[0].id;
+						sess.idUser=result[0].id;
+						sess.perfil=result[0].perfil;
 						sess.token=result[0].token_web;
 						res.redirect("/portal");
 					}
