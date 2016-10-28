@@ -95,10 +95,18 @@ app.get('/pcligado', function(req, res) {
 
 });
 app.post('/desligapc', function(req, res) {
-     macDesliga.push({
+    var repetido=false
+    for (var i = macDesliga.length - 1; i >= 0; i--) {
+        if (macDesliga[i].mac==req.body.mac) {
+            repetido=true
+        }
+    };
+    if (!repetido) {
+        macDesliga.push({
             mac: req.body.mac
         });
-    console.log(macDesliga);
+    }
+    
     res.send(macDesliga);
 
 });

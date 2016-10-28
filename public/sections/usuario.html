@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
+		<link rel="stylesheet" type="text/css" href="/css/library/data-tables.min.css"> <!-- CSS DATATABLES -->
 	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
 	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
@@ -48,7 +49,7 @@
 				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 					Novo Usuário
 				</button>
-				<table class="table-striped">
+				<table class="table-striped" datatable="ng" dt-options="dtOptions">
 					<thead>
 						<tr>
 							<th>Nome</th>					
@@ -80,7 +81,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Novo Usuário</h4>
+						<h4 class="modal-title" id="myModalLabel">{{titulo}}</h4>
 					</div>
 					<div class="modal-body">
 						<form>
@@ -144,12 +145,12 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Novo Usuário</h4>
+						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
 					</div>
 					<div class="modal-body">
-						<p>Tem certeza que deseja excluir o usuario {{usuarioExclusao.nome}}?</p>
-						<button ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
-						<button data-toggle="modal" data-target="#modalExcluir">Não</button>
+						<p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
+						<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
+						<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalExcluir">Não</button>
 					</div>
 					<div class="modal-footer">
 					</div>
