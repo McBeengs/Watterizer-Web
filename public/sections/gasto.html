@@ -46,9 +46,11 @@
 		<div id="content-portal" class="container-fluid">
 			<p id="conexaoCaiu">Não Medindo no Momento<p>
 				<div id="mask">
+				<button ng-click="createChart()">Iniciar Gráficos</button>
 					<canvas id="line" class="chart chart-line" chart-data="chart.data"
-					chart-labels="chart.labels" chart-series="series" chart-options="chart.options"
-					chart-dataset-override="chart.datasetOverride" chart-click="chart.onClick" />
+					chart-labels="chart.labels" chart-series="chart.series" chart-options="chart.options"
+					chart-dataset-override="chart.datasetOverride" chart-click="chart.onClick">
+					</canvas>
 				</div>
 			</div>
 			<!-- RODAPÉ -->

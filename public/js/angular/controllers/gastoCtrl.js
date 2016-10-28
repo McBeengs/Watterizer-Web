@@ -1,10 +1,13 @@
 // CONTROLLER DE GASTOS
 app.requires.push('chart.js');
-app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
-	setTimeout(function() {
+app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $timeout) {
+	$timeout(function() {
 		var socket = io.connect('localhost:1515');
 		$http.get("/dados/gasto/hoje")
 		.then(function (response) {
+			$rootScope.gastos = response.data;
+		}, 100);
+		$scope.createChart = function () {
 			$scope.prepareChart = {};
 	    	$scope.prepareChart.series = ['Hoje', 'Semana Passada'];
 	    	$scope.prepareChart.data = [];
@@ -28,7 +31,6 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 					]
 				}
 			};
-			$scope.gastos = response.data;
 			var j = 0;
 			for (var i = $scope.gastos.length - 41; i <= $scope.gastos.length - 1; i++) {
 		    	$scope.prepareChart.data.push(Number($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1)));
@@ -46,7 +48,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 				data=["1':'1","2':'2","3':'3","4':'4","5':'5","6':'2","7':'3","8':'4","9':'1","10':'2","11':'3","12':'4"];
 				if (data==null) {
 					console.log('null');
-					data=[]
+					data=[];
 				}
 				for (var i = 0; i <= data.length - 1; i++) {
 		    		$scope.prepareChart.data.push(Number(data[i].substr(data[i].lastIndexOf("\'")+1)));
@@ -65,21 +67,20 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval) {
 	    	$scope.chart.labels = $scope.prepareChart.labels;
 	    	$scope.chart.datasetOverride = $scope.prepareChart.datasetOverride;
 	    	$scope.chart.options = $scope.prepareChart.options;
-	    	$scope.chart.data = [];
-	    	$scope.chart.data.push($scope.prepareChart.data);
-	    	$scope.chart.data.push($scope.prepareChart.data);
+	    	$scope.chart.data = [$scope.prepareChart.data, $scope.prepareChart.data];
+	    	console.log($scope.chart.data)
 	    	$interval(function () {
-	    		var random = (Math.floor((Math.random() * 10)));
+	    		var random = (Math.floor((Math.random() * 1000)));
+	    		var random2 = (Math.floor((Math.random() * 1000)));
 	    		$scope.chart.data[0].push(random);
-	    		$scope.chart.data[1].push(random+2);
+	    		// $scope.chart.data[1].push(random2);
 	    		$scope.chart.labels.push(j);
 	    		$scope.chart.data[0].shift();
-	    		$scope.chart.data[1].shift();
+	    		// $scope.chart.data[1].shift();
 	    		$scope.chart.labels.shift();
 	    		j++;
-	    	}, 1000);
-	    	console.log($scope.chart.data)
-		});
+	    	}, 5000);
+		};
 	}, 100);
 
     // $scope.update = function() {

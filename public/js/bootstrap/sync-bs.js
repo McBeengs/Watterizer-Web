@@ -13,7 +13,28 @@ function adjusts() {
 		
 
 	} else if (screenW >= 768) { // SOMENTE PARA TELAS PEQUENAS (TABLETS)
+		
+
+	} else if (screenW <  768) { // SOMENTE PARA TELAS MUITO PEQUENAS (CELULAR)
+		secsPortalDivs.css({
+			"border":"none"
+		});
+		
+		secsPortal.css({
+			"margin-top":"20px"
+		});
+
 		// title.css({
+		// 	"font-size":"28px",
+		// 	"margin-left":"7%"
+		// });
+	}
+
+	if (screenW >= 768) { // PARA TELAS PEQUENAS OU MAIORES
+	// footer.css({
+	// 	"top":$(document).height() - 140
+	// });
+	// title.css({
 		// 	"font-size":"28px"
 		// });
 
@@ -40,33 +61,13 @@ function adjusts() {
 		$("#sec-computador").css({
 			"border-left": "5px solid rgb(45,45,45)"
 		});
-
-	} else if (screenW <  768) { // SOMENTE PARA TELAS MUITO PEQUENAS (CELULAR)
-		secsPortalDivs.css({
-			"border":"none"
-		});
-		
-		secsPortal.css({
-			"margin-top":"20px"
-		});
-
-		// title.css({
-		// 	"font-size":"28px",
-		// 	"margin-left":"7%"
-		// });
+	} else {
+	// footer.css({
+	// 	"top":$(document).height() - 60
+	// });
 	}
 };
 
 adjusts();
 
-$(window).resize(function (){adjusts()});
-
-if (screenW >= 768) { // PARA TELAS PEQUENAS OU MAIORES
-	// footer.css({
-	// 	"top":$(document).height() - 140
-	// });
-} else {
-	// footer.css({
-	// 	"top":$(document).height() - 60
-	// });
-}
+$(window).resize(function () {adjusts();});
