@@ -1,5 +1,5 @@
 // CONTROLLER DE GASTOS
-app.requires.push('chart.js');
+app.requires.push('nvd3');
 app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $timeout) {
 	$timeout(function() {
 		var socket = io.connect('localhost:1515');
@@ -8,113 +8,95 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			$rootScope.gastos = response.data;
 		}, 100);
 		$scope.createChart = function () {
-			$scope.prepareChart = {};
-	    	$scope.prepareChart.series = ['Hoje', 'Semana Passada'];
-	    	$scope.prepareChart.data = [];
-	    	$scope.prepareChart.labels = [];
-	    	$scope.prepareChart.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-	    	$scope.prepareChart.options = {
-				scales: {
-					yAxes: [
-						{
-							id: 'y-axis-1',
-							type: 'linear',
-							display: true,
-							position: 'left'
+			$scope.chart = {};
+			$scope.options = {
+				chart: {
+					type: 'lineChart',
+					height: 450,
+					margin : {
+						top: 20,
+						right: 20,
+						bottom: 40,
+						left: 55
+					},
+					x: function(d){ return d.x; },
+					y: function(d){ return d.y; },
+					useInteractiveGuideline: true,
+					dispatch: {
+						stateChange: function(e){ console.log("stateChange"); },
+						changeState: function(e){ console.log("changeState"); },
+						tooltipShow: function(e){ console.log("tooltipShow"); },
+						tooltipHide: function(e){ console.log("tooltipHide"); }
+					},
+					xAxis: {
+						axisLabel: 'Time (ms)'
+					},
+					yAxis: {
+						axisLabel: 'Voltage (v)',
+						tickFormat: function(d){
+							return d3.format('.02f')(d);
 						},
-						{
-							id: 'y-axis-2',
-							type: 'linear',
-							display: true,
-							position: 'right'
-						}
-					]
+						axisLabelDistance: -10
+					},
+					callback: function(chart){
+						console.log("!!! lineChart callback !!!");
+					}
+				},
+				title: {
+					enable: true,
+					text: 'Title for Line Chart'
+				},
+				subtitle: {
+					enable: true,
+					text: 'Subtitle for simple line chart. Lorem ipsum dolor sit amet, at eam blandit sadipscing, vim adhuc sanctus disputando ex, cu usu affert alienum urbanitas.',
+					css: {
+						'text-align': 'center',
+						'margin': '10px 13px 0px 7px'
+					}
+				},
+				caption: {
+					enable: true,
+					html: '<b>Figure 1.</b> Lorem ipsum dolor sit amet, at eam blandit sadipscing, <span style="text-decoration: underline;">vim adhuc sanctus disputando ex</span>, cu usu affert alienum urbanitas. <i>Cum in purto erat, mea ne nominavi persecuti reformidans.</i> Docendi blandit abhorreant ea has, minim tantas alterum pro eu. <span style="color: darkred;">Exerci graeci ad vix, elit tacimates ea duo</span>. Id mel eruditi fuisset. Stet vidit patrioque in pro, eum ex veri verterem abhorreant, id unum oportere intellegam nec<sup>[1, <a href="https://github.com/krispo/angular-nvd3" target="_blank">2</a>, 3]</sup>.',
+					css: {
+						'text-align': 'justify',
+						'margin': '10px 13px 0px 7px'
+					}
 				}
 			};
-			var j = 0;
-			for (var i = $scope.gastos.length - 41; i <= $scope.gastos.length - 1; i++) {
-		    	$scope.prepareChart.data.push(Number($scope.gastos[i].substr($scope.gastos[i].lastIndexOf("\'")+1)));
-		    	// if(i % 5 == 0){
-		      		$scope.prepareChart.labels.push(j);
-		      	// } else {
-		      		// $scope.prepareChart.labels.push(" ");
-		      	// }
-		      	j++;
-			}
-	      	j++;
+			$scope.data = sinAndCos();
 
-			socket.emit("load",2);
-			socket.on('toClientLoad', function (data) {
-				data=["1':'1","2':'2","3':'3","4':'4","5':'5","6':'2","7':'3","8':'4","9':'1","10':'2","11':'3","12':'4"];
-				if (data==null) {
-					console.log('null');
-					data=[];
-				}
-				for (var i = 0; i <= data.length - 1; i++) {
-		    		$scope.prepareChart.data.push(Number(data[i].substr(data[i].lastIndexOf("\'")+1)));
-		    		// if(i % 5 == 0){
-		      			$scope.prepareChart.labels.push(j);
-		      		// } else {
-		      			// $scope.prepareChart.labels.push(" ");
-		      		// }
-	    			j++;
-				}
-				$scope.prepareChart.data.splice(0, $scope.prepareChart.data.length - 41);
-				$scope.prepareChart.labels.splice(0, $scope.prepareChart.labels.length - 41);
-			});
-			$scope.chart = {};
-	    	$scope.chart.series = $scope.prepareChart.series;
-	    	$scope.chart.labels = $scope.prepareChart.labels;
-	    	$scope.chart.datasetOverride = $scope.prepareChart.datasetOverride;
-	    	$scope.chart.options = $scope.prepareChart.options;
-	    	$scope.chart.data = [$scope.prepareChart.data, $scope.prepareChart.data];
-	    	console.log($scope.chart.data)
-	    	$interval(function () {
-	    		var random = (Math.floor((Math.random() * 1000)));
-	    		var random2 = (Math.floor((Math.random() * 1000)));
-	    		$scope.chart.data[0].push(random);
-	    		// $scope.chart.data[1].push(random2);
-	    		$scope.chart.labels.push(j);
-	    		$scope.chart.data[0].shift();
-	    		// $scope.chart.data[1].shift();
-	    		$scope.chart.labels.shift();
-	    		j++;
-	    	}, 5000);
-		};
-	}, 100);
+			/*Random Data Generator */
+			function sinAndCos() {
+				var sin = [],sin2 = [],
+				cos = [];
 
-    // $scope.update = function() {
-    //   var random = (Math.floor((Math.random() * 10) + 1));
-    //   $scope.graph.data.push(random);
-    //   $scope.graph.labels.push($scope.i++);
-    // }
-    // $interval($scope.update, 2000);
-	// $scope.labels = ["January", "February", "March", "April", "May", "June", "July", "August", "September"];
-	// $scope.series = ['Series A', 'Series B'];
-	// $scope.data = [
-	// 	[65, 59, 80, 81, 56, 55, 40],
-	// 	[28, 48, 40, 19, 86, 27, 90]
-	// ];
-	// $scope.onClick = function (points, evt) {
-	// 	console.log(points, evt);
-	// };
-	// $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-	// $scope.options = {
-	// 	scales: {
-	// 		yAxes: [
-	// 			{
-	// 				id: 'y-axis-1',
-	// 				type: 'linear',
-	// 				display: true,
-	// 				position: 'left'
-	// 			},
-	// 			{
-	// 				id: 'y-axis-2',
-	// 				type: 'linear',
-	// 				display: true,
-	// 				position: 'right'
-	// 			}
-	// 		]
-	// 	}
-	// };
+            //Data is represented as an array of {x,y} pairs.
+            for (var i = 0; i < 100; i++) {
+            	sin.push({x: i, y: Math.sin(i/10)});
+            	sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
+            	cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
+            }
+
+            //Line chart data should be sent as an array of series objects.
+            return [
+            {
+                    values: sin,      //values - represents the array of {x,y} data points
+                    key: 'Sine Wave', //key  - the name of the series.
+                    color: '#ff7f0e'  //color - optional: choose your own line color.
+                },
+                {
+                	values: cos,
+                	key: 'Cosine Wave',
+                	color: '#2ca02c'
+                },
+                {
+                	values: sin2,
+                	key: 'Another sine wave',
+                	color: '#7777ff',
+                    area: true      //area - set to true if you want this line to turn into a filled area chart.
+                }
+                ];
+            };
+        };
+    }, 100);
 });
