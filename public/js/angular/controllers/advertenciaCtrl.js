@@ -1,6 +1,6 @@
 // CONTROLLER DE ADVERTENCIAS
 app.requires.push('datatables');
-app.controller('advertenciaCtrl', function($scope, $http,DTOptionsBuilder, DTColumnBuilder) {
+app.controller('advertenciaCtrl', function($scope,$window, $http,DTOptionsBuilder, DTColumnBuilder) {
 	var language = {
 		"sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",

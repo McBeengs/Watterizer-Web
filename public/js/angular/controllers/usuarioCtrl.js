@@ -1,6 +1,6 @@
 // CONTROLLER DE USUARIOS
 app.requires.push('datatables');
-app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumnBuilder) {
+app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, DTColumnBuilder) {
 	var language = {
 		"sEmptyTable": "Nenhum registro encontrado",
     "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -131,7 +131,7 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 			console.log("create");
 			$http.post("/dados/usuario", $scope.usuario)
 			.then(function (response) {
-				console.log($scope.usuario);
+				$window.location.reload();
 			}, function(response){
 				console.log("Falhou")
 			});
@@ -139,6 +139,7 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 		else{
 			$http.put("/dados/usuario", $scope.usuario)
 			.then(function (response) {
+				$window.location.reload();
 			}, function(response){
 				console.log("Falhou")
 			});

@@ -1,12 +1,12 @@
 {
   "name": "webservice",
   "version": "1.0.0",
-  "description": "teste1",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "sdf",
+  "author": "Senairianos",
   "license": "MIT",
   "dependencies": {
     "aes-cross": "^1.0.9",
@@ -15,7 +15,6 @@
     "body-parser": "^1.15.2",
     "chart.js": "^2.3.0",
     "cookie-parser": "^1.4.3",
-    "ejs": "^2.5.1",
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "file-type": "^3.8.0",

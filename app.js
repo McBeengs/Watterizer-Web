@@ -85,7 +85,15 @@ app.post('/pcdesligado', function(req, res) {
 
 });
 app.post('/pcligado', function(req, res) {
-    pcsLigados.push(req.body.mac);
+    var repetido=false
+    for (var i = pcsLigados.length - 1; i >= 0; i--) {
+        if (pcsLigados[i]==req.body.mac) {
+            repetido=true
+        }
+    }
+    if (!repetido) {
+        pcsLigados.push(req.body.mac);
+    }
     console.log(pcsLigados);
     res.send(pcsLigados);
 

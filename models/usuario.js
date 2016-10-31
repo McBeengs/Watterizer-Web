@@ -6,8 +6,6 @@ const aes = require('aes-cross');
 var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 const nodemailer = require('nodemailer');
-var sess;
-var autoUser='';
 // var enc = aes.encText('testTxt',key,init);
 // var dec = aes.decText('testTxt',key,init);
 
@@ -33,7 +31,7 @@ function Usuario() {
 		});
 	};
 
-	this.geraUsuario = function(nome, res) {
+	this.geraUsuario = function(nome,req, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
 				var user = nome.nome.replace(/ /g,"");
@@ -51,7 +49,7 @@ function Usuario() {
 					};
 				};
 				con.release();
-				autoUser=user;
+				req.session.autoUser=user;
 				res.send(user);
 			});
 		});
@@ -73,13 +71,13 @@ function Usuario() {
 	};
 
 	// ADICIONA UM NOVO USUARIO
-	this.create = function(usuario, res) {
-
+	this.create = function(usuario,req, res) {
 		connection.acquire(function(err, con) {
+			var sess=req.session;
 			var senha = randtoken.generate(8);
 			usuario.senha=aes.encText(senha,key,init);
-			if (autoUser!='') {
-				usuario.username=autoUser;
+			if (sess.autoUser!='') {
+				usuario.username=sess.autoUser;
 				con.query('INSERT INTO usuario SET username=?,senha=?,email=?,nome=?,telefone=?,hora_entrada=?,hora_saida=?,hora_intervalo=?,id_perfil=?,id_setor=?', [usuario.username,usuario.senha,usuario.email,usuario.nome,usuario.telefone,usuario.hora_entrada,usuario.hora_saida,usuario.hora_intervalo,usuario.id_perfil,usuario.id_setor], function(err, result) {
 					con.release();
 
@@ -136,7 +134,7 @@ function Usuario() {
 		var sess = req.session;
 		if (usuario.id!=sess.idUser) {
 			connection.acquire(function(err, con) {
-				if (autoUser!='') {
+				if (sess.autoUser!='') {
 				usuario.username=autoUser;
 			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
@@ -220,7 +218,7 @@ function Usuario() {
 	// AUTENTICA AS REQUISIÇÕES DE UM USUARIO
 	this.autenticacao = function(token,req, res) {
 		connection.acquire(function(err, con) {
-			sess=req.session;
+			var sess=req.session;
 			con.query('SELECT * FROM usuario WHERE token_web = ? OR token_desktop = ? AND data_exclusao IS NULL', [token,token], function(err, result) {
 				if(result[0]!=null){
 					sess.aut=true;
@@ -237,7 +235,7 @@ function Usuario() {
 	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
 	this.login = function(login,senha, krypt,req, res) {
 		connection.acquire(function(err, con) {
-			sess = req.session;
+			var sess = req.session;
 			token = randtoken.generate(16);
 			var user = [];		
 			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
