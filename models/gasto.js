@@ -81,10 +81,10 @@ function Gasto() {
 		});
 	};
 
-	// MOSTRA O GASTO DE UM ARDUINO HOJE
+	// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
 	this.getOneHoje = function(id,res) {
 		connection.acquire(function(err, con) {
-			con.query("SELECT ultimo_update, CONVERT(gasto USING utf8) AS gasto FROM gasto INNER JOIN arduino ON(gasto.id_arduino=arduino.id) WHERE data = CURDATE() AND arduino.id = ?",[id], function(err, result) {
+			con.query("SELECT ultimo_update, CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE() AND id_equipamento = ?",[id], function(err, result) {
 				var gastos='';
 				
 				for (var i = 0; i <= result.length - 1; i++) {
