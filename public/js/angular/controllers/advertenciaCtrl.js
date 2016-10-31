@@ -28,8 +28,8 @@ app.controller('advertenciaCtrl', function($scope, $http,DTOptionsBuilder, DTCol
     .withLanguage(language)
     // .withDOM('<"top"<"col-xs-6"i>f>tr<"bottom"<"col-xs-6"l><"col-xs-6"p>>');
 	// LISTA TODAS AS ADVERTENCIAS
-	$scope.showDT = true;
-	setTimeout(function() {
+	var intervalo=setInterval(function () {
+        if ($scope.load) {
 		$http.get("/dados/advertencia")
 		.then(function (response) {
 			// console.log(.token);
@@ -37,5 +37,7 @@ app.controller('advertenciaCtrl', function($scope, $http,DTOptionsBuilder, DTCol
 		}, function(response){
 			console.log("Falhou");
 		})
-	}, 50);
+	clearInterval(intervalo);
+        };
+    },10);
 });

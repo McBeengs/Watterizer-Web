@@ -33,9 +33,9 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 
 
 	// LISTA TODOS OS USUARIOS
-	$scope.showDT = true;
-	setTimeout(function() {
-		$http.get("/dados/usuario")
+	var intervalo=setInterval(function () {
+		if ($scope.load) {
+			$http.get("/dados/usuario")
 		.then(function (response) {
 			console.log(response.data)
 			$scope.usuarios = response.data;
@@ -54,8 +54,11 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 		}, function(response){
 			console.log("Falhou")
 		});
+		clearInterval(intervalo);
+		};
+	},10);
 
-	}, 200);
+
 	
 
 	$scope.editar = function(usuario) {
