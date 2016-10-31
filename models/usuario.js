@@ -136,6 +136,8 @@ function Usuario() {
 		var sess = req.session;
 		if (usuario.id!=sess.idUser) {
 			connection.acquire(function(err, con) {
+				if (autoUser!='') {
+				usuario.username=autoUser;
 			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
 				if (err) {
@@ -148,6 +150,7 @@ function Usuario() {
 					.send('OK');
 				}
 			});
+		}
 		});
 		}
 		else{
