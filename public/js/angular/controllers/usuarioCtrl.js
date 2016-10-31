@@ -55,7 +55,7 @@ app.controller("usuarioCtrl", function($scope, $http, DTOptionsBuilder, DTColumn
 			console.log("Falhou")
 		});
 
-	}, 100);
+	}, 200);
 	
 
 	$scope.editar = function(usuario) {

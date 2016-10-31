@@ -84,7 +84,7 @@
 						<h4 class="modal-title" id="myModalLabel">{{titulo}}</h4>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form  ng-submit="create()">
 							<div class="form-group col-sm-6">
 								<label for="txt-nome">Nome:</label>
 								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome" ng-model="usuario.nome" ng-bind="usuario.nome" required>
@@ -126,12 +126,12 @@
 								</select>
 							</div>
 							<div class="col-sm-5 centered">
-								<input type="submit" value="Cadastrar" class="form-control btn-primary" ng-click="create()">
+								<input type="submit" value="Cadastrar" class="form-control btn-primary">
 							</div>
 						</form>
-						<form>
+						<form  ng-submit="desliga()">
 							<div class="col-sm-5 centered">
-								<input type="submit" value="Desligar" class="form-control btn-primary" ng-click="desliga()">
+								<input type="submit" value="Desligar" class="form-control btn-primary">
 							</div>
 						</form>
 					</div>
