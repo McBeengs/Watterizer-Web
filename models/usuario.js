@@ -60,7 +60,7 @@ function Usuario() {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
 				var isCadastrado=false;
 				for (var i = result.length - 1; i >= 0; i--) {
-					if (result[i].email==email.email) {
+					if (result[i].email==email) {
 						isCadastrado=true;
 					};
 				};

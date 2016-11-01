@@ -380,7 +380,7 @@ module.exports = {
     });
     
     app.post('/emailcheck', function(req, res) {
-        usuario.checaEmailCadastrado(req.body, res);
+        usuario.checaEmailCadastrado(req.body.email, res);
     });
 
     // MODIFICA UM SETOR
