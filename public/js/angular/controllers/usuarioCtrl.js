@@ -3,26 +3,26 @@ app.requires.push('datatables');
 app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, DTColumnBuilder) {
 	var language = {
 		"sEmptyTable": "Nenhum registro encontrado",
-    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-    "sInfoPostFix": "",
-    "sInfoThousands": ".",
-    "sLengthMenu": "_MENU_ resultados por página",
-    "sLoadingRecords": "Carregando...",
-    "sProcessing": "Processando...",
-    "sZeroRecords": "Nenhum registro encontrado",
-    "sSearch": "Pesquisar",
-    "oPaginate": {
-        "sNext": "Próximo",
-        "sPrevious": "Anterior",
-        "sFirst": "Primeiro",
-        "sLast": "Último"
-    },
-    "oAria": {
-        "sSortAscending": ": Ordenar colunas de forma ascendente",
-        "sSortDescending": ": Ordenar colunas de forma descendente"
-    }
+		"sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+		"sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+		"sInfoFiltered": "(Filtrados de _MAX_ registros)",
+		"sInfoPostFix": "",
+		"sInfoThousands": ".",
+		"sLengthMenu": "_MENU_ resultados por página",
+		"sLoadingRecords": "Carregando...",
+		"sProcessing": "Processando...",
+		"sZeroRecords": "Nenhum registro encontrado",
+		"sSearch": "Pesquisar",
+		"oPaginate": {
+			"sNext": "Próximo",
+			"sPrevious": "Anterior",
+			"sFirst": "Primeiro",
+			"sLast": "Último"
+		},
+		"oAria": {
+			"sSortAscending": ": Ordenar colunas de forma ascendente",
+			"sSortDescending": ": Ordenar colunas de forma descendente"
+		}
 	}
 	$scope.dtOptions = DTOptionsBuilder.newOptions()
 	.withLanguage(language)
@@ -36,25 +36,25 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 	var intervalo=setInterval(function () {
 		if ($scope.load) {
 			$http.get("/dados/usuario")
-		.then(function (response) {
-			console.log(response.data)
-			$scope.usuarios = response.data;
-		}, function(response){
-			console.log("Falhou")
-		});
-		$http.get("/setor/arduino")
-		.then(function (response) {
-			$scope.setores = response.data;
-		}, function(response){
-			console.log("Falhou")
-		});
-		$http.get("/dados/perfil")
-		.then(function (response) {
-			$scope.perfis = response.data;
-		}, function(response){
-			console.log("Falhou")
-		});
-		clearInterval(intervalo);
+			.then(function (response) {
+				console.log(response.data)
+				$scope.usuarios = response.data;
+			}, function(response){
+				console.log("Falhou")
+			});
+			$http.get("/setor/arduino")
+			.then(function (response) {
+				$scope.setores = response.data;
+			}, function(response){
+				console.log("Falhou")
+			});
+			$http.get("/dados/perfil")
+			.then(function (response) {
+				$scope.perfis = response.data;
+			}, function(response){
+				console.log("Falhou")
+			});
+			clearInterval(intervalo);
 		};
 	},10);
 
@@ -109,6 +109,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		$scope.usuarioExclusao={};
 		$http.delete("/dados/usuario/"+id, $scope.usuario)
 		.then(function (response) {
+			$window.location.reload();
 		}, function(response){
 			console.log("Falhou")
 		});
@@ -127,23 +128,34 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		}
 	}
 	$scope.create = function() {
-		if ($scope.usuario.id==undefined) {
-			console.log("create");
-			$http.post("/dados/usuario", $scope.usuario)
-			.then(function (response) {
-				$window.location.reload();
-			}, function(response){
-				console.log("Falhou")
-			});
-		}
-		else{
-			$http.put("/dados/usuario", $scope.usuario)
-			.then(function (response) {
-				$window.location.reload();
-			}, function(response){
-				console.log("Falhou")
-			});
-		}
+		$http.post("/emailCheck", $scope.usuario)
+		.then(function (response) {
+			if (response.data == false) {
+				if ($scope.usuario.id==undefined) {
+					console.log("create");
+					$http.post("/dados/usuario", $scope.usuario)
+					.then(function (response) {
+						$window.location.reload();
+					}, function(response){
+						console.log("Falhou")
+					});
+				}
+				else{
+					$http.put("/dados/usuario", $scope.usuario)
+					.then(function (response) {
+						$window.location.reload();
+					}, function(response){
+						console.log("Falhou")
+					});
+				}
+			}
+			else{
+				alert("Vai rolar não parça")
+			}
+			
+		}, function(response){
+			console.log("Falhou")
+		});
 		
 	}
 });

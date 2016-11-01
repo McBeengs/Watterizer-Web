@@ -71,16 +71,16 @@ io.sockets.on('connection', function (socket) {
 var macDesliga=[];
 var pcsLigados=[];
 app.post('/desligaconf', function(req, res) {
+    console.log("pcs a desligar"+macDesliga);
     var index = macDesliga.indexOf(req.body.mac);
     macDesliga.splice(index, 1);
-    console.log(macDesliga);
     res.send(macDesliga);
 
 });
 app.post('/pcdesligado', function(req, res) {
     var index = macDesliga.indexOf(req.body.mac);
     pcsLigados.splice(index, 1);
-    console.log(pcsLigados);
+    console.log("pc desligado pcs ligados: "+pcsLigados);
     res.send(macDesliga);
 
 });
@@ -94,11 +94,12 @@ app.post('/pcligado', function(req, res) {
     if (!repetido) {
         pcsLigados.push(req.body.mac);
     }
-    console.log(pcsLigados);
+    console.log("pcs ligados post: "+pcsLigados);
     res.send(pcsLigados);
 
 });
 app.get('/pcligado', function(req, res) {
+    console.log("Get pcs ligados "+pcsLigados);
     res.send(pcsLigados);
 
 });
@@ -114,7 +115,7 @@ app.post('/desligapc', function(req, res) {
             mac: req.body.mac
         });
     }
-    
+    console.log(macDesliga);
     res.send(macDesliga);
 
 });
@@ -129,8 +130,12 @@ net.createServer(function(sock) {
     // SE ALGUM DADO FOR RECEBIDO
     sock.on('data', function(data) {
         var encodedString = String.fromCharCode.apply(null, data),
-        data = decodeURIComponent(escape(encodedString));               
-        var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+        data = decodeURIComponent(escape(encodedString));
+        if (data.trim().localeCompare("test")==0) {
+        sock.write(data);
+     }
+     else{               
+     var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
@@ -161,7 +166,7 @@ net.createServer(function(sock) {
 
         io.sockets.emit('toClient', { array: arrayDadosArduino[idEquipamento], arduino: idEquipamento });
         sock.write(data);
-
+}
         
 
     });
