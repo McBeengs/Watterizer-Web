@@ -239,9 +239,13 @@ module.exports = {
         gasto.getOne(req.params.id, res);
     });
     
-    // MOSTRA O GASTO DE UM ARDUINO HOJE
+    // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
     app.get(prefixoDados+'/gasto/hoje/:id/', function(req, res) {
         gasto.getOneHoje(req.params.id, res);
+    });
+     // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
+    app.get(prefixoDados+'/gasto/arduino/:id/', function(req, res) {
+        gasto.getOneHojeArduino(req.params.id, res);
     });
 
     // MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA
