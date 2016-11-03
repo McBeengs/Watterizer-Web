@@ -26,6 +26,14 @@ function Equipamento() {
 			});
 		});
 	};
+	this.checkNovo = function(res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM equipamento WHERE id_arduino IS NULL', function(err, result) {
+				con.release();
+				res.send(result);
+			});
+		});
+	};
 	this.checkArduino = function(mac, res) {
 		connection.acquire(function(err, con) {
 			var idArduino=0;
@@ -57,8 +65,7 @@ function Equipamento() {
 								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 							});
 						} else {
-							res.status(HttpStatus.CREATED)
-							.send('CREATED');
+							res.send(result.insertId)
 						}
 					});
 				}
@@ -71,8 +78,8 @@ function Equipamento() {
 								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 							});
 						} else {
-							res.status(HttpStatus.OK)
-							.send('UPDATED');
+							console.log(result);
+							res.send(result.insertId)
 						}
 					});
 				}

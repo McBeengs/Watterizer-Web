@@ -7,7 +7,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const net = require('net');
 const gasto = require('./models/gasto');
-// var helmet = require('helmet');
+var helmet = require('helmet');
 var sess;
 
 // INICIA O EXPRESS E PARSER JSON
@@ -17,7 +17,7 @@ app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'ssshhhhh',name : 'sessionId',resave:true,saveUninitialized:false}));
 
-// app.use(helmet());
+app.use(helmet());
 
 // POSTCSS
 const postcss = require('postcss');
@@ -163,8 +163,7 @@ net.createServer(function(sock) {
                 arrayDadosArduino[idEquipamento] = new Array(0);
             }
         };
-
-        io.sockets.emit('toClient', { array: arrayDadosArduino[idEquipamento], arduino: idEquipamento });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: idEquipamento });
         sock.write(data);
 }
         

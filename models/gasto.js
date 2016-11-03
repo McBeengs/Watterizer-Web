@@ -245,7 +245,7 @@ function Gasto() {
 	// ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
 	this.intervalo = function(data,idEquipamento, res) {
 		connection.acquire(function(err, con) {
-			
+			var segundos;
 			con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
 
 				if (JSON.stringify(result)=='[]') {
@@ -255,7 +255,7 @@ function Gasto() {
 						var gastos='';
 						var intervalo = result[0].intervalo;
 						intervalo = intervalo.split(':'); // split it at the colons
-						var segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
+						segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
 
 						if (segundos>1) {
 							gastos+=result[0].gasto+','
@@ -283,8 +283,7 @@ function Gasto() {
 							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 						});
 					} else {
-						res.status(HttpStatus.CREATED)
-						.send('ok');
+						return segundos;
 					}
 				}
 				

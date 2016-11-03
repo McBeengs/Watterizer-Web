@@ -192,6 +192,9 @@ module.exports = {
         }
         
     });
+    app.get('/equipamentonew', function(req, res) {
+      equipamento.checkNovo(res);
+    });
     app.post(prefixoDados+'/equipamentocheckarduino', function(req, res) {
         equipamento.checkArduino(req.body.mac,res);
     });
