@@ -2,18 +2,26 @@
 app.requires.push('nvd3');
 app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $timeout) {
 	$timeout(function() {
-		$http.get("/dados/gasto/hoje")
+		$http.get("/setor/arduino")
 		.then(function (response) {
-			$rootScope.gastos = [];
-			for (var i = 0; i <= response.data.length - 1; i++) {
-				$rootScope.gastos.push({x: i, y: Number(response.data[i].substr(response.data[i].lastIndexOf("\'")+1))});
-			}
-			$rootScope.i = i;
-			$scope.getRecentData();
-		}, 100);
+			$scope.setores = response.data;
+			console.log($scope.setores);
+		});
 
+		$scope.getDataBase = function (arduino) {
+			$http.get("/dados/gasto/hoje/"+$scope.arduinoSel)
+			.then(function (response) {
+				$rootScope.gastos = [];
+				for (var i = 0; i <= response.data.length - 1; i++) {
+					$rootScope.gastos.push({x: i, y: Number(response.data[i].substr(response.data[i].lastIndexOf("\'")+1))});
+				}
+				$rootScope.i = i;
+				$scope.getRecentData();
+			});	
+		}
+
+		var socket = io.connect('localhost:1515');
 		$scope.getRecentData = function () {
-			var socket = io.connect('localhost:1515');
 			socket.emit("load",2);
 			socket.on('toClientLoad', function (data) {
 				if (data==null) {
@@ -24,15 +32,27 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 					$scope.gastos.push({x: $rootScope.i, y: Number(data[j].substr(data[j].lastIndexOf("\'")+1))});
 					$rootScope.i++;
 				}
-				$timeout(function(argument) {
+				$timeout(function() {
 					$scope.createChart($scope.gastos);
-				},1000);
+				}, 1000);
 			});
-			$interval(function(){
-				$scope.gastos.push({x: $rootScope.i, y: 200});
+			// $interval(function(){
+			// 	$scope.gastos.push({x: $rootScope.i, y: 200});
+			// 	$scope.createChart($scope.gastos);
+			// 	$rootScope.i++;
+			// }, 1000);
+		}
+
+		socket.on('toClient', function (data) {
+			if (data.arduino == arduinoSel) {
+				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				$scope.createChart($scope.gastos);
 				$rootScope.i++;
-			}, 1000);
+			}
+		}
+
+		$scope.stopChart = function () {
+
 		}
 
 		$scope.createChart = function (data) {
@@ -80,7 +100,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				},
 				subtitle: {
 					enable: true,
-					html: 'Gráfico de consumo de energia elétrica referente a: <br> <b>Arduino:</b> <b>Dia:</b> ',
+					html: "<p>Gráfico de consumo de energia elétrica referente a:<p><br> <form class='form-inline'><div class='form-group'><label><b>Setor:</b></label><select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'><option>-- Selecione um Setor --</option></select></div><div class='form-group'><label><b>Arduíno:</b></label><select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'><option>-- Selecione um Arduino --</option></select></div></form>",
 					css: {
 						'text-align': 'center',
 						'margin': '10px 13px 0px 7px',
@@ -102,7 +122,11 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				// var sin = [],sin2 = [],
 				// cos = [];
 				var limit = 40;
-				data.splice(0, data.length - limit);
+				if(data!=null){
+					data.splice(0, data.length - limit);
+				} else {
+					data = [{x:0, y:0}];
+				}
 	            // //Data is represented as an array of {x,y} pairs.
 	            // for (var i = 0; i < 41; i++) {
 	            // 	sin.push({x: i, y: Math.sin(i/10)});

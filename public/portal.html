@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="zxx" ng-app="watterizerApp">
 <head>
 	<meta charset="UTF-8">
 	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
@@ -9,8 +9,12 @@
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
+	<script src="/js/angular/controllers/homeCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
-<body>
+<body ng-controller="homeCtrl">
 	<div class="container-fluid">
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
@@ -41,9 +45,9 @@
 			<!-- NAVEGAÇÃO PELAS SEÇÕES DO PORTAL -->
 			<div id="sections-portal">
 				<div id="sec-gasto" class="watts-box col-sm-8"><a href="/portal/gastos">Dados de Consumo</a></div>
-				<div id="sec-setor" class="watts-box col-sm-4"><a href="/portal/setores">Setores<label class="badge">15</label></a></div>
-				<div id="sec-usuario" class="watts-box col-sm-4"><a href="/portal/usuarios">Usuários<label class="badge">1278</label></a></div>
-				<div id="sec-advertencia" class="watts-box col-sm-6"><a href="/portal/advertencias">Advertências<label class="badge">5</label></a></div>
+				<div id="sec-setor" class="watts-box col-sm-4"><a href="/portal/setores">Setores<label class="badge">{{dados.setor}}</label></a></div>
+				<div id="sec-usuario" class="watts-box col-sm-4"><a href="/portal/usuarios">Usuários<label class="badge">{{dados.usuario}}</label></a></div>
+				<div id="sec-advertencia" class="watts-box col-sm-6"><a href="/portal/advertencias">Advertências<label class="badge">{{dados.advertencia}}</label></a></div>
 				<div id="sec-computador" class="watts-box col-sm-6"><a href="/portal/computadores">Computadores Ligados<label class="badge">43 </label></a></div>
 			</div>
 		</div>
@@ -51,22 +55,7 @@
 </body>
 
 <!-- IMPORTAÇÕES JAVASCRIPT -->
-<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 <script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS DO BOOTSTRAP -->
 <script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
 <script src="/js/custom/portal.js"></script> <!-- JS DO INDEX -->
-<script type="text/javascript">
-	$("#sections-portal div").click(function () {
-		window.location.href = $(this).find("a").attr("href")
-	});
-	$.ajax({
-	url: "/sessao",
-	success: function(response) {
-		$( "#name").html(response[0]);
-	},
-	error: function(xhr) {
-		
-	}	
-});
-</script>
 </html>
