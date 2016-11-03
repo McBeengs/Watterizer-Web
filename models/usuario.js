@@ -20,6 +20,15 @@ function Usuario() {
 			});
 		});
 	};
+	// CONTA REGISTROS DO BANCO
+	this.contarRegistros = function(res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT COUNT(*) as advertencia,(SELECT COUNT(*) FROM usuario) as usuario,(SELECT COUNT(*) FROM setor) as setor FROM advertencia', function(err, result) {
+				con.release();
+				res.send(result);
+			});
+		});
+	};
 
 	// MOSTRA UM USUARIO
 	this.getOne = function(id, res) {

@@ -151,6 +151,9 @@ module.exports = {
     app.get(prefixoDados+'/arduino/', function(req, res) {
         arduino.listAll(res);
     });
+    app.get(prefixoDados+'/contador/', function(req, res) {
+        usuario.contarRegistros(res);
+    });
 
     // MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
     app.get(prefixoDados+'/arduino/setor/:id/', function(req, res) {
