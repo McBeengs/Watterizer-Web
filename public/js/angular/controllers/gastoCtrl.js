@@ -8,8 +8,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			console.log($scope.setores);
 		});
 
-		$scope.getDataBase = function (arduino) {
-			$http.get("/dados/gasto/hoje/"+$scope.arduinoSel)
+		// $scope.getDataBase = function (arduino) {
+			$http.get("/dados/gasto/hoje/")
 			.then(function (response) {
 				$rootScope.gastos = [];
 				for (var i = 0; i <= response.data.length - 1; i++) {
@@ -18,7 +18,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				$rootScope.i = i;
 				$scope.getRecentData();
 			});	
-		}
+		// }
 
 		var socket = io.connect('localhost:1515');
 		$scope.getRecentData = function () {
@@ -44,12 +44,14 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}
 
 		socket.on('toClient', function (data) {
-			if (data.arduino == arduinoSel) {
+			// if (data.arduino == arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
+				$timeout(function() {
 				$scope.createChart($scope.gastos);
+				}, 1000);
 				$rootScope.i++;
-			}
-		}
+			// }
+		});
 
 		$scope.stopChart = function () {
 
