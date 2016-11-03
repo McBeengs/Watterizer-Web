@@ -5,11 +5,10 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		$http.get("/setor/arduino")
 		.then(function (response) {
 			$scope.setores = response.data;
-			console.log($scope.setores);
 		});
 
-		// $scope.getDataBase = function (arduino) {
-			$http.get("/dados/gasto/hoje/")
+		$scope.startChart = function () {
+			$http.get("/dados/gasto/arduino/"+$scope.arduinoSel)
 			.then(function (response) {
 				$rootScope.gastos = [];
 				for (var i = 0; i <= response.data.length - 1; i++) {
@@ -18,7 +17,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				$rootScope.i = i;
 				$scope.getRecentData();
 			});	
-		// }
+		}
 
 		var socket = io.connect('localhost:1515');
 		$scope.getRecentData = function () {
@@ -34,7 +33,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				}
 				$timeout(function() {
 					$scope.createChart($scope.gastos);
-				}, 1000);
+				}, 500);
 			});
 			// $interval(function(){
 			// 	$scope.gastos.push({x: $rootScope.i, y: 200});
@@ -101,8 +100,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 					}
 				},
 				subtitle: {
-					enable: true,
-					html: "<p>Gráfico de consumo de energia elétrica referente a:<p><br> <form class='form-inline'><div class='form-group'><label><b>Setor:</b></label><select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'><option>-- Selecione um Setor --</option></select></div><div class='form-group'><label><b>Arduíno:</b></label><select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'><option>-- Selecione um Arduino --</option></select></div></form>",
+					enable: false,
+					html: "<p>Gráfico de consumo de energia elétrica referente a:<p><br> <form class='form-inline'><div class='form-group'><label><b>Setor:</b></label><select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'><option  value=''>-- Selecione um Setor --</option></select></div><div class='form-group'><label><b>Arduíno:</b></label><select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'><option  value=''>-- Selecione um Arduino --</option></select></div></form>",
 					css: {
 						'text-align': 'center',
 						'margin': '10px 13px 0px 7px',
