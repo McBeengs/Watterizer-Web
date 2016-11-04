@@ -11,7 +11,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			$http.get("/dados/gasto/arduino/"+$scope.arduinoSel)
 			.then(function (response) {
 				$rootScope.gastos = [];
-				for (var i = 0; i <= response.data.length - 1; i++) {
+				for (var i = 0; i <= response.data.length - 2; i++) {
 					$rootScope.gastos.push({x: i, y: Number(response.data[i].substr(response.data[i].lastIndexOf("\'")+1))});
 				}
 				$rootScope.i = i;
