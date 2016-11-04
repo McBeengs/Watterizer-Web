@@ -7,6 +7,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const net = require('net');
 const gasto = require('./models/gasto');
+const usuario = require('./models/usuario');
 var helmet = require('helmet');
 var sess;
 
@@ -70,6 +71,7 @@ io.sockets.on('connection', function (socket) {
 
 var macDesliga=[];
 var pcsLigados=[];
+//desktop
 app.post('/desligaconf', function(req, res) {
     console.log("pcs a desligar"+macDesliga);
     var index = macDesliga.indexOf(req.body.mac);
@@ -77,13 +79,13 @@ app.post('/desligaconf', function(req, res) {
     res.send(macDesliga);
 
 });
+//desktop
 app.post('/pcdesligado', function(req, res) {
-    var index = macDesliga.indexOf(req.body.mac);
-    pcsLigados.splice(index, 1);
     console.log("pc desligado pcs ligados: "+pcsLigados);
     res.send(macDesliga);
 
 });
+//desktop
 app.post('/pcligado', function(req, res) {
     var repetido=false
     for (var i = pcsLigados.length - 1; i >= 0; i--) {
@@ -94,10 +96,12 @@ app.post('/pcligado', function(req, res) {
     if (!repetido) {
         pcsLigados.push(req.body.mac);
     }
+    io.sockets.emit('pcLigado', pcsLigados);
     console.log("pcs ligados post: "+pcsLigados);
     res.send(pcsLigados);
 
 });
+//web
 app.get('/pcligado', function(req, res) {
     console.log("Get pcs ligados "+pcsLigados);
     res.send(pcsLigados);
@@ -119,8 +123,23 @@ app.post('/desligapc', function(req, res) {
     res.send(macDesliga);
 
 });
+//desktop
 app.get('/desligapc', function(req, res) {
     res.send(macDesliga);
+});
+// DESLOGA UM USUARIO COM BASE EM SEU TOKEN
+app.post('/logout', function(req, res) {
+    usuario.logoutDesktop(req.body.token, res);
+    var index = macDesliga.indexOf(req.body.mac);
+    pcsLigados.splice(index, 1);
+    io.sockets.emit('pcLigado', pcsLigados);
+    req.session.destroy(function(err) {
+    });
+});
+app.get('/logout', function(req, res) {
+    usuario.logoutWeb(req.session.token, res);
+    req.session.destroy(function(err) {
+    });
 });
 
 net.createServer(function(sock) {
@@ -132,10 +151,10 @@ net.createServer(function(sock) {
         var encodedString = String.fromCharCode.apply(null, data),
         data = decodeURIComponent(escape(encodedString));
         if (data.trim().localeCompare("test")==0) {
-        sock.write(data);
-     }
-     else{               
-     var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+            sock.write(data);
+        }
+        else{               
+           var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
@@ -165,10 +184,10 @@ net.createServer(function(sock) {
         };
         io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: idEquipamento });
         sock.write(data);
-}
-        
+    }
 
-    });
+
+});
     // SE A CONEXÃO FOR FECHADA
 
     sock.on('close', function(data) {

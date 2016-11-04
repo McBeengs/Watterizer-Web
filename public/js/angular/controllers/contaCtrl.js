@@ -42,10 +42,17 @@ app.controller('contaCtrl', function($scope, $http,$window) {
 	},5);
 
 $scope.update = function() {
-	$http.put("/dados/usuarioConta", $scope.usuario)
-	.then(function (response) {
-		$window.location.reload();
-	}, function(response){
-		console.log("Falhou")
-	});	}
+	if ($scope.usuario.senha==$scope.usuario.confsenha) {
+		delete  $scope.usuario.confsenha
+		$http.put("/dados/usuarioConta", $scope.usuario)
+		.then(function (response) {
+			$window.location.reload();
+		}, function(response){
+			console.log("Falhou")
+		});
+	}
+	else{
+		alert("Senhas não conferem")
+	}
+}
 })
