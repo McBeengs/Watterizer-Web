@@ -69,11 +69,14 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		$scope.usuario.username=usuario.username;
 		$scope.usuario.email=usuario.email;
 		$scope.usuario.telefone=usuario.telefone;
-		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_entrada+" GMT");
+		date=$scope.usuario.hora_entrada.split(':')
+		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_entrada=date;
-		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_intervalo+" GMT");
+		date=$scope.usuario.hora_intervalo.split(':')
+		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_intervalo=date;
-		date = new Date("Fri, 26 Sep 2014 "+usuario.hora_saida+" GMT");
+		date=$scope.usuario.hora_saida.split(':')
+		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_saida=date;
 		$scope.usuario.id_setor=usuario.id_setor;
 		$scope.usuario.id_perfil=usuario.id_perfil;

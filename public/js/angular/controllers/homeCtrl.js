@@ -1,7 +1,8 @@
 // CONTROLLER DA HOME
 app.controller('homeCtrl', function($scope, $http) {
 	// LISTA TODOS OS SETORES
-	setTimeout(function() {
+	var intervalo=setInterval(function () {
+		if ($scope.load) {
 		$http.get("/dados/contador")
 		.then(function (response) {
 			$scope.dados = response.data[0];
@@ -9,5 +10,7 @@ app.controller('homeCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou")
 		});
+		clearInterval(intervalo);
+	}
 	}, 50);
 });
