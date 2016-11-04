@@ -39,6 +39,16 @@ function Usuario() {
 			});
 		});
 	};
+	// MOSTRA UM USUARIO
+	this.getLogado = function(id, res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM usuario WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
+				con.release();
+				result[0].senha=aes.decText(result[0].senha,key,init);
+				res.send(result);
+			});
+		});
+	};
 
 	this.geraUsuario = function(nome,req, res) {
 		connection.acquire(function(err, con) {
@@ -167,6 +177,31 @@ function Usuario() {
 					});
 		}
 		
+	};
+	// MODIFICA UMA CONTA
+	this.updateConta = function(usuario, res) {
+		usuario.hora_entrada= new Date(usuario.hora_entrada);
+		usuario.hora_intervalo= new Date(usuario.hora_intervalo);
+		usuario.hora_saida= new Date(usuario.hora_saida);
+		usuario.hora_entrada= usuario.hora_entrada.getHours()+":"+usuario.hora_entrada.getMinutes()+":"+usuario.hora_entrada.getSeconds();
+		usuario.hora_intervalo= usuario.hora_intervalo.getHours()+":"+usuario.hora_intervalo.getMinutes()+":"+usuario.hora_intervalo.getSeconds();
+		usuario.hora_saida= usuario.hora_saida.getHours()+":"+usuario.hora_saida.getMinutes()+":"+usuario.hora_saida.getSeconds();
+		usuario.senha = aes.encText(usuario.senha, key,init)
+			connection.acquire(function(err, con) {
+			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
+				con.release();
+				if (err) {
+					console.log(err)
+					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+				} else {
+					res.status(HttpStatus.OK)
+					.send('OK');
+				}
+			});
+		});
 	};
 
 	// DELETA UM USUARIO

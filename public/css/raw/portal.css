@@ -331,6 +331,14 @@
 {
 	background: var(--lighterGray);
 }
+#conta-container{
+	background-color: var(--lighterGray);
+	border-radius: 1%;
+}
+#conta-label{
+	text-align: center;
+	padding-top: 10px;
+}
 
 #usuarios div.panel-collapse img
 {
