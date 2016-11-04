@@ -152,31 +152,7 @@ module.exports = {
     app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
-    app.get(prefixoDados+'/imagem/', function(req, res){
-        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
-            if(err == null) {
-                res.contentType('png')
-                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
-            } else {
-                fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
-                    if(err == null) {
-                        res.contentType('jpeg')
-                        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".jpg");
-                    } else {
-                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
-                            if(err == null) {
-                                res.contentType('gif')
-                                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");
-                            } else {
-                                res.send("404");
-                            }
-                        });
-                    }
-                });
-            }
-        });
-
-});
+ 
 
 /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
