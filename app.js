@@ -191,6 +191,7 @@ net.createServer(function(sock) {
     // SE A CONEXÃO FOR FECHADA
 
     sock.on('close', function(data) {
+        console.log("DESCONECTADO");
         // INFORMA A DESCONEXÃO
         var idEquipamento=0;
         for (var i = 0; i <= arrayIpArduino.length - 1; i++) {
