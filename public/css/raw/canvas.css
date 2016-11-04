@@ -20,11 +20,6 @@
 	
 }
 
-canvas
-{
-	width: 100%;
-}
-
 #canvas-drawer
 {
 	border-bottom: var(--mainYellow) solid 3px;
@@ -33,11 +28,6 @@ canvas
 .canvas-container
 {
 	margin-left: -30px;
-}
-
-.canvas-container canvas
-{
-	width: 100%;
 }
 
 #controles

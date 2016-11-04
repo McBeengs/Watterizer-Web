@@ -11,15 +11,26 @@ var canvas = new fabric.Canvas(
 
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 
-window.addEventListener('resize', resizeCanvas, false);
-resizeCanvas();
+$(document).ready( function(){
+    //Get the canvas &
+    var c = $('#canvas-drawer');
+    var ct = c.get(0).getContext('2d');
+    var container = $(c).parent();
 
-function resizeCanvas() {   
-    $("canvas").css({
-        width:window.innerWidth,
-        height:"450px"
-    });
-}
+    //Run function when browser resizes
+    $(window).resize( respondCanvas );
+
+    function respondCanvas(){ 
+        c.attr('width', $(container).width() ); //max width
+        c.attr('height', $(container).height() ); //max height
+
+        //Call a function to redraw other content (texts, images etc)
+    }
+
+    //Initial call 
+    respondCanvas();
+
+}); 
 
 /* EVENT LISTENERS DO CANVAS */
 
