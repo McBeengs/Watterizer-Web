@@ -84,6 +84,10 @@ module.exports = {
     app.get(prefixoPortal+'/gastos', function(req, res) {
         res.sendFile(__dirname + "/public/sections/gasto.html");
     });
+    // CONFIGURAÇÃO DE CONTA
+    app.get(prefixoPortal+'/configuracoes', function(req, res) {
+        res.sendFile(__dirname + "/public/sections/configuracaoConta.html");
+    });
 
     // ACESSO AOS SETORES
     app.get(prefixoPortal+'/setores', function(req, res) {
@@ -153,6 +157,9 @@ module.exports = {
     });
     app.get(prefixoDados+'/contador/', function(req, res) {
         usuario.contarRegistros(res);
+    });
+    app.get(prefixoDados+'/logado/', function(req, res) {
+        usuario.getLogado(req.session.idUser,res);
     });
 
     // MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
@@ -441,6 +448,10 @@ module.exports = {
     // MODIFICA UM USUARIO
     app.put(prefixoDados+'/usuario/', function(req, res) {
         usuario.update(req.body,req, res);
+    });
+    // MODIFICA UM USUARIO
+    app.put(prefixoDados+'/usuarioConta/', function(req, res) {
+        usuario.updateConta(req.body, res);
     });
 
     // DELETA UM USUARIO
