@@ -19,8 +19,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			});	
 		}
 
-		var socket = io.connect('localhost:1515');
 		$scope.getRecentData = function () {
+			var socket = io.connect('10.0.4.70:1515');
 			socket.emit("load",2);
 			socket.on('toClientLoad', function (data) {
 				if (data==null) {

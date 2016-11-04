@@ -10,7 +10,7 @@ var key = new Buffer("W4tT3R1z3rG5T2e4", "utf-8");
 var init = new Buffer('BaTaTaElEtRiCa15', "utf-8");
 var prefixoDados = "/dados";
 var prefixoPortal = "/portal";
-
+var fs = require('fs');
 // MODELS
 const teste = require('./models/teste');
 const advertencia = require('./models/advertencia');
@@ -78,6 +78,9 @@ module.exports = {
 
     app.get(prefixoPortal+'',function(req,res){
         res.sendFile(__dirname + "/public/portal.html");
+    });
+    app.get(prefixoPortal+'/computadores',function(req,res){
+        res.sendFile(__dirname + "/public/sections/computador.html");
     });
 
     // ACESSO AOS GASTOS
@@ -149,8 +152,33 @@ module.exports = {
     app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
+    app.get(prefixoDados+'/imagem/', function(req, res){
+        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
+            if(err == null) {
+                res.contentType('png')
+                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+            } else {
+                fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
+                    if(err == null) {
+                        res.contentType('jpeg')
+                        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".jpg");
+                    } else {
+                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
+                            if(err == null) {
+                                res.contentType('gif')
+                                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");
+                            } else {
+                                res.send("404");
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
-    /* ARDUINOS */
+});
+
+/* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
     app.get(prefixoDados+'/arduino/', function(req, res) {
         arduino.listAll(res);
@@ -201,7 +229,7 @@ module.exports = {
     });
     app.get('/equipamentonew', function(req, res) {
       equipamento.checkNovo(res);
-    });
+  });
     app.post(prefixoDados+'/equipamentocheckarduino', function(req, res) {
         equipamento.checkArduino(req.body.mac,res);
     });
@@ -251,7 +279,7 @@ module.exports = {
         gasto.getOneHoje(req.params.id, res);
     });
      // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
-    app.get(prefixoDados+'/gasto/arduino/:id/', function(req, res) {
+     app.get(prefixoDados+'/gasto/arduino/:id/', function(req, res) {
         gasto.getOneHojeArduino(req.params.id, res);
     });
 
@@ -470,16 +498,5 @@ module.exports = {
         }
     });
 
-    // DESLOGA UM USUARIO COM BASE EM SEU TOKEN
-    app.post('/logout', function(req, res) {
-        usuario.logoutDesktop(req.body.token, res);
-        req.session.destroy(function(err) {
-        });
-    });
-    app.get('/logout', function(req, res) {
-        usuario.logoutWeb(req.session.token, res);
-        req.session.destroy(function(err) {
-        });
-    });
 }
 };
