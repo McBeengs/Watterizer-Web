@@ -11,7 +11,9 @@
 {
 	display: inline-block;
 }
-
+.alert{
+	display: none;
+}
 #auth img
 {	
 	

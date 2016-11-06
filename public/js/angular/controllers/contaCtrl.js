@@ -39,20 +39,29 @@ app.controller('contaCtrl', function($scope, $http,$window) {
 			});
 			clearInterval(intervalo);
 		};
-	},100);
+	},200);
 
 $scope.update = function() {
 	if ($scope.usuario.senha==$scope.usuario.confsenha) {
 		delete  $scope.usuario.confsenha
 		$http.put("/dados/usuarioConta", $scope.usuario)
 		.then(function (response) {
-			$window.location.reload();
+			$("#sucesso").fadeIn();
+			setTimeout(function() {
+				$("#sucesso").fadeOut();
+			}, 3000);
 		}, function(response){
-			console.log("Falhou")
+			$("#erro").fadeIn();
+			setTimeout(function() {
+				$("#erro").fadeOut();
+			}, 3000);
 		});
 	}
 	else{
-		alert("Senhas não conferem")
+		$("#senhaWarn").fadeIn();
+		setTimeout(function() {
+			$("#senhaWarn").fadeOut();
+		}, 3000);
 	}
 }
 })

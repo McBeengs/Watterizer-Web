@@ -50,7 +50,7 @@
 				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 					Novo Usuário
 				</button>
-				<table class="table-striped" datatable="ng" dt-options="dtOptions">
+				<table class="table-striped" datatable="ng" ng-if="load" dt-options="dtOptions">
 					<thead>
 						<tr>
 							<th>Nome</th>					
@@ -63,16 +63,16 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="usuario in usuarios">
-						<td>{{usuario.nome}}</td>
-						<td>{{usuario.username}}</td>
-						<td>{{usuario.email}}</td>
-						<td>{{usuario.perfil}}</td>
-						<td>{{usuario.telefone}}</td>
-						<td>
-							<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#myModal">Editar</button>
-							<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modalExcluir">Excluir</button>
-						</td>
-					</tr>
+							<td>{{usuario.nome}}</td>
+							<td>{{usuario.username}}</td>
+							<td>{{usuario.email}}</td>
+							<td>{{usuario.perfil}}</td>
+							<td>{{usuario.telefone}}</td>
+							<td>
+								<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#myModal">Editar</button>
+								<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modalExcluir">Excluir</button>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -82,7 +82,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
+						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja sair ?</p>

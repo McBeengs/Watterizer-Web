@@ -46,7 +46,7 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<table class="table-striped" datatable="ng" dt-options="dtOptions">
+			<table class="table-striped" datatable="ng" dt-options="dtOptions" ng-if="load">
 				<thead>
 					<tr>
 						<th>Data</th>
@@ -72,7 +72,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
+						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja sair ?</p>

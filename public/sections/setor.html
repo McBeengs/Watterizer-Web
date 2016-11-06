@@ -77,7 +77,7 @@
 		        </div>
 			</div>
 			<div id="setores" class="panel-group">
-				<div class="panel panel-default" ng-repeat="setor in setores">
+				<div class="panel panel-default" ng-if="load" ng-repeat="setor in setores">
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
@@ -110,7 +110,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
+						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja sair ?</p>
