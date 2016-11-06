@@ -39,7 +39,7 @@ app.controller('contaCtrl', function($scope, $http,$window) {
 			});
 			clearInterval(intervalo);
 		};
-	},5);
+	},100);
 
 $scope.update = function() {
 	if ($scope.usuario.senha==$scope.usuario.confsenha) {

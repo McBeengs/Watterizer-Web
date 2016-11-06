@@ -45,8 +45,16 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-		<div >
-			<div role="document">
+			<div>
+				<div role="document">
+					<div id="upload-container">
+						<img src="/foto.png">
+						<form id="uploadForm" enctype   =  "multipart/form-data" action="/upload" method="post">
+						<input type="file" name="userPhoto" />
+						<input type="submit" value="Enviar Imagem" name="submit">
+						<p id="name" href="#">Usuário: {{usuarioLogado.data[0]}}</p>
+					</form>
+				</div>
 				<div id="conta-container">
 					<div>
 						<h4 id="conta-label">Configurações do Usuário</h4>
@@ -121,43 +129,43 @@
 				</div>
 			</div>
 		</div>
-		</div>
-		<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja sair ?</p>
-						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modalLogout">Não</a>
-					</div>
-					<div class="modal-footer">
-					</div>
+	</div>
+	<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
 				</div>
-			</div>
-		</div>
-		
-		<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
-						<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
-						<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalExcluir">Não</button>
-					</div>
-					<div class="modal-footer">
-					</div>
+				<div class="modal-body">
+					<p>Tem certeza que deseja sair ?</p>
+					<a href="/logout">Sim</span></a>
+					<a href="/logout" data-toggle="modal" data-target="#modalLogout">Não</a>
+				</div>
+				<div class="modal-footer">
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
+				</div>
+				<div class="modal-body">
+					<p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
+					<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
+					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalExcluir">Não</button>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="/js/jquery/jquery-ui.min.js"></script> <!-- JS DO JQUERY UI -->

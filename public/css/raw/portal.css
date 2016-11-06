@@ -24,9 +24,27 @@
 }
 
 #auth img
-{
+{	
+	
 	height: 50px;
 	width: 50px;
+	border-radius: 100%;
+}
+#upload-container
+{
+	margin-left: 45%;
+}
+#upload-container input[type="file"],p
+{	
+	margin: 0 !important;
+	color: white;
+}
+#upload-container img
+{	
+	margin-bottom: 20px;
+	margin-top: 20px;
+	height: 150px;
+	width: 150px;
 	border-radius: 100%;
 }
 
@@ -334,6 +352,7 @@
 #conta-container{
 	background-color: var(--lighterGray);
 	border-radius: 1%;
+	border: solid 1px black;
 }
 #conta-label{
 	text-align: center;

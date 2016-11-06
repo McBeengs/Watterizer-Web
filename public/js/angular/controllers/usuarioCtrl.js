@@ -56,7 +56,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 			});
 			clearInterval(intervalo);
 		};
-	},10);
+	},100);
 
 
 	

@@ -36,7 +36,7 @@ var storage =   multer.diskStorage({
         ext = ext.length>1 ? ext : "." + require('mime').extension(file.mimetype);
         if (ext=='.png'||ext=='.jpg'||ext=='.gif') {
             isvalid=true;
-            callback(null, 'fotoid1'+ext);
+            callback(null, 'fotoid'+req.session.idUser+".png");
         }
         else {
             isvalid=false;
@@ -113,7 +113,7 @@ module.exports = {
                 return res.end("Error uploading file.");
             }
             else if (isvalid) {
-                res.end("File is uploaded");
+                res.redirect("/portal/configuracoes")
             }
             else {
                 res.end("File is invalid");
@@ -163,7 +163,7 @@ module.exports = {
                         res.contentType('jpeg')
                         res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".jpg");
                     } else {
-                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
+                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".gif", function(err, stat) {
                             if(err == null) {
                                 res.contentType('gif')
                                 res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");

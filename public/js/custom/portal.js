@@ -16,6 +16,21 @@
 // 		$( "#name").html(response[0]);
 // 	},
 // 	error: function(xhr) {
-		
+
 // 	}	
 // });
+
+$(window).resize(function () {
+	if ($(window).width()<350) {
+		$("#upload-container").css({
+			"margin":"0"
+		})
+	}
+	else{
+		$("#upload-container").css({
+			"margin-left":"45%"
+		})
+	}
+})
+
+
