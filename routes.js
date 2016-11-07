@@ -157,32 +157,12 @@ module.exports = {
         advertencia.create(req.body, res);
     });
     app.get('/foto.png', function (req, res) {
-        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
-            if(err == null) {
-                res.contentType('png')
-                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
-            } else {
-                fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
-                    if(err == null) {
-                        res.contentType('jpeg')
-                        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".jpg");
-                    } else {
-                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".gif", function(err, stat) {
-                            if(err == null) {
-                                res.contentType('gif')
-                                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");
-                            } else {
-                               res.sendFile(__dirname + "/public/img/avatar-placeholder.gif");
-                           }
-                       });
-                    }
-                });
-            }
-        });
-}); 
+        res.contentType('png')
+        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+    }); 
 
 
-/* ARDUINOS */
+    /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
     app.get(prefixoDados+'/arduino/', function(req, res) {
         arduino.listAll(res);
