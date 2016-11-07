@@ -22,6 +22,7 @@ const setor = require('./models/setor');
 const usuario = require('./models/usuario');
 const canvas = require('./models/canvas');
 const equipamento = require('./models/equipamento');
+const ip = require("ip");
 
 //UPLOAD DE ARQUIVOS
 const multer  =   require('multer');
@@ -147,13 +148,16 @@ module.exports = {
     app.get(prefixoDados+'/advertencia/', function(req, res){
         advertencia.listAll(res);
     });
+    app.get('/ip', function(req, res) {
+        res.send(ip.address());
+    });
 
     // ADICIONA UMA NOVA ADVERTENCIA
     app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
     app.get('/foto.png', function (req, res) {
-    fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
+        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
             if(err == null) {
                 res.contentType('png')
                 res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
@@ -168,9 +172,9 @@ module.exports = {
                                 res.contentType('gif')
                                 res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");
                             } else {
-                                 res.sendFile(__dirname + "/public/img/avatar-placeholder.gif");
-                            }
-                        });
+                               res.sendFile(__dirname + "/public/img/avatar-placeholder.gif");
+                           }
+                       });
                     }
                 });
             }

@@ -2,6 +2,7 @@ const connection = require('../connection');
 const HttpStatus = require('http-status-codes');
 
 function Pergunta() {
+	// LISTA TODAS AS PERGUNTAS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM perguntasecreta', function(err, result) {
@@ -10,6 +11,7 @@ function Pergunta() {
 			});
 		});
 	};
+	// LISTA POR ID
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM perguntasecreta WHERE id = ?', [id], function(err, result) {
@@ -18,6 +20,7 @@ function Pergunta() {
 			});
 		});
 	};
+	// CRIA PERGUNTA
 	this.create = function(pergunta, res) {
 		connection.acquire(function(err, con) {
 			con.query('INSERT INTO perguntasecreta SET ?', pergunta, function(err, result) {
@@ -34,6 +37,7 @@ function Pergunta() {
 			});
 		});
 	};
+	// ATUALIZA PERGUNTA
 	this.update = function(pergunta, res) {
 		connection.acquire(function(err, con) {
 			con.query('UPDATE perguntasecreta SET ? WHERE id = ?', [pergunta, pergunta.id], function(err, result) {
@@ -50,6 +54,7 @@ function Pergunta() {
 			});
 		});
 	};
+	// DELETA PERGUNTA
 	this.delete = function(id, res) {
 		connection.acquire(function(err, con) {
 			con.query('DELETE FROM perguntasecreta WHERE id = ?', [id], function(err, result) {

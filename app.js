@@ -11,13 +11,12 @@ const usuario = require('./models/usuario');
 var helmet = require('helmet');
 var sess;
 
-// INICIA O EXPRESS E PARSER JSON
+// INICIA O EXPRESS, PARSER JSON E SESSÃO
 var app = express();
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'ssshhhhh',name : 'sessionId',resave:true,saveUninitialized:false}));
-
 app.use(helmet());
 
 // POSTCSS
@@ -46,7 +45,7 @@ routes.configure(app);
 var server = app.listen(1515, function() {
 	console.log('Server listening on port ' + server.address().port);
 });
-
+// CAPTURA IP DA MAQUINA
 var ip = require("ip");
 //SERVIDOR NET
 var HOST = ip.address();
@@ -79,6 +78,7 @@ app.post('/desligaconf', function(req, res) {
     res.send(macDesliga);
 
 });
+
 //desktop
 app.post('/pcdesligado', function(req, res) {
     console.log("pc desligado pcs ligados: "+pcsLigados);
