@@ -133,6 +133,8 @@ module.exports = {
                 sess.aut=false;
                 next();
             } else {
+                req.session.destroy(function(err) {
+                });
                 res.end();
             }
         }, 30);

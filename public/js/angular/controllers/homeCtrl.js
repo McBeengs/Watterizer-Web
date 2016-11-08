@@ -1,5 +1,5 @@
 // CONTROLLER DA HOME
-app.controller('homeCtrl', function($scope, $http,$timeout) {
+app.controller('homeCtrl', function($scope,$window, $http,$timeout) {
 	// LISTA TODOS OS SETORES
 	var intervalo=setInterval(function () {
 		if ($scope.load) {
@@ -11,7 +11,14 @@ app.controller('homeCtrl', function($scope, $http,$timeout) {
 			});
 			$http.get("/dados/contador")
 			.then(function (response) {
-				$scope.dados = response.data[0];
+				console.log(response.data[0]);
+				if (response.data[0]!=undefined) {
+					$scope.dados = response.data[0];
+				}
+				else{
+					console.log("reload");
+					$window.location.reload();
+				}
 			}, function(response){
 				console.log("Falhou")
 			});
