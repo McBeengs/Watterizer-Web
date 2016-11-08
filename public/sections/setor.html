@@ -35,7 +35,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#" data-toggle="modal" data-target="#modalLogout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
 						</ul>
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="canvas">
-	        	<canvas id="canvas-drawer"></canvas>
+	        	<canvas id="canvas-drawer" width="1920" height="500"></canvas>
 	        
 		        <div id="controles">
 		            <div id="btns-zoom">
@@ -76,8 +76,8 @@
 		            </ul>
 		        </div>
 			</div>
-			<div id="setores" class="panel-group">
-				<div class="panel panel-default" ng-if="load" ng-repeat="setor in setores">
+			<div id="setores" class="panel-group row">
+				<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="setor in setores">
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
@@ -95,7 +95,7 @@
 									<div id="arduino-{{setor.id}}-{{arduino.id}}" class="panel-collapse collapse">
 										<ul class="list-group">
 											<li class="list-group-item">Localização: <p>{{arduino.localizacao}}</p></li>
-											<li class="list-group-item">Computador Responsável: {{arduino.id_computador_responsavel}}</li>
+											<li class="list-group-item">Computador Responsável: {{arduino.id_computador_responsavel}}</l>
 										</ul>
 									</div>
 								</div>
@@ -105,17 +105,17 @@
 				</div>				
 			</div>
 		</div>
-		<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-label">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
+						<h4 class="modal-title" id="log-out-label">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja sair ?</p>
 						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modalLogout">Não</a>
+						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
 					</div>
 					<div class="modal-footer">
 					</div>

@@ -48,24 +48,27 @@
 		</header>
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
-			<p id="conexaoCaiu">Não Medindo no Momento<p>
-			<div id="mask">
-				<form class='form-inline'>
-					<div class="form-group">
-						<label><b>Setor:</b></label>
-						<select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
-							<option value=''>-- Selecione um Setor --</option>
-						</select>
-					</div> 
-					<div class="form-group">
-						<label><b>Arduíno:</b></label>
-						<select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel' ng-change='startChart()'>
-							<option value=''>-- Selecione um Arduino --</option>
-						</select>
-					</div>
-				</form>
-				<!-- <button ng-click="startChart()">Iniciar Gráfico</button> -->
-				<nvd3 options="chart.options" data="chart.data"></nvd3>
+			<form id="chart-select" class='form-inline'>
+				<div class="form-group">
+					<label><b>Setor:</b></label>
+					<select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
+						<option value=''>-- Selecione --</option>
+					</select>
+				</div> 
+				<div class="form-group">
+					<label><b>Arduíno:</b></label>
+					<select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel' ng-change='startChart()'>
+						<option value=''>-- Selecione --</option>
+					</select>
+				</div>
+			</form>
+			<!-- <button ng-click="startChart()">Iniciar Gráfico</button> -->
+			<div id="container-chart">
+				<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
+			</div>
+			<div id="mask-container" class="col-xs-12">
+				<div id="blur"></div>
+				<div id="mask"><h2>Não Medindo No Momento</h2></div>
 			</div>
 		</div>
 		<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

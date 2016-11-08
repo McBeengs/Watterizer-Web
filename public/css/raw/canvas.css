@@ -15,11 +15,6 @@
 	--sectionsBorder: 10px;
 }
 
-#canvas-holder
-{
-	
-}
-
 #canvas-drawer
 {
 	border-bottom: var(--mainYellow) solid 3px;
@@ -32,7 +27,6 @@
 
 #controles
 {
-	margin-top: 350px;
 	padding: 15px;
 	border: var(--mainYellow) solid 3px;
 	border-radius: var(--defaultBorderRadius);

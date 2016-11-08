@@ -38,7 +38,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#" data-toggle="modal" data-target="#modalLogout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
 						</ul>
 					</div>
 				</div>
@@ -47,7 +47,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="usuarios" >
-				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-usuario">
 					Novo Usuário
 				</button>
 				<table class="table-striped" datatable="ng" ng-if="load" dt-options="dtOptions">
@@ -69,37 +69,37 @@
 							<td>{{usuario.perfil}}</td>
 							<td>{{usuario.telefone}}</td>
 							<td>
-								<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#myModal">Editar</button>
-								<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modalExcluir">Excluir</button>
+								<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#modal-dados-usuario">Editar</button>
+								<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modal-excluir">Excluir</button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-message">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
+						<h4 class="modal-title" id="log-out-message">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja sair ?</p>
 						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modalLogout">Não</a>
+						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
 					</div>
 					<div class="modal-footer">
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="modal-dados-usuario" tabindex="-1" role="dialog" aria-labelledby="user-data-label">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">{{titulo}}</h4>
+						<h4 class="modal-title" id="user-data-label">{{titulo}}</h4>
 					</div>
 					<div class="modal-body">
 						<form  ng-submit="create()">
@@ -158,17 +158,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="modal-excluir" tabindex="-1" role="dialog" aria-labelledby="delete-label">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Excluir Usuário</h4>
+						<h4 class="modal-title" id="delete-label">Excluir Usuário</h4>
 					</div>
 					<div class="modal-body">
 						<p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
-						<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modalExcluir">Sim</button>
-						<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalExcluir">Não</button>
+						<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modal-excluir">Sim</button>
+						<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-excluir">Não</button>
 					</div>
 					<div class="modal-footer">
 					</div>

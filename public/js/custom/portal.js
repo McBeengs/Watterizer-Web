@@ -33,4 +33,32 @@ $(window).resize(function () {
 	}
 })
 
+var mask = $("#mask-container");
+var chart = $("nvd3");
+function resizeMask(chart){
+	$("#mask-container").css({
+		"top":chart.offset().top+50,
+		"left":chart.offset().left
+	});
+}
 
+resizeMask(chart);
+mask.fadeOut();
+
+$(chart).resize(function (){
+	resizeMask(chart);
+});
+
+mask.mouseover(function() {
+	mask.css({
+		"z-index":"-1"
+	});
+	mask.find("h2").fadeOut();
+});
+
+$("#container-chart").mouseout(function() {
+	mask.css({
+		"z-index":"2"
+	});
+	mask.find("h2").fadeIn();
+});
