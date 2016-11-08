@@ -9,4 +9,8 @@ app.run(function ($rootScope,$http) {
 		$("#name").html(response.data[0]);
 		$rootScope.load=true
 	});
+	$http.get("/ip")
+	.then(function (response){
+		$rootScope.ip=response.data
+	});
 });

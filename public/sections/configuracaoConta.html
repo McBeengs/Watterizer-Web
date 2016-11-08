@@ -55,17 +55,6 @@
 							<p id="name" href="#">Usuário: {{usuarioLogado.data[0]}}</p>
 						</form>
 					</div>
-					<div id="alerts">
-						<div class="alert alert-success" id="sucesso">
-							<strong>Sucesso!</strong> Informações atualizadas com sucesso!.
-						</div>
-						<div class="alert alert-warning" id="senhaWarn">
-							<strong>Atenção!</strong> Senhas não conferem.
-						</div>
-						<div class="alert alert-danger" id="erro">
-							<strong>Erro!</strong> Ocorreu um erro inesperado,revise as informações e tente novamente.
-						</div>
-					</div>
 					<div id="conta-container" ng-if="load">
 						<div>
 							<h4 id="conta-label">Configurações do Usuário</h4>
@@ -136,6 +125,17 @@
 							</form>
 						</div>
 						<div class="modal-footer">
+						</div>
+					</div>
+					<div id="alerts">
+						<div class="alert alert-success" id="sucesso">
+							<strong>Sucesso!</strong> Informações atualizadas com sucesso!.
+						</div>
+						<div class="alert alert-warning" id="senhaWarn">
+							<strong>Atenção!</strong> Senhas não conferem.
+						</div>
+						<div class="alert alert-danger" id="erro">
+							<strong>Erro!</strong> Ocorreu um erro inesperado,revise as informações e tente novamente.
 						</div>
 					</div>
 				</div>

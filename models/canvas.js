@@ -2,6 +2,7 @@ const connection = require('../connection');
 const HttpStatus = require('http-status-codes');
 
 function Canvas() {
+	// LISTA TODOS OS Canvas()
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas)', function(err, result) {
@@ -10,6 +11,7 @@ function Canvas() {
 			});
 		});
 	};
+	// LISTA OS CANVAS POR SETOR
 	this.getOne = function(setor, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas) WHERE setor = ?', [setor], function(err, result) {
@@ -18,7 +20,7 @@ function Canvas() {
 			});
 		});
 	};
-
+	// CRIA O CANVAS COM BASE NO SETOR
 	this.create = function(canvas, res) {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;
@@ -49,7 +51,7 @@ function Canvas() {
 			});
 		});
 	};
-
+	// ATUALIZA UM CANVAS BASEADO NO SETOR
 	this.update = function(canvas, res) {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;
@@ -68,6 +70,7 @@ function Canvas() {
 			});
 		});
 	};
+	// APAGA UM CANVAS COM BASE NO SETOR
 	this.delete = function(canvas, res) {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;

@@ -49,7 +49,7 @@ function Usuario() {
 			});
 		});
 	};
-
+	// GERA USUÁRIO AUTOMATICAMENTE
 	this.geraUsuario = function(nome,req, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
@@ -73,7 +73,7 @@ function Usuario() {
 			});
 		});
 	};
-
+	// VERIFICA SE O EMAIL EXISTE NO BANCO DE DADOS
 	this.checaEmailCadastrado = function(email, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
@@ -229,8 +229,7 @@ function Usuario() {
 					});
 	}
 	};
-
-	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN
+	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN WEB
 	this.logoutWeb = function(token, res) {
 		connection.acquire(function(err, con) {
 			if (token != undefined){
@@ -244,6 +243,7 @@ function Usuario() {
 			}
 		});
 	};
+	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN DESKTOP
 	this.logoutDesktop = function(token, res) {
 		connection.acquire(function(err, con) {
 			if (token != undefined){

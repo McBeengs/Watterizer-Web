@@ -2,6 +2,7 @@ const connection = require('../connection');
 const HttpStatus = require('http-status-codes');
 
 function Equipamento() {
+	// LISTA OS EQUIPAMENTOS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM equipamento', function(err, result) {
@@ -10,6 +11,7 @@ function Equipamento() {
 			});
 		});
 	};
+	// LISTA EQUIPAMENTO POR ID
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM equipamento WHERE id = ?', [id], function(err, result) {
@@ -18,6 +20,7 @@ function Equipamento() {
 			});
 		});
 	};
+	// CHECA EQUIPAMENTO COM SETOR E ARDUINO
 	this.check = function(mac, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
@@ -26,6 +29,7 @@ function Equipamento() {
 			});
 		});
 	};
+	// VERIFICA EQUIPAMENTOS SEM ARDUINO
 	this.checkNovo = function(res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM equipamento WHERE id_arduino IS NULL', function(err, result) {
@@ -34,6 +38,7 @@ function Equipamento() {
 			});
 		});
 	};
+	// SELECIONA EQUIPAMENTO COM O MESMO ID ARDUINO
 	this.checkArduino = function(mac, res) {
 		connection.acquire(function(err, con) {
 			var idArduino=0;
@@ -52,6 +57,7 @@ function Equipamento() {
 			
 		});
 	};
+	// CRIA UM EQUIPAMENTO OU ATUALIZA O MESMO
 	this.create = function(equipamento, res) {
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
@@ -88,6 +94,7 @@ function Equipamento() {
 			
 		});
 	};
+	// APENAS ATUALIZA O EQUIPAMENTO
 	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
 			con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
@@ -104,6 +111,7 @@ function Equipamento() {
 			});
 		});
 	};
+	// APAGA UM EQUIPAMENTO COM BASE NO MAC
 	this.delete = function(mac, res) {
 		connection.acquire(function(err, con) {
 			con.query('DELETE FROM equipamento WHERE mac = ?', [mac], function(err, result) {

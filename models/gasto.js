@@ -2,7 +2,7 @@ const connection = require('../connection');
 const HttpStatus = require('http-status-codes');
 
 function Gasto() {
-	// MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
+	// MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS E EQUIPAMENTOS
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
 			con.query("SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto", function(err, result) {
@@ -38,7 +38,7 @@ function Gasto() {
 		});
 	};
 
-	// MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS
+	// MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS E EQUIPAMENTOS
 	this.listHoje = function(res) {
 		connection.acquire(function(err, con) {
 			con.query("SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE();", function(err, result) {
@@ -71,7 +71,7 @@ function Gasto() {
 		});
 	};
 
-	// MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA
+	// MOSTRA O GASTO POR ID
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM gasto WHERE id = ?', [id], function(err, result) {
@@ -81,7 +81,7 @@ function Gasto() {
 		});
 	};
 
-	// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
+	// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE POR EQUIPAMENTO
 	this.getOneHoje = function(id,res) {
 		connection.acquire(function(err, con) {
 			con.query("SELECT ultimo_update, CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE() AND id_equipamento = ?",[id], function(err, result) {
@@ -343,8 +343,7 @@ function Gasto() {
 			});
 });
 };
-
-
+// APAGA UM GASTO
 this.delete = function(id, res) {
 	connection.acquire(function(err, con) {
 		con.query('DELETE FROM gasto WHERE id = ?', [id], function(err, result) {

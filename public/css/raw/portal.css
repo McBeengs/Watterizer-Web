@@ -22,9 +22,6 @@
 {
 	display: inline-block;
 }
-.alert{
-	display: none;
-}
 #auth img
 {	
 	
@@ -351,14 +348,22 @@
 {
 	background: var(--lighterGray);
 }
-#conta-container{
+
+#conta-container
+{
 	background-color: var(--lighterGray);
 	border-radius: 1%;
 	border: solid 1px black;
 }
-#conta-label{
+
+#conta-label
+{
 	text-align: center;
 	padding-top: 10px;
+}
+
+.alert{
+	display: none;
 }
 
 #usuarios div.panel-collapse img

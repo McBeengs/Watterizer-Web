@@ -22,6 +22,7 @@ const setor = require('./models/setor');
 const usuario = require('./models/usuario');
 const canvas = require('./models/canvas');
 const equipamento = require('./models/equipamento');
+const ip = require("ip");
 
 //UPLOAD DE ARQUIVOS
 const multer  =   require('multer');
@@ -147,38 +148,21 @@ module.exports = {
     app.get(prefixoDados+'/advertencia/', function(req, res){
         advertencia.listAll(res);
     });
+    app.get('/ip', function(req, res) {
+        res.send(ip.address());
+    });
 
     // ADICIONA UMA NOVA ADVERTENCIA
     app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
     app.get('/foto.png', function (req, res) {
-    fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".png", function(err, stat) {
-            if(err == null) {
-                res.contentType('png')
-                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
-            } else {
-                fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".jpg", function(err, stat) {
-                    if(err == null) {
-                        res.contentType('jpeg')
-                        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".jpg");
-                    } else {
-                        fs.stat(__dirname + "/img/fotoid"+req.session.idUser+".gif", function(err, stat) {
-                            if(err == null) {
-                                res.contentType('gif')
-                                res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".gif");
-                            } else {
-                                 res.sendFile(__dirname + "/public/img/avatar-placeholder.gif");
-                            }
-                        });
-                    }
-                });
-            }
-        });
-}); 
+        res.contentType('png')
+        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+    }); 
 
 
-/* ARDUINOS */
+    /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
     app.get(prefixoDados+'/arduino/', function(req, res) {
         arduino.listAll(res);

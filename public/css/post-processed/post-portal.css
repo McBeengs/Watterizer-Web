@@ -11,9 +11,6 @@
 {
 	display: inline-block;
 }
-.alert{
-	display: none;
-}
 #auth img
 {	
 	
@@ -349,14 +346,22 @@
 #content-portal div.panel-group div.panel-footer{
 	background: rgb(150,150,150);
 }
-#conta-container{
+
+#conta-container
+{
 	background-color: rgb(150,150,150);
 	border-radius: 1%;
 	border: solid 1px black;
 }
-#conta-label{
+
+#conta-label
+{
 	text-align: center;
 	padding-top: 10px;
+}
+
+.alert{
+	display: none;
 }
 
 #usuarios div.panel-collapse img
