@@ -72,19 +72,30 @@ var macDesliga=[];
 var pcsLigados=[];
 //desktop
 app.post('/desligaconf', function(req, res) {
-    console.log("pcs a desligar"+macDesliga);
-    var index = macDesliga.indexOf(req.body.mac);
-    macDesliga.splice(index, 1);
-    res.send(macDesliga);
+    if (req.body.option!=undefined) {
+        if (req.body.option=="sim") {
+            var index = macDesliga.indexOf(req.body.mac);
+            macDesliga.splice(index, 1);
+            io.sockets.emit('continuaUsando', req.body.mac);
+        }
+        else if (req.body.option=="nao") {
+            var index = pcsLigados.indexOf(req.body.mac);
+            pcsLigados.splice(index, 1);
+            var index = macDesliga.indexOf(req.body.mac);
+            macDesliga.splice(index, 1);
+        }
+    }
+    else{
+        var index = pcsLigados.indexOf(req.body.mac);
+            pcsLigados.splice(index, 1);
+            var index = macDesliga.indexOf(req.body.mac);
+            macDesliga.splice(index, 1);
+    }
+    io.sockets.emit('pcLigado', req.body.mac);
+    res.send(pcsLigados);
 
 });
 
-//desktop
-app.post('/pcdesligado', function(req, res) {
-    console.log("pc desligado pcs ligados: "+pcsLigados);
-    res.send(macDesliga);
-
-});
 //desktop
 app.post('/pcligado', function(req, res) {
     var repetido=false
@@ -96,14 +107,12 @@ app.post('/pcligado', function(req, res) {
     if (!repetido) {
         pcsLigados.push(req.body.mac);
     }
-    io.sockets.emit('pcLigado', pcsLigados);
-    console.log("pcs ligados post: "+pcsLigados);
+    io.sockets.emit('pcLigado', req.body.mac);
     res.send(pcsLigados);
 
 });
 //web
 app.get('/pcligado', function(req, res) {
-    console.log("Get pcs ligados "+pcsLigados);
     res.send(pcsLigados);
 
 });
@@ -119,7 +128,6 @@ app.post('/desligapc', function(req, res) {
             mac: req.body.mac
         });
     }
-    console.log(macDesliga);
     res.send(macDesliga);
 
 });
@@ -132,7 +140,8 @@ app.post('/logout', function(req, res) {
     usuario.logoutDesktop(req.body.token, res);
     var index = macDesliga.indexOf(req.body.mac);
     pcsLigados.splice(index, 1);
-    io.sockets.emit('pcLigado', pcsLigados);
+    console.log("deslogou");
+    io.sockets.emit('pcLigado', req.body.mac);
     req.session.destroy(function(err) {
     });
 });
@@ -159,6 +168,7 @@ net.createServer(function(sock) {
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
         var gastoRecebido = JSON.parse(data).gasto;
+        var arduino = JSON.parse(data).arduino;
         gasto.intervalo(ultimoEnvio,idEquipamento);    
         // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosArduino[idEquipamento] == undefined) {
@@ -182,7 +192,7 @@ net.createServer(function(sock) {
                 arrayDadosArduino[idEquipamento] = new Array(0);
             }
         };
-        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: idEquipamento });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino });
         sock.write(data);
     }
 
