@@ -107,7 +107,8 @@ function Usuario() {
 							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 						});
 					} else {
-
+						res.status(HttpStatus.CREATED)
+					.send('CREATED');
 						var text = 'Senha '+senha;
 						var transporter = nodemailer.createTransport({
 							service: 'Gmail',
@@ -132,17 +133,15 @@ function Usuario() {
 								
 							};
 						});
-						res.status(HttpStatus.CREATED)
-						.send('CREATED');
 					}
 				});
-}
-else{
-	res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	.send({
-		error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-	});
-}
+			}
+			else{
+				res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.send({
+					error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+				});
+			}
 
 });
 };
@@ -309,8 +308,8 @@ else{
 				user = JSON.stringify(result);
 			});
 			if (user != null) {
-					con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-					});
+				con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+				});
 				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
 					var string = JSON.stringify(result);
 					var obj = string;
