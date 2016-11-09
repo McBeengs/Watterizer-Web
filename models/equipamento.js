@@ -48,10 +48,10 @@ function Equipamento() {
 					idArduino=result[0].id_arduino;
 				}
 				con.query('SELECT equipamento.id,equipamento.numero_porta,equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE id_arduino = ?', idArduino, function(err, result) {
-				
-				con.release();
-				res.send(result);
-			});
+
+					con.release();
+					res.send(result);
+				});
 
 			});
 			
@@ -64,36 +64,43 @@ function Equipamento() {
 			con.query('SELECT id FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
 				if (result[0]==null) {
 					con.query('INSERT INTO equipamento SET ?', [equipamento], function(err, result) {
-						con.release();
 						if (err) {
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 							.send({
 								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 							});
 						} else {
-							res.send(result.insertId)
+							res.status(HttpStatus.OK).send(result.insertId.toString())
 						}
 					});
 				}
 				else{
 					con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
-						con.release();
 						if (err) {
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 							.send({
 								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 							});
 						} else {
-							console.log(result);
-							res.send(result.insertId)
+							res.status(HttpStatus.OK).send(result.insertId.toString())
 						}
 					});
 				}
+				con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
+					var equipamentoResponsavel = result[0];
+					if (equipamentoResponsavel!=undefined && equipamentoResponsavel.mac!="null") {
+						console.log(equipamentoResponsavel);
+						con.query('UPDATE ARDUINO SET id_computador_responsavel = ? WHERE id = ? AND id_computador_responsavel IS NULL', [equipamentoResponsavel.id,equipamentoResponsavel.id_arduino], function(err, result) {
+						});
+					}
+					con.release();
+				});
+				
 
 			});
-			
-		});
-	};
+
+});
+};
 	// APENAS ATUALIZA O EQUIPAMENTO
 	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
