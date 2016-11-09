@@ -114,8 +114,8 @@ function Usuario() {
 							auth: {
 					            user: 'watterizer@gmail.com', // Your email id
 					            pass: 'senairianos115' // Your password
-			        		}
-			    		});
+					        }
+					    });
 						var mailOptions = {
 						    from: 'watterizer@gmail.com', // sender address
 						    to: usuario.email, // list of receivers
@@ -132,20 +132,20 @@ function Usuario() {
 								
 							};
 						});
-							res.status(HttpStatus.CREATED)
-							.send('CREATED');
+						res.status(HttpStatus.CREATED)
+						.send('CREATED');
 					}
 				});
-			}
-			else{
-				res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-					});
-			}
-			
-		});
-	};
+}
+else{
+	res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	.send({
+		error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+	});
+}
+
+});
+};
 
 
 	// MODIFICA UM USUARIO
@@ -154,27 +154,27 @@ function Usuario() {
 		if (usuario.id!=sess.idUser) {
 			connection.acquire(function(err, con) {
 				if (sess.autoUser!='') {
-				usuario.username=autoUser;
-			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
-				con.release();
-				if (err) {
-					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					usuario.username=autoUser;
+					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
+						con.release();
+						if (err) {
+							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+							.send({
+								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+							});
+						} else {
+							res.status(HttpStatus.OK)
+							.send('OK');
+						}
 					});
-				} else {
-					res.status(HttpStatus.OK)
-					.send('OK');
 				}
 			});
 		}
-		});
-		}
 		else{
 			res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-					});
+			.send({
+				error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+			});
 		}
 		
 	};
@@ -187,7 +187,7 @@ function Usuario() {
 		usuario.hora_intervalo= usuario.hora_intervalo.getHours()+":"+usuario.hora_intervalo.getMinutes()+":"+usuario.hora_intervalo.getSeconds();
 		usuario.hora_saida= usuario.hora_saida.getHours()+":"+usuario.hora_saida.getMinutes()+":"+usuario.hora_saida.getSeconds();
 		usuario.senha = aes.encText(usuario.senha, key,init)
-			connection.acquire(function(err, con) {
+		connection.acquire(function(err, con) {
 			con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 				con.release();
 				if (err) {
@@ -208,26 +208,26 @@ function Usuario() {
 	this.delete = function(id,req, res) {
 		var sess = req.session;
 		if (id!=sess.idUser) {
-		connection.acquire(function(err, con) {
-			con.query('UPDATE usuario SET data_exclusao = NOW() WHERE id = ?', [id], function(err, result) {
-				con.release();
-				if (err) {
-					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-					});
-				} else {
-					res.status(HttpStatus.NO_CONTENT)
-					.send('NO CONTENT');
-				}
+			connection.acquire(function(err, con) {
+				con.query('UPDATE usuario SET data_exclusao = NOW() WHERE id = ?', [id], function(err, result) {
+					con.release();
+					if (err) {
+						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.send({
+							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+						});
+					} else {
+						res.status(HttpStatus.NO_CONTENT)
+						.send('NO CONTENT');
+					}
+				});
 			});
-		});
-	}else{
-		res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.send({
-						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-					});
-	}
+		}else{
+			res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.send({
+				error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+			});
+		}
 	};
 	// DESLOGA UM USUARIO COM BASE EM SEU TOKEN WEB
 	this.logoutWeb = function(token, res) {
@@ -254,7 +254,7 @@ function Usuario() {
 				
 			} else {
 				con.release();
-					res.end();
+				res.end();
 			}
 		});
 	};
@@ -277,7 +277,7 @@ function Usuario() {
 	}
 
 	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
-	this.login = function(login,senha, krypt,req, res) {
+	this.login = function(login,senha,req, res) {
 		connection.acquire(function(err, con) {
 			var sess = req.session;
 			token = randtoken.generate(16);
@@ -286,24 +286,35 @@ function Usuario() {
 				user = JSON.stringify(result);
 			});
 			if (user != null) {
-				
-				if (krypt) {
-					con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-					});
-				}
-				else  {
-					con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-					});
-				};
+				con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+				});
 				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
-
 					var string = JSON.stringify(result);
 					var obj = string;
-					if (krypt) {
-						obj = aes.encText(string,key,init);
-						res.send(obj);
-					}
-					else if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
+					obj = aes.encText(string,key,init);
+					res.send(obj);			
+					con.release();
+				});
+			}
+			token = null;
+		});
+};
+	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
+	this.loginWeb = function(login,senha,req, res) {
+		connection.acquire(function(err, con) {
+			var sess = req.session;
+			token = randtoken.generate(16);
+			var user = [];		
+			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
+				user = JSON.stringify(result);
+			});
+			if (user != null) {
+					con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					});
+				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
+					var string = JSON.stringify(result);
+					var obj = string;
+					if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
 						
 						sess.nome=result[0].nome;
 						sess.idUser=result[0].id;
@@ -315,13 +326,12 @@ function Usuario() {
 						sess.login=false;
 						res.redirect("/index");		
 					}					
-					user = JSON.stringify(result);
 					con.release();
 				});
 			}
 			token = null;
 		});
-	};
+};
 } 
 
 module.exports = new Usuario();

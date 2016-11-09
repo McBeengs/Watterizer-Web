@@ -109,7 +109,7 @@
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-username">Nome de Usuário</label>
-								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" ng-model="usuario.username" ng-bind="usuario.username" readonly required>
+								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" ng-model="usuario.username"  readonly required>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-email">Email</label>
@@ -185,24 +185,4 @@
 <script src="/js/data-tables/data-tables-bootstrap.min.js"></script> <!-- JS DATATABLE BOOTSTRAP -->
 <script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="/js/angular/angular-datatables.min.js"></script> <!-- JS DO ANGULAR DATATABLES-->
-<script type="text/javascript">
-	$(function() {
-		$( "#txt-nome" ).autocomplete({
-			source: function( request, response ) {		
-				$.ajax({
-					type: 'POST',
-					url: "/gerausuario",
-					data: {
-						nome: request.term
-					},
-					success: function( data ) {
-						$("#txt-username").val(data);
-
-					}
-				});
-			},
-			minLength: 3
-		});
-	});
-</script>
 </html>

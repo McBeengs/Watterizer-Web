@@ -475,13 +475,12 @@ module.exports = {
 
     // CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
     app.post('/login', function(req, res) {
+        usuario.login(aes.decText(req.body.login,key,init),req.body.senha, req, res);
+    });
+    app.post('/loginWeb', function(req, res) {
         sess = req.session;
         sess.login=req.body.login;
-        try {
-            usuario.login(aes.decText(req.body.login,key,init),req.body.senha, true, req, res);
-        } catch(e) {
-            usuario.login(req.body.login,aes.encText(req.body.senha,key,init), false,req, res);
-        }
+        usuario.loginWeb(req.body.login,aes.encText(req.body.senha,key,init),req, res);
     });
 
 }

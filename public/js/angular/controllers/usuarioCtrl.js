@@ -69,13 +69,13 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		$scope.usuario.username=usuario.username;
 		$scope.usuario.email=usuario.email;
 		$scope.usuario.telefone=usuario.telefone;
-		date=$scope.usuario.hora_entrada.split(':')
+		date=usuario.hora_entrada.split(':')
 		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_entrada=date;
-		date=$scope.usuario.hora_intervalo.split(':')
+		date=usuario.hora_intervalo.split(':')
 		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_intervalo=date;
-		date=$scope.usuario.hora_saida.split(':')
+		date=usuario.hora_saida.split(':')
 		date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 		$scope.usuario.hora_saida=date;
 		$scope.usuario.id_setor=usuario.id_setor;
@@ -84,6 +84,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		
 	}
 	$scope.novo = function() {
+		console.log($scope.usuario);
 		$scope.usuario = {};
 		$scope.titulo="Novo Usuário";
 	}
@@ -161,4 +162,22 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		});
 		
 	}
+	$(function() {
+		$( "#txt-nome" ).autocomplete({
+			source: function( request, response ) {		
+				$.ajax({
+					type: 'POST',
+					url: "/gerausuario",
+					data: {
+						nome: request.term
+					},
+					success: function( data ) {
+						$scope.usuario.username = data
+						$("#txt-username").val(data);
+					}
+				});
+			},
+			minLength: 3
+		});
+	});
 });
