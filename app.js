@@ -45,29 +45,6 @@ routes.configure(app);
 var server = app.listen(1515, function() {
 	console.log('Server listening on port ' + server.address().port);
 });
-// CAPTURA IP DA MAQUINA
-var ip = require("ip");
-//SERVIDOR NET
-var HOST = ip.address();
-var PORT = 3000;
-
-
-var arrayIpArduino=[];
-var arrayDadosArduino= new Array(0);
-arrayDadosArduino[0] = new Array(0);
-var io = require('socket.io')(server);
-
-io.sockets.on('connection', function (socket) {
-    console.log("conectou");
-    sockets = socket;
-    socket.on('load',function(data) {
-        // var aasd = gasto.getOneHoje(data, null);
-        // console.log(aasd);
-        socket.emit('toClientLoad', arrayDadosArduino[data]);
-    });
-    
-});
-
 var macDesliga=[];
 var pcsLigados=[];
 //desktop
@@ -150,6 +127,40 @@ app.get('/logout', function(req, res) {
     req.session.destroy(function(err) {
     });
 });
+var precoKilowatt={};
+precoKilowatt.valor=0;
+var custoTotal=0;
+app.post('/kilowatt', function(req, res) {
+    console.log(req.body.valor);
+   precoKilowatt.valor=req.body.valor;
+   precoKilowatt.data = new Date();
+   res.end();
+});
+// CAPTURA IP DA MAQUINA
+var ip = require("ip");
+//SERVIDOR NET
+var HOST = ip.address();
+var PORT = 3000;
+
+
+var arrayIpArduino=[];
+var arrayDadosEquipamento= new Array(0);
+arrayDadosEquipamento[0] = new Array(0);
+var arrayDadosArduino= new Array(0);
+arrayDadosArduino[0] = new Array(0);
+var io = require('socket.io')(server);
+
+io.sockets.on('connection', function (socket) {
+    console.log("conectou");
+    sockets = socket;
+    socket.on('load',function(data) {
+        // var aasd = gasto.getOneHoje(data, null);
+        // console.log(aasd);
+        socket.emit('toClientLoad', arrayDadosArduino[data]);
+    });
+    
+});
+
 
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
@@ -162,17 +173,26 @@ net.createServer(function(sock) {
         if (data.trim().localeCompare("test")==0) {
             sock.write(data);
         }
-        else{               
+        else{
+
            var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
         var gastoRecebido = JSON.parse(data).gasto;
         var arduino = JSON.parse(data).arduino;
+        // console.log("custo total "+custoTotal);
+        // console.log("preco kilowatt "+precoKilowatt.valor);
+        // console.log("gasto recebido "+gastoRecebido);
+
+        custoTotal=custoTotal+(precoKilowatt.valor*gastoRecebido)
         gasto.intervalo(ultimoEnvio,idEquipamento);    
         // console.log('ultimoEnvio'+ultimoEnvio);
-        if (arrayDadosArduino[idEquipamento] == undefined) {
-            arrayDadosArduino[idEquipamento] = new Array(0);
+        if (arrayDadosEquipamento[idEquipamento] == undefined) {
+            arrayDadosEquipamento[idEquipamento] = new Array(0);
+        }
+        if (arrayDadosArduino[arduino] == undefined) {
+            arrayDadosArduino[arduino] = new Array(0);
         }
         for (var i = 0; i <= arrayIpArduino.length - 1; i++) {
             if (i!=idEquipamento && arrayIpArduino[i]==sock.remoteAddress +':'+ sock.remotePort) {
@@ -180,19 +200,19 @@ net.createServer(function(sock) {
             }
         };
         arrayIpArduino[idEquipamento]=sock.remoteAddress +':'+ sock.remotePort;
-        arrayDadosArduino[idEquipamento].push(gastoRecebido);
+        arrayDadosEquipamento[idEquipamento].push(gastoRecebido);
+        arrayDadosArduino[arduino].push(gastoRecebido);
         
         var isCheia = false;
         
-        for (var i = 0; i <= arrayDadosArduino[idEquipamento].length - 1; i++) {
+        for (var i = 0; i <= arrayDadosEquipamento[idEquipamento].length - 1; i++) {
             if (i==599) {
-
-                gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
+                gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento, null);
                 ultimoEnvioData= new Date();
-                arrayDadosArduino[idEquipamento] = new Array(0);
+                arrayDadosEquipamento[idEquipamento] = new Array(0);
             }
         };
-        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo: custoTotal });
         sock.write(data);
     }
 
@@ -211,8 +231,8 @@ net.createServer(function(sock) {
             }
         };
 
-        gasto.create(arrayDadosArduino[idEquipamento],idEquipamento, null);
-        arrayDadosArduino[idEquipamento] = new Array(0);
+        gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento, null);
+        arrayDadosEquipamento[idEquipamento] = new Array(0);
         io.sockets.emit('noConnection',data);
     });
 

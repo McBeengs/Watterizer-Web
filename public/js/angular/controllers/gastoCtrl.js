@@ -25,7 +25,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}
 
 		$scope.getRecentData = function () {
-			socket.emit("load",2);
+			console.log($scope.arduinoSel);
+			socket.emit("load",$scope.arduinoSel);
 			socket.on('toClientLoad', function (data) {
 				if (data==null) {
 					console.log('null');
@@ -42,7 +43,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}
 
 		socket.on('toClient', function (data) {
-			if (data.arduino == arduinoSel) {
+			console.log(data.custo);
+			if (data.arduino == $scope.arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
 				$timeout(function() {

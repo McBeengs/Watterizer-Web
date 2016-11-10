@@ -62,6 +62,10 @@ function Equipamento() {
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
 			con.query('SELECT id FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
+				if (result[0]!=undefined) {
+					con.query('DELETE ARDUINO WHERE id = ?', [result[0].id_arduino], function(err, result) {
+						});
+				}
 				if (result[0]==null) {
 					con.query('INSERT INTO equipamento SET ?', [equipamento], function(err, result) {
 						if (err) {
@@ -75,8 +79,9 @@ function Equipamento() {
 					});
 				}
 				else{
-					con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
+					con.query('UPDATE equipamento SET ? WHERE mac = ? AND nome = ?', [equipamento, equipamento.mac, equipamento.nome], function(err, result) {
 						if (err) {
+							console.log(err);
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 							.send({
 								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -89,7 +94,6 @@ function Equipamento() {
 				con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
 					var equipamentoResponsavel = result[0];
 					if (equipamentoResponsavel!=undefined && equipamentoResponsavel.mac!="null") {
-						console.log(equipamentoResponsavel);
 						con.query('UPDATE ARDUINO SET id_computador_responsavel = ? WHERE id = ? AND id_computador_responsavel IS NULL', [equipamentoResponsavel.id,equipamentoResponsavel.id_arduino], function(err, result) {
 						});
 					}
