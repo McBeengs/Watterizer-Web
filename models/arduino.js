@@ -43,8 +43,7 @@ function Arduino() {
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 					});
 				} else {
-					res.status(HttpStatus.CREATED)
-					.send(result.insertId.toString());
+					res.status(HttpStatus.OK).send(result.insertId.toString());
 				}
 			});
 		});
