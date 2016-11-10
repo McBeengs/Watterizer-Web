@@ -55,11 +55,12 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		$interval( function() {
 			if(active == false){
 				$("#mask-container").fadeIn();
+				$("text.nvd3.nv-noData").remove();
 			} else {
 				$("#mask-container").fadeOut();
 				active == false;
 			}
-		}, 1001);
+		}, 1000);
     }, 100);
 
 	$scope.stopedChart = function () {

@@ -83,11 +83,13 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		$scope.titulo="Editar Usuário"
 		
 	}
+
 	$scope.novo = function() {
 		console.log($scope.usuario);
 		$scope.usuario = {};
 		$scope.titulo="Novo Usuário";
 	}
+
 	$scope.desliga = function() {
 		var pcsligados;
 		var pcligado={};
@@ -109,6 +111,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		});
 		
 	}
+
 	$scope.excluir = function(id) {
 		$scope.usuarioExclusao={};
 		$http.delete("/dados/usuario/"+id, $scope.usuario)
@@ -118,11 +121,13 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 			console.log("Falhou")
 		});
 	}
+
 	$scope.preparaExclusao = function(nome,id) {
 		$scope.usuarioExclusao={}
 		$scope.usuarioExclusao.nome=nome;
 		$scope.usuarioExclusao.id=id;
 	}
+
 	$scope.autoExclusao = function(id) {
 		if (id!=$scope.usuarioLogado.data[2]) {
 			return true;
@@ -131,6 +136,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 			return false;
 		}
 	}
+
 	$scope.create = function() {
 		$http.post("/emailCheck", $scope.usuario)
 		.then(function (response) {
@@ -162,6 +168,16 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 		});
 		
 	}
+
+	// $scope.telMask = function (){
+	// 	console.log("Mudou", $("#txt-telefone").val().length);
+	// 	if($("#txt-telefone").val().length == 15){
+	// 		$("#txt-telefone").mask("(00) 00000-0000");
+	// 	} else {
+	// 		$("#txt-telefone").mask("(00) 0000-0000");
+	// 	}
+	// }
+
 	$(function() {
 		$( "#txt-nome" ).autocomplete({
 			source: function( request, response ) {		

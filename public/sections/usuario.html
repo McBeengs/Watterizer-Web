@@ -22,10 +22,10 @@
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
-				<a id="voltar" href="/portal">Voltar</a>
+				<a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
 				<!-- LOGO -->
 				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
-					<a class="col-xs-12" href="">Watterizer</a>
+					<a class="col-xs-12" href="/portal">Watterizer</a>
 				</div>
 				<!-- DADOS DO USUARIO  -->
 				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
@@ -58,6 +58,7 @@
 							<th>Email</th>
 							<th>Perfil</th>
 							<th>Telefone</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -116,7 +117,7 @@
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-telefone">Telefone</label>
-								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone" ng-model="usuario.telefone" required>
+								<input type="text" minlength="8" maxlength="16" class="form-control" id="txt-telefone" ng-model="usuario.telefone" ng-change="telMask()" required>
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-entrada">Hora de Entrada</label>
@@ -173,30 +174,11 @@
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="/js/jquery/jquery-ui.min.js"></script> <!-- JS DO JQUERY UI -->
+<script src="/js/jquery/jquery.mask.min.js"></script> <!-- JS JQUERY MASK -->
 <script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
 <script src="/js/data-tables/data-tables-jquery.min.js"></script> <!-- JS DATATABLE JQUERY -->
 <script src="/js/data-tables/data-tables-bootstrap.min.js"></script> <!-- JS DATATABLE BOOTSTRAP -->
 <script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 <script src="/js/angular/angular-datatables.min.js"></script> <!-- JS DO ANGULAR DATATABLES-->
-<script type="text/javascript">
-	$(function() {
-		$( "#txt-nome" ).autocomplete({
-			source: function( request, response ) {		
-				$.ajax({
-					type: 'POST',
-					url: "/gerausuario",
-					data: {
-						nome: request.term
-					},
-					success: function( data ) {
-						$("#txt-username").val(data);
-
-					}
-				});
-			},
-			minLength: 3
-		});
-	});
-</script>
 </html>

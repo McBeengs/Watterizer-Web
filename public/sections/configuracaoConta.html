@@ -21,10 +21,10 @@
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
-				<a id="voltar" href="/portal">Voltar</a>
+				<a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
 				<!-- LOGO -->
 				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
-					<a class="col-xs-12" href="">Watterizer</a>
+					<a class="col-xs-12" href="/portal">Watterizer</a>
 				</div>
 				<!-- DADOS DO USUARIO  -->
 				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
@@ -51,7 +51,7 @@
 						<img src="/foto.png">
 						<form id="uploadForm" enctype   =  "multipart/form-data" action="/upload" method="post">
 							<input type="file" name="user-photo">
-							<input class="form-control btn-primary centered" type="submit" value="Enviar Imagem" name="submit">
+							<input type="submit" value="Enviar Imagem" class="form-control btn-primary centered" name="submit">
 							<p id="name" href="#">Usuário: {{usuarioLogado.data[0]}}</p>
 						</form>
 					</div>
