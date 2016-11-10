@@ -50,8 +50,8 @@
 					<div id="upload-container">
 						<img src="/foto.png">
 						<form id="uploadForm" enctype   =  "multipart/form-data" action="/upload" method="post">
-							<input type="file" name="userPhoto" />
-							<input type="submit" value="Enviar Imagem" name="submit">
+							<input type="file" name="user-photo">
+							<input class="form-control btn-primary centered" type="submit" value="Enviar Imagem" name="submit">
 							<p id="name" href="#">Usuário: {{usuarioLogado.data[0]}}</p>
 						</form>
 					</div>
@@ -119,8 +119,8 @@
 										<option value="usuario.id_perfil">{{perfil.id}}</option>
 									</select>
 								</div>
-								<div class="col-xs-4">
-									<input type="submit" value="Cadastrar" class="form-control btn-primary">
+								<div class="col-xs-12">
+									<input type="submit" value="Cadastrar" class="form-control btn-primary centered">
 								</div>
 							</form>
 						</div>

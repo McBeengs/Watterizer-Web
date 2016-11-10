@@ -42,15 +42,14 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}
 
 		socket.on('toClient', function (data) {
-			// if (data.arduino == arduinoSel) {
+			if (data.arduino == arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
 				$timeout(function() {
 					$scope.createChart($scope.gastos);
 				}, 1000);
 				$rootScope.i++;
-
-			// }
+			}
 		});
 
 		$interval( function() {

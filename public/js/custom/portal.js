@@ -42,12 +42,7 @@ function resizeMask(chart){
 	});
 }
 
-resizeMask(chart);
 mask.fadeOut();
-
-$(chart).resize(function (){
-	resizeMask(chart);
-});
 
 mask.mouseover(function() {
 	mask.css({

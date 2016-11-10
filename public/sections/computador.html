@@ -44,6 +44,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="computadores" class="panel-group">
+				<h3 id="no-data" ng-if="pcsLigadosFull.length==0">Nenhum registro foi encontrado</h3>
 				<div class="panel panel-default" ng-if="load" ng-repeat="pc in pcsLigadosFull">
 					<div class="panel-heading">
 						<h4 class="panel-title">

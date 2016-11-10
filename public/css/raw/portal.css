@@ -22,6 +22,7 @@
 {
 	display: inline-block;
 }
+
 #auth img
 {	
 	
@@ -29,15 +30,18 @@
 	width: 50px;
 	border-radius: 100%;
 }
+
 #upload-container
 {
 	margin-left: 45%;
 }
-#upload-container input[type="file"],p
+
+#upload-container input[type="file"], p
 {	
 	margin: 0 !important;
 	color: white;
 }
+
 #upload-container img
 {	
 	margin-bottom: 20px;
@@ -175,6 +179,12 @@
 	height: 145px;
 }
 
+#no-data
+{
+	color: white;
+	text-align: center;
+}
+
 /* TABELAS */
 #DataTables_Table_0_wrapper
 {
@@ -260,6 +270,7 @@
 {
 	padding-top: 15px;
 	padding-bottom: 15px;
+	text-align: center;
 }
 
 #content-portal table thead tr:first-of-type th:first-of-type
@@ -275,6 +286,11 @@
 #content-portal table tbody
 {
 	font-size: 16px;
+}
+
+#content-portal #usuarios table tbody tr:first-of-type td:last-of-type
+{
+	border-top-right-radius: var(--defaultBorderRadius);
 }
 
 #content-portal table tbody tr:not(:last-of-type) td
@@ -305,11 +321,15 @@
 /* MODAL */
 #content-portal button[data-toggle="modal"]
 {
-	margin-top: 30px;
 	border-radius: var(--defaultBorderRadius);
 	color: var(--mainGray);
 	padding: 5px 15px;
 	font-weight: bold;
+}
+
+#new-user
+{
+	margin: 30px 0;
 }
 
 #content-portal div.modal-content
@@ -321,6 +341,11 @@
 #content-portal div.modal-content div.body
 {
 	/*background: var(--lightBorder);*/
+}
+
+input[type="submit"]
+{
+	width: 60% !important;
 }
 
 /* PANELS */
@@ -421,6 +446,7 @@
 	border: 2px solid var(--mainYellow);
 	border-radius: var(--defaultBorderRadius);
 	padding: 5px;
+	outline: none;
 }
 
 #chart

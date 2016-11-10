@@ -61,8 +61,7 @@
 		                <button class="btn btn-default" id="btn-canvas-obj-delete">Remover Objeto</button>
 		                <button class="btn btn-primary" id="btn-canvas-save">Salvar Planta</button>
 		                <button class="btn btn-default" id="btn-canvas-download">Download como Imagem</button>
-		                <select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores">
-		                </select>
+		                <select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores"></select>
 		            </div>
 		        </div>
 
@@ -77,6 +76,7 @@
 		        </div>
 			</div>
 			<div id="setores" class="panel-group row">
+				<h3 id="no-data" ng-if="setores.length==0">Nenhum registro foi encontrado</h3>
 				<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="setor in setores">
 					<div class="panel-heading">
 						<h4 class="panel-title">

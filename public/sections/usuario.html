@@ -47,7 +47,7 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="usuarios" >
-				<button type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-usuario">
+				<button id="new-user" type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-usuario">
 					Novo Usuário
 				</button>
 				<table class="table-striped" datatable="ng" ng-if="load" dt-options="dtOptions">
@@ -58,7 +58,6 @@
 							<th>Email</th>
 							<th>Perfil</th>
 							<th>Telefone</th>
-							<th>Ações</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -102,34 +101,34 @@
 						<h4 class="modal-title" id="user-data-label">{{titulo}}</h4>
 					</div>
 					<div class="modal-body">
-						<form  ng-submit="create()">
+						<form ng-submit="create()">
 							<div class="form-group col-sm-6">
 								<label for="txt-nome">Nome:</label>
 								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome" ng-model="usuario.nome" required>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-username">Nome de Usuário</label>
-								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" ng-model="usuario.username" ng-bind="usuario.username" readonly required>
+								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" ng-model="usuario.username" readonly required>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-email">Email</label>
-								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" ng-model="usuario.email" ng-bind="usuario.email" required>
+								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" ng-model="usuario.email" required>
 							</div>
 							<div class="form-group col-sm-6">
 								<label for="txt-telefone">Telefone</label>
-								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone" ng-model="usuario.telefone" ng-bind="usuario.telefone" required>
+								<input type="text" minlength="8" maxlength="11" class="form-control" id="txt-telefone" ng-model="usuario.telefone" required>
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-entrada">Hora de Entrada</label>
-								<input type="time" class="form-control" id="txt-hr-entrada" ng-model="usuario.hora_entrada" ng-bind="usuario.hora_entrada" required>
+								<input type="time" class="form-control" id="txt-hr-entrada" ng-model="usuario.hora_entrada" required>
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-intervalo">Hora de Intervalo</label>
-								<input type="time" class="form-control" id="txt-hr-intervalo" ng-model="usuario.hora_intervalo" ng-bind="usuario.hora_intervalo" required>
+								<input type="time" class="form-control" id="txt-hr-intervalo" ng-model="usuario.hora_intervalo" required>
 							</div>
 							<div class="form-group col-sm-4">
 								<label for="txt-hr-saida">Hora de Saída</label>
-								<input type="time" class="form-control" id="txt-hr-saida" ng-model="usuario.hora_saida" ng-bind="usuario.hora_saida" required>
+								<input type="time" class="form-control" id="txt-hr-saida" ng-model="usuario.hora_saida" required>
 							</div>
 							<div class="form-group col-xs-6">
 								<label for="txt-id_setor">Setor</label>
@@ -143,13 +142,8 @@
 									<option value="usuario.id_perfil">{{perfil.id}}</option>
 								</select>
 							</div>
-							<div class="col-sm-5 centered">
-								<input type="submit" value="Cadastrar" class="form-control btn-primary">
-							</div>
-						</form>
-						<form  ng-submit="desliga()">
-							<div class="col-sm-5 centered">
-								<input type="submit" value="Desligar" class="form-control btn-primary">
+							<div class="col-xs-12">
+								<input type="submit" value="Cadastrar" class="form-control btn-primary centered">
 							</div>
 						</form>
 					</div>
