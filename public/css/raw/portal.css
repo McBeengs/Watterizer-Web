@@ -111,6 +111,7 @@
 	background-size: contain;
 	background-position: center;
 	z-index: 500;
+	margin-left: -15px;
 }
 
 /* PORTAL */
@@ -285,11 +286,16 @@
 	font-size: 16px;
 }
 
-/*#content-portal #usuarios table tbody tr:first-of-type td:last-of-type
+#content-portal #usuarios table tbody tr td:last-of-type
 {
-	border-top-right-radius: var(--defaultBorderRadius);
+	/*border-top-right-radius: var(--defaultBorderRadius);*/
 	text-align: center;
-}*/
+}
+
+#content-portal #advertencias table tbody tr td:last-of-type
+{
+	cursor: pointer;
+}
 
 #content-portal table tbody tr:not(:last-of-type) td
 {
@@ -400,7 +406,7 @@
 
 .panel
 {
-	background-color: var(--lighterGray);
+	background-color: var(--lighterGray) !important;
 }
 
 .ui-progressbar 
@@ -472,6 +478,6 @@
 {
 	text-align: center;
 	color: white;
-	line-height: 425px;
+	padding-top: 170px;
 	font-size: 40px;
 }

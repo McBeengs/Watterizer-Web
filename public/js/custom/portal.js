@@ -21,17 +21,25 @@
 // });
 
 $(window).resize(function () {
-	if ($(window).width()<350) {
-		$("#upload-container").css({
-			"margin":"0"
-		})
-	}
-	else{
-		$("#upload-container").css({
-			"margin-left":"45%"
-		})
-	}
-})
+	// if ($(window).width()<350) {
+	// 	$("#upload-container").css({
+	// 		"margin":"0"
+	// 	})
+	// }
+	// else{
+	// 	$("#upload-container").css({
+	// 		"margin-left":"45%"
+	// 	})
+	// }
+	sizeAdjusts();
+});
+
+sizeAdjusts();
+function sizeAdjusts() {
+	$("header").css({
+		"width":$(window).width()
+	});
+}
 
 var mask = $("#mask-container");
 var chart = $("nvd3");

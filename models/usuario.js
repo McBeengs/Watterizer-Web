@@ -150,10 +150,10 @@ function Usuario() {
 	// MODIFICA UM USUARIO
 	this.update = function(usuario,req, res) {
 		var sess = req.session;
-		if (usuario.id!=sess.idUser) {
+		if (usuario.id!=sess.idUser && sess.idUser!=undefined) {
 			connection.acquire(function(err, con) {
 				if (sess.autoUser!='') {
-					usuario.username=autoUser;
+					usuario.username=sess.autoUser;
 					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 						con.release();
 						if (err) {
