@@ -48,8 +48,12 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 							$scope.pcsLigadosFull.push($scope.equipamentos[i])
 						}
 				};
+			}, 1000);
+		})
+		socket.on("pcDesligado",function(data) {
+			$timeout(function() {
 				for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-						if ($scope.pcsLigadosFull[i].mac!=data) {
+						if ($scope.pcsLigadosFull[i].mac==data) {
 							$scope.pcsLigadosFull.splice(i, 1);
 						}
 				};

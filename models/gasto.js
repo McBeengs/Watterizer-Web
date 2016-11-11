@@ -216,7 +216,7 @@ function Gasto() {
 	};
 
 	// ADICIONA UM NOVO GASTO
-	this.create = function(arrayGasto,idEquipamento, res) {
+	this.create = function(arrayGasto,idEquipamento,custo, res) {
 		connection.acquire(function(err, con) {
 			var idArduino;
 			con.query('SELECT mac,id_arduino FROM equipamento WHERE id=?',[idEquipamento], function(err, result) {
@@ -245,11 +245,11 @@ function Gasto() {
 
 						};
 						console.log("insert");
-						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME()',[gastos,idArduino,idEquipamento], function(err, result) {
+						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME(), custo=?',[gastos,idArduino,idEquipamento,custo], function(err, result) {
 						})
 					}
 					else {
-						con.query('SELECT CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE()  AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
+						con.query('SELECT CONVERT(gasto USING utf8) AS gasto,custo FROM gasto WHERE data = CURDATE()  AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
 							if (result[0]!=undefined) {
 								gastos+=result[0].gasto+',';
 							}
@@ -268,8 +268,13 @@ function Gasto() {
 							for (var i = arraygastos.length - 1; i >= 0; i--) {
 								soma+=Number(arraygastos[i]);
 							};
+							
+							custo=custo+result[0].custo;
+
 							console.log("update");
-							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=CURTIME() WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?', [gastos,idArduino,idEquipamento]);
+							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=CURTIME(),custo=? WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?', [gastos,custo,idArduino,idEquipamento],function (err,result) {
+								
+							});
 
 						});  
 
@@ -330,6 +335,7 @@ function Gasto() {
 				con.release();
 				if (res!=undefined) {
 					if (err) {
+						console.log(err);
 						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 						.send({
 							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)

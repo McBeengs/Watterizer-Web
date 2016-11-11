@@ -27,7 +27,7 @@ app.controller('homeCtrl', function($scope,$window, $http,$timeout) {
 	}, 50);
 	setTimeout(function () {
 		var socket = io.connect($scope.ip+':1515');
-		socket.on("pcLigado",function(data) {
+		socket.on("pcCount",function(data) {
 			$timeout(function() {
 				$scope.pcsLigadosCount = data.length;
 			}, 1000);
