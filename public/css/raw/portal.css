@@ -175,6 +175,13 @@
 	height: 145px;
 }
 
+#no-data
+{
+	color: white;
+	text-align: center;
+	font-size: 28px;
+}
+
 /* TABELAS */
 #DataTables_Table_0_wrapper
 {
@@ -196,6 +203,7 @@
 {
 	color: white;
 	font-size: 16px;
+	font-family: "featured";
 }
 
 #DataTables_Table_0_wrapper ul.pagination li:first-of-type a
@@ -277,6 +285,12 @@
 	font-size: 16px;
 }
 
+/*#content-portal #usuarios table tbody tr:first-of-type td:last-of-type
+{
+	border-top-right-radius: var(--defaultBorderRadius);
+	text-align: center;
+}*/
+
 #content-portal table tbody tr:not(:last-of-type) td
 {
 	border-bottom: 1px solid var(--lightBorder);
@@ -305,11 +319,15 @@
 /* MODAL */
 #content-portal button[data-toggle="modal"]
 {
-	margin-top: 30px;
 	border-radius: var(--defaultBorderRadius);
 	color: var(--mainGray);
 	padding: 5px 15px;
 	font-weight: bold;
+}
+
+#new-user
+{
+	margin: 30px 0;
 }
 
 #content-portal div.modal-content
@@ -421,6 +439,7 @@
 	border: 2px solid var(--mainYellow);
 	border-radius: var(--defaultBorderRadius);
 	padding: 5px;
+	outline: none;
 }
 
 #chart

@@ -19,10 +19,10 @@
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
-				<a id="voltar" href="/portal">Voltar</a>
+				<a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
 				<!-- LOGO -->
 				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
-					<a class="col-xs-12" href="">Watterizer</a>
+					<a class="col-xs-12" href="/portal">Watterizer</a>
 				</div>
 				<!-- FORMULARIO DE LOGIN  -->
 				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
@@ -45,7 +45,7 @@
 		<div id="content-portal" class="container-fluid">
 			<div id="computadores" class="panel-group">
 				<h3 id="no-data" ng-if="pcsLigadosFull.length==0">Nenhum registro foi encontrado</h3>
-				<div class="panel panel-default" ng-if="load" ng-repeat="pc in pcsLigadosFull">
+				<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="pc in pcsLigadosFull">
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" href="#computador-{{pc.id}}" data-parent="#computadores">{{pc.nome}}</a>
