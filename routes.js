@@ -46,7 +46,7 @@ var storage =   multer.diskStorage({
     }
 });
 
-var upload = multer({ storage : storage}).single('userPhoto');
+var upload = multer({ storage : storage}).single('user-photo');
 var sess;
 
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS

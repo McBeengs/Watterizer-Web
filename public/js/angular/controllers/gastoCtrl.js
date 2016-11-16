@@ -129,9 +129,9 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				}
 			}
 		};
-		$scope.chart.data = sinAndCos(data);
+		$scope.chart.data = createChartData(data);
 		/*Random Data Generator */
-		function sinAndCos(data) {
+		function createChartData(data) {
 			// var sin = [],sin2 = [],
 			// cos = [];
 			var limit = 40;

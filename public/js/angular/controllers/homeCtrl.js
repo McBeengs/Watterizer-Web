@@ -32,7 +32,5 @@ app.controller('homeCtrl', function($scope,$window, $http,$timeout) {
 				$scope.pcsLigadosCount = data.length;
 			}, 1000);
 		})
-	}, 200);
-	
-	
+	}, 200);	
 });
