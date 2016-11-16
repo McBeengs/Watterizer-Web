@@ -55,10 +55,10 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 
 		$interval( function() {
 			if(active == false){
-				$("#mask-container").fadeIn();
+				$("#container-mask").fadeIn();
 				$("text.nvd3.nv-noData").remove();
 			} else {
-				$("#mask-container").fadeOut();
+				$("#container-mask").fadeOut();
 				active == false;
 			}
 		}, 1000);

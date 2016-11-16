@@ -40,4 +40,8 @@ app.controller('advertenciaCtrl', function($scope,$window, $http,DTOptionsBuilde
 	clearInterval(intervalo);
         };
     },10);
+
+    $scope.mensagemModal = function (adv) {
+        $scope.advertencia = adv;
+    }
 });

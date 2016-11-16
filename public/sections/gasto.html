@@ -40,7 +40,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
 							<li class="divider"></li>
-							<li><a href="#" data-toggle="modal" data-target="#modalLogout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
 						</ul>
 					</div>
 				</div>
@@ -62,16 +62,17 @@
 					</select>
 				</div>
 			</form>
-			<!-- <button ng-click="startChart()">Iniciar Gráfico</button> -->
-			<div id="container-chart">
-				<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
-			</div>
-			<div id="mask-container" class="col-xs-12">
-				<div id="blur"></div>
-				<div id="mask"><h2>Não Medindo No Momento</h2></div>
+			<div id="all-arround-chart">
+				<div id="container-chart">
+					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
+				</div>
+				<div id="container-mask" class="col-xs-12">
+					<div id="blur"></div>
+					<div id="mask"><h2>Não Medindo No Momento</h2></div>
+				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -79,9 +80,9 @@
 						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
 					</div>
 					<div class="modal-body">
-						<p>Tem certeza que deseja sair ?</p>
+						<p>Tem certeza que deseja sair?</p>
 						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modalLogout">Não</a>
+						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
 					</div>
 					<div class="modal-footer">
 					</div>

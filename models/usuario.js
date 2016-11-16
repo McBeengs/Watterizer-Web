@@ -95,7 +95,7 @@ function Usuario() {
 			var sess=req.session;
 			var senha = randtoken.generate(8);
 			usuario.senha=aes.encText(senha,key,init);
-			if (sess.autoUser!='') {
+			if (sess.autoUser!='' && sess !=undefined) {
 				usuario.username=sess.autoUser;
 				con.query('INSERT INTO usuario SET username=?,senha=?,email=?,nome=?,telefone=?,hora_entrada=?,hora_saida=?,hora_intervalo=?,id_perfil=?,id_setor=?', [usuario.username,usuario.senha,usuario.email,usuario.nome,usuario.telefone,usuario.hora_entrada,usuario.hora_saida,usuario.hora_intervalo,usuario.id_perfil,usuario.id_setor], function(err, result) {
 					con.release();
@@ -108,7 +108,7 @@ function Usuario() {
 						});
 					} else {
 						res.status(HttpStatus.CREATED)
-					.send('CREATED');
+						.send('CREATED');
 						var text = 'Senha '+senha;
 						var transporter = nodemailer.createTransport({
 							service: 'Gmail',
@@ -135,13 +135,13 @@ function Usuario() {
 						});
 					}
 				});
-			}
-			else{
-				res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.send({
-					error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-				});
-			}
+}
+else{
+	res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	.send({
+		error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+	});
+}
 
 });
 };
@@ -150,10 +150,10 @@ function Usuario() {
 	// MODIFICA UM USUARIO
 	this.update = function(usuario,req, res) {
 		var sess = req.session;
-		if (usuario.id!=sess.idUser && sess.idUser!=undefined) {
+		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
-				if (sess.autoUser!='') {
-					usuario.username=sess.autoUser;
+				if (sess.autoUser!='' && sess!=undefined) {
+					usuario.username=autoUser;
 					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 						con.release();
 						if (err) {
@@ -279,22 +279,21 @@ function Usuario() {
 	this.login = function(login,senha,req, res) {
 		connection.acquire(function(err, con) {
 			var sess = req.session;
-			token = randtoken.generate(16);
-			var user = [];		
 			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
-				user = JSON.stringify(result);
+				if (result[0] != null) {
+					var token = randtoken.generate(16);	
+					con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+					});
+					con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
+						var string = JSON.stringify(result);
+						var obj = string;
+						obj = aes.encText(string,key,init);
+						res.send(obj);			
+						con.release();
+					});
+				}
 			});
-			if (user != null) {
-				con.query('UPDATE usuario SET token_desktop = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-				});
-				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
-					var string = JSON.stringify(result);
-					var obj = string;
-					obj = aes.encText(string,key,init);
-					res.send(obj);			
-					con.release();
-				});
-			}
+
 			token = null;
 		});
 };
@@ -302,34 +301,36 @@ function Usuario() {
 	this.loginWeb = function(login,senha,req, res) {
 		connection.acquire(function(err, con) {
 			var sess = req.session;
-			token = randtoken.generate(16);
-			var user = [];		
+			var token = randtoken.generate(16);	
 			con.query('SELECT * FROM usuario WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
-				user = JSON.stringify(result);
-			});
-			if (user != null) {
-				con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
-				});
-				con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
-					var string = JSON.stringify(result);
-					var obj = string;
-					if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
-						
-						sess.nome=result[0].nome;
-						sess.idUser=result[0].id;
-						sess.perfil=result[0].perfil;
-						sess.token=result[0].token_web;
-						res.redirect("/portal");
+				if (result[0] != null) {
+					if (result[0].username!="admin" || result[0].token_web==null) {
+						con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
+						});
 					}
-					else {
-						sess.login=false;
-						res.redirect("/index");		
-					}					
-					con.release();
-				});
-			}
-			token = null;
-		});
+					con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ?', [login,login,senha], function(err, result) {
+						var string = JSON.stringify(result);
+						var obj = string;
+						if (obj!='[]' && result[0].perfil.toLowerCase()=='administrador') {
+							
+							sess.nome=result[0].nome;
+							sess.idUser=result[0].id;
+							sess.perfil=result[0].perfil;
+							sess.token=result[0].token_web;
+							con.release();
+							res.redirect("/portal");
+						}
+						else {
+							sess.login=false;
+							con.release();
+							res.redirect("/index");		
+						}					
+						
+					});
+				}
+			});
+
+});
 };
 } 
 

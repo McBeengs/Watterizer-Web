@@ -87,6 +87,19 @@
 	margin-left: 10px;
 }
 
+#modal-logout
+{
+	text-align: center;
+}
+
+#modal-logout a
+{
+	background-color: rgb(224,224,224);
+	border: 2px outset rgb(224,224,224);
+	border-radius: 20px;
+	padding: 5px;
+}
+
 #voltar
 {
 	display: block;
@@ -451,7 +464,7 @@
 	z-index: 2;
 }
 
-#mask-container
+#container-mask
 {
 	background-color: rgba(66,66,66,0.8);
 	position: absolute;
