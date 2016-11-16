@@ -95,7 +95,7 @@ function Usuario() {
 			var sess=req.session;
 			var senha = randtoken.generate(8);
 			usuario.senha=aes.encText(senha,key,init);
-			if (sess.autoUser!='') {
+			if (sess.autoUser!='' && sess !=undefined) {
 				usuario.username=sess.autoUser;
 				con.query('INSERT INTO usuario SET username=?,senha=?,email=?,nome=?,telefone=?,hora_entrada=?,hora_saida=?,hora_intervalo=?,id_perfil=?,id_setor=?', [usuario.username,usuario.senha,usuario.email,usuario.nome,usuario.telefone,usuario.hora_entrada,usuario.hora_saida,usuario.hora_intervalo,usuario.id_perfil,usuario.id_setor], function(err, result) {
 					con.release();
@@ -150,9 +150,9 @@ else{
 	// MODIFICA UM USUARIO
 	this.update = function(usuario,req, res) {
 		var sess = req.session;
-		if (usuario.id!=sess.idUser) {
+		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
-				if (sess.autoUser!='') {
+				if (sess.autoUser!='' && sess!=undefined) {
 					usuario.username=autoUser;
 					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 						con.release();
