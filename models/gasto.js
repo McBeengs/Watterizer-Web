@@ -333,7 +333,6 @@ function Gasto() {
 
 				}
 				con.release();
-				if (res!=undefined) {
 					if (err) {
 						console.log(err);
 						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -341,14 +340,39 @@ function Gasto() {
 							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
 						});
 					} else {
-						console.log("return");
 						return segundos;
 					}
+				
+				
+			});
+});
+};
+// ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
+	this.getIntervalo = function(data,idEquipamento, res) {
+		connection.acquire(function(err, con) {
+			var segundos=0;
+			con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
+
+				if (JSON.stringify(result)=='[]') {
+					
+				} else {
+					con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[data,idEquipamento], function(err, result) {
+						var gastos='';
+						var intervalo = result[0].intervalo;
+						intervalo = intervalo.split(':'); // split it at the colons
+						segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
+					});
+
+				}
+				con.release();
+				if (res!=undefined) {
+						res.end(segundos)
 				}
 				
 			});
 });
 };
+
 // APAGA UM GASTO
 this.delete = function(id, res) {
 	connection.acquire(function(err, con) {

@@ -134,6 +134,10 @@ app.post('/kilowatt', function(req, res) {
     precoKilowatt.data = new Date();
     res.end();
 });
+app.post('/intervalo', function(req, res) {
+    console.log("asd");
+    gasto.getIntervalo(req.body.data,req.body.equipamento,res)
+});
 // CAPTURA IP DA MAQUINA
 var ip = require("ip");
 //SERVIDOR NET
@@ -161,7 +165,7 @@ io.sockets.on('connection', function (socket) {
     });
     
 });
-
+var request = require('request');
 
 net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
@@ -176,7 +180,7 @@ net.createServer(function(sock) {
         }
         else{
 
-        var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+            var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
@@ -191,9 +195,14 @@ net.createServer(function(sock) {
         if (arrayCustoEquipamento[idEquipamento]==undefined) {
             arrayCustoEquipamento[idEquipamento]=0;
         }
-        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+(precoKilowatt.valor*gastoRecebido)
+        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+((127*gastoRecebido)*precoKilowatt.valor)
         arrayCustoEquipamento[idEquipamento]=arrayCustoArduino[idEquipamento]+(precoKilowatt.valor*gastoRecebido)
-        gasto.intervalo(ultimoEnvio,idEquipamento);   
+        gasto.intervalo(ultimoEnvio,idEquipamento); 
+        request.post('http://localhost:1515/intervalo', function (error, response, body) {
+            console.log(body)
+        }).form({equipamento:idEquipamento,data:ultimoEnvio})
+
+
         // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosEquipamento[idEquipamento] == undefined) {
             arrayDadosEquipamento[idEquipamento] = new Array(0);
@@ -215,9 +224,10 @@ net.createServer(function(sock) {
         
         for (var i = 0; i <= arrayDadosEquipamento[idEquipamento].length - 1; i++) {
             if (i==599) {
-                gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoArduino[arduino], null);
+                gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
                 ultimoEnvioData= new Date();
                 arrayDadosEquipamento[idEquipamento] = new Array(0);
+                arrayCustoEquipamento[idEquipamento] = new Array(0);
                 arrayCustoArduino[arduino]=0;
             }
         };
@@ -231,6 +241,7 @@ net.createServer(function(sock) {
     // SE A CONEXÃO FOR FECHADA
 
     sock.on('close', function(data) {
+
         console.log("DESCONECTADO");
         // INFORMA A DESCONEXÃO
         var idEquipamento=0;
@@ -248,8 +259,9 @@ net.createServer(function(sock) {
             }
         };
 
-        gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoArduino[arduino], null);
+        gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
         arrayDadosEquipamento[idEquipamento] = new Array(0);
+        arrayCustoEquipamento[idEquipamento] = new Array(0);
         io.sockets.emit('noConnection',data);
     });
 
