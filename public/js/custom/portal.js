@@ -21,22 +21,30 @@
 // });
 
 $(window).resize(function () {
-	if ($(window).width()<350) {
-		$("#upload-container").css({
-			"margin":"0"
-		})
-	}
-	else{
-		$("#upload-container").css({
-			"margin-left":"45%"
-		})
-	}
-})
+	// if ($(window).width()<350) {
+	// 	$("#upload-container").css({
+	// 		"margin":"0"
+	// 	})
+	// }
+	// else{
+	// 	$("#upload-container").css({
+	// 		"margin-left":"45%"
+	// 	})
+	// }
+	sizeAdjusts();
+});
 
-var mask = $("#mask-container");
+sizeAdjusts();
+function sizeAdjusts() {
+	$("header").css({
+		"width":$(window).width()
+	});
+}
+
+var mask = $("#container-mask");
 var chart = $("nvd3");
 function resizeMask(chart){
-	$("#mask-container").css({
+	$("#container-mask").css({
 		"top":chart.offset().top+50,
 		"left":chart.offset().left
 	});
@@ -49,6 +57,13 @@ mask.mouseover(function() {
 		"z-index":"-1"
 	});
 	mask.find("h2").fadeOut();
+});
+
+$("#blur").mouseover(function() {
+	mask.css({
+		"z-index":"2"
+	});
+	mask.find("h2").fadeIn();
 });
 
 $("#container-chart").mouseout(function() {

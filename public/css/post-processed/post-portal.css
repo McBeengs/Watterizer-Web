@@ -87,6 +87,19 @@
 	margin-left: 10px;
 }
 
+#modal-logout
+{
+	text-align: center;
+}
+
+#modal-logout a
+{
+	background-color: rgb(224,224,224);
+	border: 2px outset rgb(224,224,224);
+	border-radius: 20px;
+	padding: 5px;
+}
+
 #voltar
 {
 	display: block;
@@ -100,6 +113,7 @@
 	background-size: contain;
 	background-position: center;
 	z-index: 500;
+	margin-left: -15px;
 }
 
 /* PORTAL */
@@ -280,11 +294,16 @@
 	font-size: 16px;
 }
 
-/*#content-portal #usuarios table tbody tr:first-of-type td:last-of-type
+#content-portal #usuarios table tbody tr td:last-of-type
 {
-	border-top-right-radius: var(--defaultBorderRadius);
+	/*border-top-right-radius: var(--defaultBorderRadius);*/
 	text-align: center;
-}*/
+}
+
+#content-portal #advertencias table tbody tr td:last-of-type
+{
+	cursor: pointer;
+}
 
 #content-portal table tbody tr:not(:last-of-type) td
 {
@@ -398,7 +417,7 @@
 
 .panel
 {
-	background-color: rgb(150,150,150);
+	background-color: rgb(150,150,150) !important;
 }
 
 .ui-progressbar 
@@ -445,7 +464,7 @@
 	z-index: 2;
 }
 
-#mask-container
+#container-mask
 {
 	background-color: rgba(66,66,66,0.8);
 	position: absolute;
@@ -470,6 +489,6 @@
 {
 	text-align: center;
 	color: white;
-	line-height: 425px;
+	padding-top: 170px;
 	font-size: 40px;
 }

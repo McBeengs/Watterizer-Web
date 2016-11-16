@@ -28,12 +28,12 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			console.log($scope.arduinoSel);
 			socket.emit("load",$scope.arduinoSel);
 			socket.on('toClientLoad', function (data) {
-				if (data==null) {
+				if (data.gasto==null) {
 					console.log('null');
-					data=[];
+					data.gasto=[];
 				}
-				for (j = 0; j <= data.length - 1; j++) {
-					$scope.gastos.push({x: $rootScope.i, y: Number(data[j].substr(data[j].lastIndexOf("\'")+1))});
+				for (j = 0; j <= data.gasto.length - 1; j++) {
+					$scope.gastos.push({x: $rootScope.i, y: Number(data.gasto[j].substr(data.gasto[j].lastIndexOf("\'")+1))});
 					$rootScope.i++;
 				}
 				$timeout(function() {
@@ -43,7 +43,6 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}
 
 		socket.on('toClient', function (data) {
-			console.log(data.custo);
 			if (data.arduino == $scope.arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
@@ -56,10 +55,10 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 
 		$interval( function() {
 			if(active == false){
-				$("#mask-container").fadeIn();
+				$("#container-mask").fadeIn();
 				$("text.nvd3.nv-noData").remove();
 			} else {
-				$("#mask-container").fadeOut();
+				$("#container-mask").fadeOut();
 				active == false;
 			}
 		}, 1000);

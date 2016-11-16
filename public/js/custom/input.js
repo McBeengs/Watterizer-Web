@@ -4,8 +4,7 @@ var SPMaskBehavior = function (val) {
 spOptions = {
 	onKeyPress: function(val, e, field, options) {
 		field.mask(SPMaskBehavior.apply({}, arguments), options);
-	},
-	placeholder: "(11) 98765-4321"
+	}
 };
 
 $('#txt-telefone').mask(SPMaskBehavior, spOptions);

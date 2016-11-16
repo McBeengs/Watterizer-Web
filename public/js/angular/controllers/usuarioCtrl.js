@@ -151,6 +151,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 					});
 				}
 				else{
+					console.log("update")
 					$http.put("/dados/usuario", $scope.usuario)
 					.then(function (response) {
 						$window.location.reload();
