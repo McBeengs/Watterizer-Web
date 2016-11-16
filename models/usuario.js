@@ -153,7 +153,7 @@ else{
 		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
 				if (sess.autoUser!='' && sess!=undefined) {
-					usuario.username=autoUser;
+					usuario.username=sess.autoUser;
 					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 						con.release();
 						if (err) {
@@ -289,11 +289,11 @@ else{
 						var obj = string;
 						obj = aes.encText(string,key,init);
 						res.send(obj);			
-						con.release();
+						
 					});
 				}
 			});
-
+			con.release();
 			token = null;
 		});
 };
@@ -317,19 +317,19 @@ else{
 							sess.idUser=result[0].id;
 							sess.perfil=result[0].perfil;
 							sess.token=result[0].token_web;
-							con.release();
+							
 							res.redirect("/portal");
 						}
 						else {
 							sess.login=false;
-							con.release();
+							
 							res.redirect("/index");		
 						}					
 						
 					});
 				}
 			});
-
+con.release();
 });
 };
 } 

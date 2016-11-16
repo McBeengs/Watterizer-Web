@@ -349,6 +349,7 @@ function Gasto() {
 			});
 });
 };
+
 // APAGA UM GASTO
 this.delete = function(id, res) {
 	connection.acquire(function(err, con) {

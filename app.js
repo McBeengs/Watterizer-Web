@@ -191,9 +191,9 @@ net.createServer(function(sock) {
         if (arrayCustoEquipamento[idEquipamento]==undefined) {
             arrayCustoEquipamento[idEquipamento]=0;
         }
-        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+(precoKilowatt.valor*gastoRecebido)
+        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+((127*gastoRecebido/1000)*precoKilowatt.valor)
         arrayCustoEquipamento[idEquipamento]=arrayCustoArduino[idEquipamento]+(precoKilowatt.valor*gastoRecebido)
-        gasto.intervalo(ultimoEnvio,idEquipamento);   
+        gasto.intervalo(ultimoEnvio,idEquipamento); 
         // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosEquipamento[idEquipamento] == undefined) {
             arrayDadosEquipamento[idEquipamento] = new Array(0);
@@ -231,6 +231,7 @@ net.createServer(function(sock) {
     // SE A CONEXÃO FOR FECHADA
 
     sock.on('close', function(data) {
+
         console.log("DESCONECTADO");
         // INFORMA A DESCONEXÃO
         var idEquipamento=0;
