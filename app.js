@@ -135,7 +135,6 @@ app.post('/kilowatt', function(req, res) {
     res.end();
 });
 app.post('/intervalo', function(req, res) {
-    console.log("asd");
     gasto.getIntervalo(req.body.data,req.body.equipamento,res)
 });
 // CAPTURA IP DA MAQUINA
@@ -199,7 +198,7 @@ net.createServer(function(sock) {
         arrayCustoEquipamento[idEquipamento]=arrayCustoArduino[idEquipamento]+(precoKilowatt.valor*gastoRecebido)
         gasto.intervalo(ultimoEnvio,idEquipamento); 
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
-            console.log(body)
+            console.log("body"+body)
         }).form({equipamento:idEquipamento,data:ultimoEnvio})
 
 

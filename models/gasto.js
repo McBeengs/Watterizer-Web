@@ -366,7 +366,7 @@ function Gasto() {
 				}
 				con.release();
 				if (res!=undefined) {
-						res.end(segundos)
+					res.status(HttpStatus.OK).send(segundos.toString())
 				}
 				
 			});
