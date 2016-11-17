@@ -61,11 +61,12 @@ function Equipamento() {
 	this.create = function(equipamento, res) {
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
-			con.query('SELECT id FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
-				if (result[0]!=undefined) {
-					con.query('DELETE ARDUINO WHERE id = ?', [result[0].id_arduino], function(err, result) {
+			con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
+				/*if (result[0]!=undefined) {
+					con.query('DELETE FROM ARDUINO WHERE id = ?', [result[0].id_arduino], function(err, result) {
+						
 						});
-				}
+				}*/
 				if (result[0]==null) {
 					con.query('INSERT INTO equipamento SET ?', [equipamento], function(err, result) {
 						if (err) {
