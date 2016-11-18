@@ -263,12 +263,14 @@ else{
 		connection.acquire(function(err, con) {
 			var sess=req.session;
 			con.query('SELECT * FROM usuario WHERE token_web = ? OR token_desktop = ? AND data_exclusao IS NULL', [token,token], function(err, result) {
-				if(result[0]!=null){
-					sess.aut=true;
-					return true;
-				} else {
-					sess.aut=false;
-					return false;
+				if (sess!=undefined) {
+					if(result[0]!=null){
+						sess.aut=true;
+						return true;
+					} else {
+						sess.aut=false;
+						return false;
+					}
 				}
 			});
 			con.release();
