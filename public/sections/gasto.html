@@ -51,18 +51,18 @@
 			<form id="chart-select" class='form-inline'>
 				<div class="form-group">
 					<label><b>Setor:</b></label>
-					<select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
+					<select ng-options='setor.id as setor.setor for setor in setores' ng-model='setorSel.id'>
 						<option value=''>-- Selecione --</option>
 					</select>
 				</div> 
 				<div class="form-group">
 					<label><b>Arduíno:</b></label>
-					<select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel' ng-change='startChart()'>
+					<select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel.id' ng-change='startChart()'>
 						<option value=''>-- Selecione --</option>
 					</select>
 				</div>
 			</form>
-			<div id="all-arround-chart">
+			<div id="all-arround-chart" ng-if="setores != null && setores != undefined && setorSel.arduinos != null && setorSel.arduinos != undefined">
 				<div id="container-chart">
 					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
 				</div>
