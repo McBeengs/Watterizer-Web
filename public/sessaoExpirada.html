@@ -2,10 +2,45 @@
 <head>
 	<title>Sessão Expirada</title>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="/css/error.css">
+	<link rel="stylesheet" type="text/css" href="/css/raw/error.css">
 </head>
 <body>
-	<header></header>
+	<header>
+		<a id="logo" href="">Watterizer</a>
+	</header>
 	<h1>Sua sessão expirou ou foi finalizada, clique <a href="/index">aqui</a> para voltar para a página inicial.</h1>
+	<h2>Você será redirecionado automaticamente em: <p id="cont"></p> segundos</h2>
 </body>
+<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+<script type="text/javascript">
+	tamanhoLogo();
+	$(window).resize(function() {
+		tamanhoLogo();
+	});
+
+	function tamanhoLogo() {
+		if($(window).width() <= 400){
+			$("#logo").css({
+				width:$(window).width()-50
+			});
+		}
+	}
+
+	$("h1").css({
+		"margin-top":$(window).height()-($(this).height()/2)-($(window).height()*0.2)
+	});
+
+	$(document).ready(function() {
+		var i = 4;
+		$("#cont").html(i+1);
+		setInterval(function() {
+			$("#cont").html(i);
+				if (i == 0){
+					window.location.href = "/index";
+				}
+			i--;
+			console.log(i)
+		}, 1000)
+	})
+</script>
 </html>

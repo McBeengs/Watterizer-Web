@@ -156,6 +156,7 @@ header .logo a
 	background: url(../../img/logo.png) no-repeat;
 	background-size: cover;
 	background-position: center;
+	text-indent: -9999px;
 }
 
 /* RODAPÉ */

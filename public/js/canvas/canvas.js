@@ -8,8 +8,15 @@ var canvas = new fabric.Canvas(
 
     }
 );
-
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
+
+// RESPONSIVIDADE
+$(document).ready(function() {
+    canvas.setWidth($(window).width());
+    $(window).resize(function() {
+        canvas.setWidth($(window).width());
+    }); 
+});
 
 /* EVENT LISTENERS DO CANVAS */
 
@@ -37,12 +44,11 @@ canvas.on('object:moving', function(e) {
     if (obj.getBoundingRect().left + obj.getBoundingRect().width > canvas.width) {
         obj.left = canvas.width - obj.getBoundingRect().width
     }
+
 });
 
 // AO SELECIONAR UM OBJETO
-canvas.on("options:selected", function(options) {
-    fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {})
-});
+canvas.on("options:selected", function(options) {});
 
 // AO CLICAR DUAS VEZES
 var timer;
@@ -63,10 +69,28 @@ canvas.observe('mouse:down', function(options) {
     }
 });
 
-// TESTE DE EVENTO (NAO FUNCIONANDO)
-// function bloquearClickDuplo() {
-//     fabric.Image.fromURL('/img/canvas-icons/pc-icon.png').attr("disabled", "disabled");
-// }
+canvas.observe('mouse:down', function(options) {
+    HideMenu();
+    if (options.target) {
+        var date = new Date();
+        var timeNow = date.getTime();
+        if (timeNow - timer > 500) {
+
+            if (canvas.getActiveObject().crossOrigin == null || canvas.getActiveObject().crossOrigin == undefined) {
+                canvas.deactivateAll();
+                canvas.renderAll();
+            }
+        }
+
+        timer = timeNow;
+    }
+});
+
+
+//REMOVENDO ITEM CONTEXT-MENU
+$("#remover").click(function() {
+    del();
+});
 
 // AO PASSAR O MOUSE EM CIMA
 canvas.observe('mouse:over', function(evento) {
@@ -170,6 +194,7 @@ $("#btn-create-box").click(function() {
 // CRIA UMA PORTA
 $("#btn-create-door").click(function() {
     fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
+        img.id = null;
         img.setWidth(100 * canvasScale);
         img.setHeight(100 * canvasScale);
         img.crossOrigin = null;
@@ -178,7 +203,7 @@ $("#btn-create-door").click(function() {
     });
 });
 
-// ADICIONA UM PC
+// ADICIONA UM PC COM TEXTO
 var idimg = 0;
 $("#btn-create-pc").click(function() {
     idimg++;
@@ -186,11 +211,31 @@ $("#btn-create-pc").click(function() {
     var texto = $("#txt-pc-name").val();
     if (texto != "") {
         fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
+            var text = new fabric.Text(texto, {
+                fontFamily: 'Arial',
+                fontSize: 20,
 
+            });
+            // text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
+            // text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
+            var group = new fabric.Group([img, text], {
+                left: 0,
+                top: 0,
+            });
+            group.id = idimg;
             img.id = idimg
+            group.setWidth(70 * canvasScale);
+            group.setHeight(70 * canvasScale);
             img.setWidth(70 * canvasScale);
             img.setHeight(70 * canvasScale);
-            img.setControlsVisibility({
+            text.setHeight(70 * canvasScale);
+            text.setWidth(70 * canvasScale);
+            text.setLeft(-13 - text.text.length * 4);
+            text.setTop(20);
+            img.setTop();
+            img.setLeft();
+            text.setTextAlign("center center");
+            group.setControlsVisibility({
                 mt: false,
                 mb: false,
                 ml: false,
@@ -202,21 +247,26 @@ $("#btn-create-pc").click(function() {
                 mtr: true
             });
             img.crossOrigin = texto;
-            canvas.add(img);
+            console.log(img.crossOrigin)
+            texto = lastTarget;
+            canvas.add(group);
         });
-        bloquearClickDuplo();
     } else {
         alert("É necessário inserir um nome no PC")
     }
 });
 
 //EDITANDO NOME PC
-$("#editar").click(function() {
+$("#editar").click(function editar() {
     var texto2 = $("#txt-new-name-pc").val();
-    console.log(lastTarget)
-    alert("antigo texto " + lastTarget.crossOrigin)
-    lastTarget.crossOrigin = texto2;
-    alert("novo texto " + lastTarget.crossOrigin)
+
+    if (texto2 != "") {
+        alert("antigo texto " + lastTarget.crossOrigin)
+        lastTarget.crossOrigin = texto2;
+        alert("novo texto " + lastTarget.crossOrigin)
+    } else {
+        alert("necessário colocar um novo")
+    }
 });
 
 
@@ -225,11 +275,11 @@ $("#btn-canvas-obj-delete").click(function() {
     var activeObject = canvas.getActiveObject(),
         activeGroup = canvas.getActiveGroup();
     if (activeObject) {
-        if (confirm('Tem certeza?')) {
+        if (confirm('Tem certeza ?')) {
             canvas.remove(activeObject);
         }
     } else if (activeGroup) {
-        if (confirm('Tem certeza?')) {
+        if (confirm('Tem certeza ?')) {
             var objectsInGroup = activeGroup.getObjects();
             canvas.discardActiveGroup();
             objectsInGroup.forEach(function(object) {
@@ -322,12 +372,9 @@ canvas.on("object:added", function(e) {
         list = [list[index2]];
 
         action = false;
-        console.log(state);
         index = 1;
     }
     object.saveState();
-
-    console.log(object.originalState);
     state[index] = JSON.stringify(object.originalState);
     list[index] = object;
     index++;
@@ -348,7 +395,6 @@ canvas.on("object:modified", function(e) {
         list = [list[index2]];
 
         action = false;
-        console.log(state);
         index = 1;
     }
 
@@ -358,8 +404,6 @@ canvas.on("object:modified", function(e) {
     list[index] = object;
     index++;
     index2 = index - 1;
-
-    console.log(state);
     refresh = true;
 });
 
@@ -396,8 +440,6 @@ function redo() {
         return;
     }
 
-    console.log('redo');
-
     index2 = index + 1;
     current = list[index2];
     current.setOptions(JSON.parse(state[index2]));
@@ -412,11 +454,11 @@ function del() {
     var activeObject = canvas.getActiveObject(),
         activeGroup = canvas.getActiveGroup();
     if (activeObject) {
-        if (confirm('Tem certeza?')) {
+        if (confirm('Tem certeza ?')) {
             canvas.remove(activeObject);
         }
     } else if (activeGroup) {
-        if (confirm('Tem certeza?')) {
+        if (confirm('Tem certeza ?')) {
             var objectsInGroup = activeGroup.getObjects();
             canvas.discardActiveGroup();
             objectsInGroup.forEach(function(object) {
@@ -471,21 +513,21 @@ $("#slt-setores").change(function() {
     }, 50);
 });
 
+$(document).bind("contextmenu", function(e) {
+    HideMenu();
+    return true;
+});
 
-
-// $(document).bind("contextmenu",function (e) {
-//     HideMenu();
-//     return true;
-// });
 
 //DESATIVAR MENU DE CONTEXTO
 $(document).ready(function() {
     $('canvas').bind("contextmenu", function(e) {
-
         if (target) {
             lastTarget = target;
             mostrarMenu(e)
+            canvas.setActiveObject(target)
         }
+
         return false;
     });
 });
@@ -502,7 +544,20 @@ function mostrarMenu(event) {
     menu.style.left = X.toString() + "px";
     menu.style.display = "block";
 
+    //CONTEXT-MENU
+    if (target.id == null || target.id == undefined) {
+        $("#editar").hide();
+        $("#txt-new-name-pc").hide();
+        $("#desligar").hide();
+    } else {
+        $("#editar").show();
+        $("#txt-new-name-pc").show();
+        $("#desligar").show();
+    }
+
 }
+
+
 
 //Rodar imagens
 function rotateObject(angleOffset) {
@@ -532,7 +587,6 @@ function rotateObject(angleOffset) {
 fabric.util.addListener(document.getElementById('esquerda'), 'click', function rodarEsquerda() {
     rotateObject(-90);
 });
-
 fabric.util.addListener(document.getElementById('direita'), 'click', function rodarDireita() {
     rotateObject(90);
 });
@@ -555,8 +609,7 @@ fabric.Object.prototype.setCenterToOrigin = function() {
     var originPoint = this.translateToOriginPoint(
         this.getCenterPoint(),
         this._originalOriginX,
-        this._originalOriginY
-    );
+        this._originalOriginY);
 
     this.set({
         originX: this._originalOriginX,
@@ -575,6 +628,7 @@ function HideMenu() {
 
 canvas.observe('object:moving', function(evento) {
     $('#context-menu').hide();
+
 });
 
 canvas.observe('mouse:out', function(evento) {
@@ -603,3 +657,12 @@ function moveImageTools(evento) {
 
     canvas.renderAll();
 }
+
+//SEGURANDO
+// var mouseDown = 0;
+// document.body.onmousedown = function() { 
+//     mouseDown = 1;
+// }
+// document.body.onmouseup = function() {
+//     mouseDown = 0;
+// }

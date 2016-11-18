@@ -103,7 +103,9 @@
 	float: left;
 	top: 25px;
 	height: 25px;
-	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	    -ms-transform: rotate(180deg);
+	        transform: rotate(180deg);
 	background: url(../../img/back.png) no-repeat;
 	background-size: contain;
 	background-position: center;
@@ -145,30 +147,35 @@
 
 #sec-gasto
 {
+	border-right: -webkit-calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	border-right: calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	height: 300px;
 }
 
 #sec-setor
 {
+	border-left: -webkit-calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	height: 145px;
 }
 
 #sec-usuario
 {
+	border-left: -webkit-calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	height: 145px;
 }
 
 #sec-advertencia
 {
+	border-right: -webkit-calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	border-right: calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	height: 145px;
 }
 
 #sec-computador
 {
+	border-left: -webkit-calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	border-left: calc(var(--sectionsBorder)/2) solid var(--mainGray);
 	height: 145px;
 }
@@ -455,7 +462,8 @@
 	right: 0px;
 	bottom: 0px;
 	left: 0px;
-	filter: blur(10px);
+	-webkit-filter: blur(10px);
+	        filter: blur(10px);
 }
 
 #mask h2
