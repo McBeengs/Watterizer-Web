@@ -44,8 +44,11 @@ function Usuario() {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
 				con.release();
-				result[0].senha=aes.decText(result[0].senha,key,init);
+				if (result[0]!=undefined) {
+					result[0].senha=aes.decText(result[0].senha,key,init);
+				}
 				res.send(result);
+				
 			});
 		});
 	};
