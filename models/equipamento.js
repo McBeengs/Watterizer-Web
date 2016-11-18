@@ -24,10 +24,20 @@ function Equipamento() {
 	this.check = function(mac, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
-				con.release();
-				res.send(result);
+				if (result[0]==null) {
+					con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao FROM equipamento  WHERE mac = ?', [mac], function(err, result) {
+						con.release();
+						console.log(result);
+						res.send(result);
+					});
+				}else{
+					con.release();
+					res.send(result);
+				}
 			});
+
 		});
+
 	};
 	// VERIFICA EQUIPAMENTOS SEM ARDUINO
 	this.checkNovo = function(res) {
@@ -62,11 +72,6 @@ function Equipamento() {
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
 			con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
-				/*if (result[0]!=undefined) {
-					con.query('DELETE FROM ARDUINO WHERE id = ?', [result[0].id_arduino], function(err, result) {
-						
-						});
-				}*/
 				if (result[0]==null) {
 					con.query('INSERT INTO equipamento SET ?', [equipamento], function(err, result) {
 						if (err) {
@@ -100,7 +105,7 @@ function Equipamento() {
 					}
 					con.release();
 				});
-				
+
 
 			});
 

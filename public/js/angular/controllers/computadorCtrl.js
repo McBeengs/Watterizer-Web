@@ -10,7 +10,9 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 				.then(function (response) {
 					$scope.pcsligados=response.data;
 					for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
+						console.log(i);
 						for (var j = $scope.pcsligados.length - 1; j >= 0; j--) {
+							console.log(j);
 							if ($scope.equipamentos[i].mac==$scope.pcsligados[j]) {
 								$scope.pcsLigadosFull.push($scope.equipamentos[i])
 							}

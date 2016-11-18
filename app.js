@@ -81,6 +81,7 @@ app.post('/pcligado', function(req, res) {
     if (!repetido) {
         pcsLigados.push(req.body.mac);
     }
+    console.log(req.body);
     io.sockets.emit('pcLigado', req.body.mac);
     io.sockets.emit('pcCount', pcsLigados);
     res.send(pcsLigados);
@@ -89,7 +90,6 @@ app.post('/pcligado', function(req, res) {
 //web
 app.get('/pcligado', function(req, res) {
     res.send(pcsLigados);
-
 });
 app.post('/desligapc', function(req, res) {
     var repetido=false
