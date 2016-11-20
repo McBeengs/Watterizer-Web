@@ -130,7 +130,8 @@ function Equipamento() {
 	// APENAS ATUALIZA O EQUIPAMENTO
 	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
-			con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
+			if (equipamento.mac!=null && equipamento.mac!="") {
+				con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -142,6 +143,22 @@ function Equipamento() {
 					.send('OK');
 				}
 			});
+			}
+			else{
+				con.query('UPDATE equipamento SET ? WHERE nome = ?', [equipamento, equipamento.nome], function(err, result) {
+				con.release();
+				if (err) {
+					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+				} else {
+					res.status(HttpStatus.OK)
+					.send('OK');
+				}
+			});
+			}
+			
 		});
 	};
 	// APAGA UM EQUIPAMENTO COM BASE NO MAC

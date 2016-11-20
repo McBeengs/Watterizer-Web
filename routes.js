@@ -223,26 +223,27 @@ module.exports = {
     app.get('/equipamentonew', function(req, res) {
       equipamento.checkNovo(res);
   });
+    //
     app.post(prefixoDados+'/equipamentocheckarduino', function(req, res) {
         equipamento.checkArduino(req.body.mac,res);
     });
     /* EQUIPAMENTOS */
-    // MOSTRA TODOS OS EQUIPAMENTOS
+    // MOSTRA TODOS OS EQUIPAMENTOS //
     app.get(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.listAll(res);
     });
 
-    // MOSTRA UM EQUIPAMENTO
+    // MOSTRA UM EQUIPAMENTO //
     app.get(prefixoDados+'/equipamento/:id/', function(req, res) {
         equipamento.getOne(req.params.id, res);
     });
 
-    // ADICIONA UM NOVO EQUIPAMENTO
+    // ADICIONA UM NOVO EQUIPAMENTO //
     app.post(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.create(req.body, res);
     });
 
-    // MODIFICA UM EQUIPAMENTO
+    // MODIFICA UM EQUIPAMENTO //
     app.put(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.update(req.body, res);
     });
