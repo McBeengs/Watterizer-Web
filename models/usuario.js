@@ -328,8 +328,6 @@ else{
 						else{
 							sess.token=result[0].token_web;
 						}
-						
-						console.log(result[0])
 						res.redirect("/portal");
 					}
 					

@@ -160,7 +160,13 @@ module.exports = {
     });
     app.get('/foto.png', function (req, res) {
         res.contentType('png')
-        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+        try{
+            res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+        }
+        catch(){
+            res.sendFile(__dirname + "public/img/avatar-placeholder.gif");
+        }
+        
     }); 
 
 
@@ -200,7 +206,7 @@ module.exports = {
     app.delete(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.delete(req.params.id, res);
     });
-
+    ///
     app.post('/equipamentocheck', function(req, res) {
         if (req.body.command=="check") {
             equipamento.check(req.body.mac,res);
@@ -213,6 +219,7 @@ module.exports = {
         }
         
     });
+    ///
     app.get('/equipamentonew', function(req, res) {
       equipamento.checkNovo(res);
   });
