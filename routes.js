@@ -411,7 +411,7 @@ module.exports = {
     });
     
     app.post('/emailcheck', function(req, res) {
-        usuario.checaEmailCadastrado(req.body.email, res);
+        usuario.checaEmailCadastrado(req.body, res);
     });
 
     // MODIFICA UM SETOR
@@ -442,7 +442,6 @@ module.exports = {
     
     app.get('/sessao', function(req, res) {
         var array=[];
-        sess=req.session;
         array.push(sess.nome);
         array.push(sess.token);
         array.push(sess.idUser);

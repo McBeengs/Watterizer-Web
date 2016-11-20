@@ -66,7 +66,7 @@ function Equipamento() {
 			});
 			
 		});
-	};
+	}; 
 	// CRIA UM EQUIPAMENTO OU ATUALIZA O MESMO
 	this.create = function(equipamento, res) {
 		connection.acquire(function(err, con) {

@@ -161,7 +161,7 @@ app.controller("usuarioCtrl", function($scope,$window,$http, DTOptionsBuilder, D
 				}
 			}
 			else{
-				alert("Vai rolar não parça")
+				alert("Email já existe")
 			}
 			
 		}, function(response){
