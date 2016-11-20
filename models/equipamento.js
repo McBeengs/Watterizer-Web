@@ -85,7 +85,8 @@ function Equipamento() {
 					});
 				}
 				else{
-					con.query('UPDATE equipamento SET ? WHERE mac = ? AND nome = ?', [equipamento, equipamento.mac, equipamento.nome], function(err, result) {
+					if (result[0].mac!=null) {
+						con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
 						if (err) {
 							console.log(err);
 							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -96,6 +97,21 @@ function Equipamento() {
 							res.status(HttpStatus.OK).send(result.insertId.toString())
 						}
 					});
+					}
+					else{
+						con.query('UPDATE equipamento SET ? WHERE nome = ?', [equipamento, equipamento.nome], function(err, result) {
+						if (err) {
+							console.log(err);
+							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+							.send({
+								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+							});
+						} else {
+							res.status(HttpStatus.OK).send(result.insertId.toString())
+						}
+					});
+					}
+					
 				}
 				con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
 					var equipamentoResponsavel = result[0];

@@ -175,28 +175,28 @@ module.exports = {
     app.get(prefixoDados+'/logado/', function(req, res) {
         usuario.getLogado(req.session.idUser,res);
     });
-
+    ///
     // MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
     app.get(prefixoDados+'/arduino/setor/:id/', function(req, res) {
         arduino.listBySetor(req.params.id, res);
     });
 
-    // MOSTRA UM ARDUINO
+    // MOSTRA UM ARDUINO ///
     app.get(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.getOne(req.params.id, res);
     });
 
-    // ADICIONA UM NOVO ARDUNO
+    // ADICIONA UM NOVO ARDUNO //
     app.post('/arduino/', function(req, res) {
         arduino.create(req.body, res);
     });
 
-    // MODIFICA UM ARDUNO
+    // MODIFICA UM ARDUNO //
     app.put(prefixoDados+'/arduino/', function(req, res) {
         arduino.update(req.body, res);
     });
 
-    // DELETA UM ARDUNO
+    // DELETA UM ARDUNO //
     app.delete(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.delete(req.params.id, res);
     });
