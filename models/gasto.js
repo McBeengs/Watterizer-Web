@@ -81,7 +81,7 @@ function Gasto() {
 		});
 	};
 
-	// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE POR EQUIPAMENTO
+	// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE POR ID
 	this.getOneHoje = function(id,res) {
 		connection.acquire(function(err, con) {
 			con.query("SELECT ultimo_update, CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE() AND id_equipamento = ?",[id], function(err, result) {
@@ -220,6 +220,10 @@ function Gasto() {
 		connection.acquire(function(err, con) {
 			var idArduino;
 			con.query('SELECT mac,id_arduino FROM equipamento WHERE id=?',[idEquipamento], function(err, result) {
+				if (err) {
+					console.log(err);
+				}
+				
 				idArduino=0;
 				if (result[0]!=null) {
 					idArduino=result[0].id_arduino;
@@ -231,7 +235,9 @@ function Gasto() {
 					}
 				}
 				con.query('SELECT *, TIMEDIFF(CURTIME(), ultimo_update) AS intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?',[idArduino,idEquipamento], function(err, result) {
-					
+					if (err) {
+						console.log("select"+err);
+					}
 					var gastos='';
 					if (JSON.stringify(result)=='[]') {
 
@@ -246,6 +252,10 @@ function Gasto() {
 						};
 						console.log("insert");
 						con.query('INSERT INTO gasto SET gasto=CONVERT(?, BINARY),data=CURDATE(),id_arduino=?,id_equipamento=?, ultimo_update=CURTIME(), custo=?',[gastos,idArduino,idEquipamento,custo], function(err, result) {
+							if (err) {
+								console.log("insert"+err);
+								console.log("custo"+custo);
+							}
 						})
 					}
 					else {
@@ -273,26 +283,28 @@ function Gasto() {
 
 							console.log("update");
 							con.query('UPDATE gasto SET gasto=CONVERT(?, BINARY), ultimo_update=CURTIME(),custo=? WHERE data = CURDATE() AND id_arduino=? AND id_equipamento=?', [gastos,custo,idArduino,idEquipamento],function (err,result) {
-								
+								if (err) {
+									console.log("update"+err);
+								}
 							});
 
 						});  
 
-					}
-					con.release();
-					if (res!=null) {
-						if (err) {
-							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-							.send({
-								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-							});
-						} else {
-							res.status(HttpStatus.CREATED)
-							.send('CREATED');
-						}
-					}
+}
+con.release();
+if (res!=null) {
+	if (err) {
+		res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+		.send({
+			error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+		});
+	} else {
+		res.status(HttpStatus.CREATED)
+		.send('CREATED');
+	}
+}
 
-				});
+});
 
 });
 
@@ -333,44 +345,45 @@ function Gasto() {
 
 				}
 				con.release();
-					if (err) {
-						console.log(err);
-						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.send({
-							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-						});
-					} else {
-						return segundos;
-					}
+				if (err) {
+					console.log(err);
+					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+				} else {
+					return segundos;
+				}
 				
 				
 			});
 });
 };
-// ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
-	this.getIntervalo = function(data,idEquipamento, res) {
-		connection.acquire(function(err, con) {
-			var segundos=0;
-			con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
+// MOSTRA O INTERVALO
+this.getIntervalo = function(data,idEquipamento, res) {
+	connection.acquire(function(err, con) {
+		console.log("data "+data+" equipamento "+idequipamento);
+		var segundos=0;
+		con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
 
-				if (JSON.stringify(result)=='[]') {
-					
-				} else {
-					con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[data,idEquipamento], function(err, result) {
-						var gastos='';
-						var intervalo = result[0].intervalo;
+			if (JSON.stringify(result)=='[]') {
+
+			} else {
+				con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[data,idEquipamento], function(err, result) {
+					var gastos='';
+					var intervalo = result[0].intervalo;
 						intervalo = intervalo.split(':'); // split it at the colons
 						segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
 					});
 
-				}
-				con.release();
-				if (res!=undefined) {
-					res.status(HttpStatus.OK).send(segundos.toString())
-				}
-				
-			});
-});
+			}
+			con.release();
+			if (res!=undefined) {
+				res.status(HttpStatus.OK).send(segundos.toString())
+			}
+
+		});
+	});
 };
 
 // APAGA UM GASTO

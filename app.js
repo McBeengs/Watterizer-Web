@@ -198,7 +198,7 @@ net.createServer(function(sock) {
         arrayCustoEquipamento[idEquipamento]=arrayCustoArduino[idEquipamento]+(precoKilowatt.valor*gastoRecebido)
         gasto.intervalo(ultimoEnvio,idEquipamento); 
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
-            console.log("body"+body)
+            
         }).form({equipamento:idEquipamento,data:ultimoEnvio})
 
 
@@ -223,6 +223,7 @@ net.createServer(function(sock) {
         
         for (var i = 0; i <= arrayDadosEquipamento[idEquipamento].length - 1; i++) {
             if (i==599) {
+                console.log("create id equipamento"+idEquipamento);
                 gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
                 ultimoEnvioData= new Date();
                 arrayDadosEquipamento[idEquipamento] = new Array(0);
@@ -257,7 +258,7 @@ net.createServer(function(sock) {
                 console.log("ip: "+sock.remoteAddress +':'+ sock.remotePort+" desconectou,idEquipamento= "+i);
             }
         };
-
+        console.log("create id equipamento"+idEquipamento);
         gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
         arrayDadosEquipamento[idEquipamento] = new Array(0);
         arrayCustoEquipamento[idEquipamento] = new Array(0);

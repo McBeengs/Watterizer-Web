@@ -49,9 +49,24 @@ var storage =   multer.diskStorage({
 var upload = multer({ storage : storage}).single('user-photo');
 var sess;
 
+
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
 module.exports = {
   configure: function(app) {
+    //Url de upload de imagem
+    app.post('/upload',function(req,res){
+        upload(req,res,function(err) {
+            if(err) {
+                return res.end("Error uploading file.");
+            }
+            else if (isvalid) {
+                res.redirect("/portal/configuracoes")
+            }
+            else {
+                res.end("File is invalid");
+            }
+        });
+    });
     // ACESSO A PAGINA INICIAL
     app.get('/index',function(req,res){
         sess = req.session;
@@ -108,19 +123,6 @@ module.exports = {
         res.sendFile(__dirname + "/public/sections/advertencia.html");
     });
 
-    app.post('/upload',function(req,res){
-        upload(req,res,function(err) {
-            if(err) {
-                return res.end("Error uploading file.");
-            }
-            else if (isvalid) {
-                res.redirect("/portal/configuracoes")
-            }
-            else {
-                res.end("File is invalid");
-            }
-        });
-    });
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
@@ -173,6 +175,9 @@ module.exports = {
     /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
     app.get(prefixoDados+'/arduino/', function(req, res) {
+        arduino.listAll(res);
+    });
+    app.get('/arduino/', function(req, res) {
         arduino.listAll(res);
     });
     app.get(prefixoDados+'/contador/', function(req, res) {
@@ -248,12 +253,12 @@ module.exports = {
         equipamento.update(req.body, res);
     });
 
-    // DELETA UM EQUIPAMENTO
+    // DELETA UM EQUIPAMENTO //
     app.delete(prefixoDados+'/equipamento/:id/', function(req, res) {
         equipamento.delete(req.params.id, res);
     });
     /* GASTOS */
-    // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
+    // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/', function(req, res) {
         gasto.listAll(res);
     });

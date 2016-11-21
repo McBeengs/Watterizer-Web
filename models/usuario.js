@@ -39,7 +39,7 @@ function Usuario() {
 			});
 		});
 	};
-	// MOSTRA UM USUARIO
+	// MOSTRA O USUARIO LOGADO
 	this.getLogado = function(id, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
@@ -305,7 +305,7 @@ else{
 			con.release();
 			token = null;
 		});
-};
+	};
 	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
 	this.loginWeb = function(login,senha,req, res) {
 		connection.acquire(function(err, con) {

@@ -2,7 +2,7 @@ const connection = require('../connection');
 const HttpStatus = require('http-status-codes');
 
 function Canvas() {
-	// LISTA TODOS OS Canvas()
+	// LISTA TODOS OS Canvas
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas)', function(err, result) {
