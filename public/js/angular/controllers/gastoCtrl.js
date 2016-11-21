@@ -7,13 +7,13 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		$http.get("/setor/arduino")
 		.then(function (response) {
 			$scope.setores = response.data;
-			console.log($scope.setores.arduinos);
-			if($scope.setores != null && $scope.setores != undefined) {
-				$scope.setorSel = response.data[0];
-				console.log($scope.setorSel);
-				$scope.arduinoSel = $scope.setorSel.arduinos[0];
-				console.log($scope.arduinoSel);
-			}
+			console.log($scope.setores)
+			// if($scope.setores != null && $scope.setores != undefined) {
+			// 	$scope.setorSel = response.data[0];
+			// 	console.log($scope.setorSel);
+			// 	$scope.arduinoSel = $scope.setorSel.arduinos[0];
+			// 	console.log($scope.arduinoSel);
+			// }
 		});
 
 		$scope.startChart = function () {

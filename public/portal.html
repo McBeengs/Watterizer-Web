@@ -44,7 +44,10 @@
 		<div id="content-portal" class="container-fluid">
 			<!-- NAVEGAÇÃO PELAS SEÇÕES DO PORTAL -->
 			<div id="sections-portal">
-				<div id="sec-gasto" class="watts-box col-sm-8"><a href="/portal/gastos">Dados de Consumo</a></div>
+				<div id="sec-gasto" class="watts-box col-sm-8">
+					<a href="/portal/gastos">Dados de Consumo</a>
+					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
+				</div>
 				<div id="sec-setor" class="watts-box col-sm-4"><a href="/portal/setores">Setores<label class="badge">{{dados.setor}}</label></a></div>
 				<div id="sec-usuario" class="watts-box col-sm-4"><a href="/portal/usuarios">Usuários<label class="badge">{{dados.usuario}}</label></a></div>
 				<div id="sec-advertencia" class="watts-box col-sm-6"><a href="/portal/advertencias">Advertências<label class="badge">{{dados.advertencia}}</label></a></div>
