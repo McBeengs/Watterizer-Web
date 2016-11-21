@@ -163,7 +163,7 @@ module.exports = {
         try{
             res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
         }
-        catch(){
+        catch(err){
             res.sendFile(__dirname + "public/img/avatar-placeholder.gif");
         }
         
