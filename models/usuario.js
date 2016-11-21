@@ -77,12 +77,13 @@ function Usuario() {
 		});
 	};
 	// VERIFICA SE O EMAIL EXISTE NO BANCO DE DADOS
-	this.checaEmailCadastrado = function(email, res) {
+	this.checaEmailCadastrado = function(usuario, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
+				console.log(result)
 				var isCadastrado=false;
 				for (var i = result.length - 1; i >= 0; i--) {
-					if (result[i].email==email) {
+					if (result[i].email==usuario.email && result[i].id!=usuario.id) {
 						isCadastrado=true;
 					};
 				};
@@ -310,19 +311,23 @@ else{
 		connection.acquire(function(err, con) {
 			var sess = req.session;
 			var token = randtoken.generate(16);	
-			con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
+			con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
 				if (result[0] != null) {
+					console.log("ad")
 					if (result[0].username!="admin" || result[0].token_web==null) {
 						con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 						});
 					}
 					if (result[0].perfil.toLowerCase()=='administrador') {
-
 						sess.nome=result[0].nome;
 						sess.idUser=result[0].id;
 						sess.perfil=result[0].perfil;
-						sess.token=result[0].token_web;
-
+						if (result[0].token_web==null) {
+							sess.token=token;
+						}
+						else{
+							sess.token=result[0].token_web;
+						}
 						res.redirect("/portal");
 					}
 					

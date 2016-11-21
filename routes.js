@@ -160,7 +160,13 @@ module.exports = {
     });
     app.get('/foto.png', function (req, res) {
         res.contentType('png')
-        res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+        try{
+            res.sendFile(__dirname + "/img/fotoid"+req.session.idUser+".png");
+        }
+        catch(err){
+            res.sendFile(__dirname + "public/img/avatar-placeholder.gif");
+        }
+        
     }); 
 
 
@@ -175,32 +181,32 @@ module.exports = {
     app.get(prefixoDados+'/logado/', function(req, res) {
         usuario.getLogado(req.session.idUser,res);
     });
-
+    ///
     // MOSTRA TODOS OS ARDUINOS DE UM SETOR ESPECIFICADO
     app.get(prefixoDados+'/arduino/setor/:id/', function(req, res) {
         arduino.listBySetor(req.params.id, res);
     });
 
-    // MOSTRA UM ARDUINO
+    // MOSTRA UM ARDUINO ///
     app.get(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.getOne(req.params.id, res);
     });
 
-    // ADICIONA UM NOVO ARDUNO
+    // ADICIONA UM NOVO ARDUNO //
     app.post('/arduino/', function(req, res) {
         arduino.create(req.body, res);
     });
 
-    // MODIFICA UM ARDUNO
+    // MODIFICA UM ARDUNO //
     app.put(prefixoDados+'/arduino/', function(req, res) {
         arduino.update(req.body, res);
     });
 
-    // DELETA UM ARDUNO
+    // DELETA UM ARDUNO //
     app.delete(prefixoDados+'/arduino/:id/', function(req, res) {
         arduino.delete(req.params.id, res);
     });
-
+    ///
     app.post('/equipamentocheck', function(req, res) {
         if (req.body.command=="check") {
             equipamento.check(req.body.mac,res);
@@ -213,29 +219,31 @@ module.exports = {
         }
         
     });
+    ///
     app.get('/equipamentonew', function(req, res) {
       equipamento.checkNovo(res);
   });
+    //
     app.post(prefixoDados+'/equipamentocheckarduino', function(req, res) {
         equipamento.checkArduino(req.body.mac,res);
     });
     /* EQUIPAMENTOS */
-    // MOSTRA TODOS OS EQUIPAMENTOS
+    // MOSTRA TODOS OS EQUIPAMENTOS //
     app.get(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.listAll(res);
     });
 
-    // MOSTRA UM EQUIPAMENTO
+    // MOSTRA UM EQUIPAMENTO //
     app.get(prefixoDados+'/equipamento/:id/', function(req, res) {
         equipamento.getOne(req.params.id, res);
     });
 
-    // ADICIONA UM NOVO EQUIPAMENTO
+    // ADICIONA UM NOVO EQUIPAMENTO //
     app.post(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.create(req.body, res);
     });
 
-    // MODIFICA UM EQUIPAMENTO
+    // MODIFICA UM EQUIPAMENTO //
     app.put(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.update(req.body, res);
     });
@@ -411,7 +419,7 @@ module.exports = {
     });
     
     app.post('/emailcheck', function(req, res) {
-        usuario.checaEmailCadastrado(req.body.email, res);
+        usuario.checaEmailCadastrado(req.body, res);
     });
 
     // MODIFICA UM SETOR
@@ -442,7 +450,6 @@ module.exports = {
     
     app.get('/sessao', function(req, res) {
         var array=[];
-        sess=req.session;
         array.push(sess.nome);
         array.push(sess.token);
         array.push(sess.idUser);
