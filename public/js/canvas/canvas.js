@@ -119,7 +119,7 @@ canvas.observe('mouse:out', function(evento) {
 
 // CONFIGURAÇÕES DE ZOOM
 var canvasScale = 1;
-var scaleFactor = 1.01;
+var scaleFactor = 1.1;
 
 $(function() {
     // ZOOM +
@@ -177,14 +177,14 @@ $(function() {
 // CRIA UM DIVISOR
 $("#btn-create-box").click(function() {
     var rect = new fabric.Rect({
-        left: 500 * canvasScale,
-        top: 150 * canvasScale,
+        left: 10 * canvasScale,
+        top: 10 * canvasScale,
         hasRotatingPoint: false,
         stroke: 'black',
         fill: 'transparent',
         strokeWidth: 2,
-        width: 500 * canvasScale,
-        height: 500 * canvasScale
+        width: 300 * canvasScale,
+        height: 300 * canvasScale
 
     });
     canvas.add(rect);
