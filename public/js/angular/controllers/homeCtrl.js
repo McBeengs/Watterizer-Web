@@ -1,4 +1,5 @@
 // CONTROLLER DA HOME
+app.requires.push('nvd3');
 app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interval, $timeout) {
 	// LISTA TODOS OS SETORES
 	var intervalo = $interval(function () {
@@ -54,14 +55,14 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 		$scope.startChart();
 
 		socket.on('toClient', function (data) {
-			if (data.arduino == $scope.arduinoSel) {
+			// if (data.arduino == $scope.arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
 				$timeout(function() {
 					$scope.createChart($scope.gastos);
 				}, 1000);
 				$rootScope.i++;
-			}
+			// }
 		});
 
 		$interval( function() {
@@ -82,7 +83,7 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 		$scope.generalChart.options = {
 			chart: {
 				type: 'lineChart',
-				height: 10,
+				height: 220,
 				margin : {
 					top: 20,
 					right: 20,
@@ -99,10 +100,10 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 					tooltipHide: function(e){ console.log("tooltipHide"); }
 				},
 				xAxis: {
-					axisLabel: 'Tempo (s)'
+					axisLabel: ''
 				},
 				yAxis: {
-					axisLabel: 'Corrente (a)',
+					axisLabel: '',
 					tickFormat: function(d){
 						return d3.format('.02f')(d);
 					},
@@ -113,7 +114,7 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 				}
 			},
 			title: {
-				enable: true,
+				enable: false,
 				text: 'Consumo Atual',
 				css: {
 					'color':'white',
