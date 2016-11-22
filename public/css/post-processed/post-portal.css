@@ -367,6 +367,11 @@
 	border-color: white;
 }
 
+#content-portal div.panel-group div.panel:nth-of-type(odd)
+{
+	
+}
+
 #content-portal div.panel-group ul.list-group li{
 	background: rgb(150,150,150);
 }
@@ -396,6 +401,7 @@
 .panel
 {
 	background-color: rgb(150,150,150) !important;
+	margin-top: 10px !important;
 }
 
 .ui-progressbar 
