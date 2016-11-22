@@ -154,6 +154,7 @@ else{
 	// MODIFICA UM USUARIO
 	this.update = function(usuario,req, res) {
 		var sess = req.session;
+		usuario.senha=aes.encText(usuario.senha,key,init);
 		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
 				if (sess.autoUser!='' && sess!=undefined) {

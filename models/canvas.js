@@ -56,9 +56,10 @@ function Canvas() {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;
 			delete canvas.setor;
-			con.query('UPDATE canvas,setor SET ? WHERE setor.setor=? AND setor.id_canvas=canvas.id', [canvas, setor], function(err, result) {
+			con.query('UPDATE canvas SET ? WHERE id = ?', [canvas, canvas.id], function(err, result) {
 				con.release();
 				if (err) {
+					console.log(err)
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -74,13 +75,12 @@ function Canvas() {
 	this.delete = function(canvas, res) {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;
+			console.log(setor)
 			delete canvas.setor;
-			con.query('DELETE FROM `canvas`WHERE `id` in (SELECT DISTINCT `id_canvas` FROM `setor`) AND ? in (SELECT DISTINCT `setor` FROM `setor`)', [setor], function(err, result) {
-				
-			});
-			con.query('UPDATE `setor` set id_canvas=0 WHERE setor=?', [setor], function(err, result) {
-				con.release();
+			con.query('UPDATE `setor` set id_canvas=NULL WHERE setor=?', [setor], function(err, result) {
+				console.log(result)
 				if (err) {
+					console.log(err)
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -90,6 +90,10 @@ function Canvas() {
 					.send('NO CONTENT');
 				}
 			});
+			// con.query('DELETE FROM `canvas`WHERE `id` in (SELECT DISTINCT `id_canvas` FROM `setor`) AND ? in (SELECT DISTINCT `setor` FROM `setor`)', [setor], function(err, result) {
+				
+			// });
+			con.release();
 		});
 	};
 } 
