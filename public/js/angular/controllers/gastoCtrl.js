@@ -2,21 +2,20 @@
 app.requires.push('nvd3');
 app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $timeout) {
 	$timeout(function() {
+		// CONECTA AO SOCKET
 		var socket = io.connect($scope.ip+':1515');
 		var active = false;
+
+		// PEGA OS SETORES DO BANCO DE DADOS
 		$http.get("/setor/arduino")
 		.then(function (response) {
 			$scope.setores = response.data;
 			console.log($scope.setores)
-			// if($scope.setores != null && $scope.setores != undefined) {
-			// 	$scope.setorSel = response.data[0];
-			// 	console.log($scope.setorSel);
-			// 	$scope.arduinoSel = $scope.setorSel.arduinos[0];
-			// 	console.log($scope.arduinoSel);
-			// }
 		});
 
+		// INICIA A FORMAÇÃO DO GRÁFICO QUANDO UM ARDUÍNO FOR SELECIONADO
 		$scope.startChart = function () {
+			// PEGA OS GASTOS DO BANCO DE DADOS
 			$http.get("/dados/gasto/arduino/"+$scope.arduinoSel)
 			.then(function (response) {
 				$rootScope.gastos = [];
@@ -31,14 +30,18 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			});	
 		}
 
+		// PEGA OS DADOS TEMPORÁRIOS NO SERVIDOR
 		$scope.getRecentData = function () {
+			// ENVIA EVENTO LOAD AO SOCKET
 			console.log($scope.arduinoSel);
 			socket.emit("load",$scope.arduinoSel);
 			socket.on('toClientLoad', function (data) {
+				// CASO OS GASTOS SEJAM NULOS
 				if (data.gasto==null) {
 					console.log('null');
 					data.gasto=[];
 				}
+				// CRIA A ARRAY
 				for (j = 0; j <= data.gasto.length - 1; j++) {
 					$scope.gastos.push({x: $rootScope.i, y: Number(data.gasto[j].substr(data.gasto[j].lastIndexOf("\'")+1))});
 					$rootScope.i++;
@@ -49,7 +52,9 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			});
 		}
 
+		// LISTENER PARA DADOS DO SOCKET
 		socket.on('toClient', function (data) {
+			// FILTRA PARA INSERIR APENAS OS VALORES DO ARDUÍNO SELECIONADO
 			if (data.arduino == $scope.arduinoSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
@@ -60,6 +65,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			}
 		});
 
+		// ADICIONA E REMOVE MÁSCARA QUE INDICA ATIVIDADE
 		$interval( function() {
 			if(active == false){
 				$("#container-mask").fadeIn();
@@ -71,12 +77,15 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		}, 1000);
     }, 100);
 
+	// PAUSA O GRÁFICO
 	$scope.stopedChart = function () {
 
 	}
 
+	// CRIA O GRÁFICO
 	$scope.createChart = function (data) {
 		$scope.chart = {};
+		// CONFIGURAÇÕES DO GRÁFICO
 		$scope.chart.options = {
 			chart: {
 				type: 'lineChart',
@@ -120,7 +129,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			},
 			subtitle: {
 				enable: false,
-				html: "<p>Gráfico de consumo de energia elétrica referente a:<p><br> <form class='form-inline'><div class='form-group'><label><b>Setor:</b></label><select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'><option  value=''>-- Selecione um Setor --</option></select></div><div class='form-group'><label><b>Arduíno:</b></label><select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'><option  value=''>-- Selecione um Arduino --</option></select></div></form>",
+				html: "",
 				css: {
 					'text-align': 'center',
 					'margin': '10px 13px 0px 7px',
@@ -129,49 +138,34 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			},
 			caption: {
 				enable: false,
-				html: '<b>Figure 1.</b> Lorem ipsum dolor sit amet, at eam blandit sadipscing, <span style="text-decoration: underline;">vim adhuc sanctus disputando ex</span>, cu usu affert alienum urbanitas. <i>Cum in purto erat, mea ne nominavi persecuti reformidans.</i> Docendi blandit abhorreant ea has, minim tantas alterum pro eu. <span style="color: darkred;">Exerci graeci ad vix, elit tacimates ea duo</span>. Id mel eruditi fuisset. Stet vidit patrioque in pro, eum ex veri verterem abhorreant, id unum oportere intellegam nec<sup>[1, <a href="https://github.com/krispo/angular-nvd3" target="_blank">2</a>, 3]</sup>.',
+				html: '',
 				css: {
 					'text-align': 'justify',
 					'margin': '10px 13px 0px 7px'
 				}
 			}
 		};
+		console.log($scope.chart);
+
+		// DADOS NO GRÁFICO
 		$scope.chart.data = createChartData(data);
-		/*Random Data Generator */
 		function createChartData(data) {
-			// var sin = [],sin2 = [],
-			// cos = [];
+			// LIMITA A QUANTIDADE DE DADOS
 			var limit = 40;
 			if(data!=null){
 				data.splice(0, data.length - limit);
 			} else {
 				data = [{x:0, y:0}];
 			}
-            // //Data is represented as an array of {x,y} pairs.
-            // for (var i = 0; i < 41; i++) {
-            // 	sin.push({x: i, y: Math.sin(i/10)});
-            // 	sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
-            // 	cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
-            // }
 
-            //Line chart data should be sent as an array of series objects.
+			// ARRAY DE OBJETOS RETORNADO
             return [
-            {
-                    values: data,      //values - represents the array of {x,y} data points
-                    key: 'Hoje', //key  - the name of the series.
-                    color: '#FFC814'  //color - optional: choose your own line color.
-                }/*,
-                {
-                	values: cos,
-                	key: 'Cosine Wave',
-                	color: '#2ca02c'
-                },
-                {
-                	values: ,
-                	key: 'Projeção',
-                	color: '#7777ff',
-                    area: false      //area - set to true if you want this line to turn into a filled area chart.
-                }*/
+            	// LINHA PRINCIPAL
+            	{
+                    values: data,
+                    key: 'Hoje',
+                    color: '#FFC814' 
+                }
             ];
 	    };
 	};

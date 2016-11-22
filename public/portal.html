@@ -9,8 +9,12 @@
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" type="text/css" href="/bower_components/nvd3/build/nv.d3.css"> <!-- JS NVD3 -->
 	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+	<script src="/bower_components/d3/d3.js"></script> <!-- JS NVD3 -->
+	<script src="/bower_components/nvd3/build/nv.d3.js"></script> <!-- JS NVD3 -->
+	<script src="/bower_components/angular-nvd3/dist/angular-nvd3.js"></script> <!-- JS NVD3 -->
 	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
 	<script src="/js/angular/controllers/homeCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
@@ -46,7 +50,7 @@
 			<div id="sections-portal">
 				<div id="sec-gasto" class="watts-box col-sm-8">
 					<a href="/portal/gastos">Dados de Consumo</a>
-					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
+					<nvd3 id="chart" options="generalChart.options" data="generalChart.data"></nvd3>
 				</div>
 				<div id="sec-setor" class="watts-box col-sm-4"><a href="/portal/setores">Setores<label class="badge">{{dados.setor}}</label></a></div>
 				<div id="sec-usuario" class="watts-box col-sm-4"><a href="/portal/usuarios">Usuários<label class="badge">{{dados.usuario}}</label></a></div>
@@ -83,5 +87,8 @@
 	$("#sections-portal div").click(function () {
 		window.location.href = $(this).find("a").attr("href");
 	});
+	setTimeout(function () {
+		$("nvd3").removeAttr("class");
+	}, 1);
 </script>
 </html>

@@ -1,7 +1,7 @@
 // CONTROLLER DA HOME
 app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interval, $timeout) {
 	// LISTA TODOS OS SETORES
-	var intervalo=setInterval(function () {
+	var intervalo = $interval(function () {
 		if ($scope.load) {
 			$http.get("/pcligado")
 			.then(function (response) {
@@ -45,7 +45,9 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 					$rootScope.gastos.push({x: i, y: Number(response.data[i].substr(response.data[i].lastIndexOf("\'")+1))});
 				}
 				$rootScope.i = i;
-				$scope.createChart($rootScope.gastos);
+				$timeout(function() {
+					$scope.createChart($rootScope.gastos);
+				}, 500);
 			});	
 		}
 
@@ -64,10 +66,8 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 
 		$interval( function() {
 			if(active == false){
-				$("#container-mask").fadeIn();
 				$("text.nvd3.nv-noData").remove();
 			} else {
-				$("#container-mask").fadeOut();
 				active == false;
 			}
 		}, 1000);
@@ -78,11 +78,11 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 	}
 
 	$scope.createChart = function (data) {
-		$scope.chart = {};
-		$scope.chart.options = {
+		$scope.generalChart = {};
+		$scope.generalChart.options = {
 			chart: {
 				type: 'lineChart',
-				height: 450,
+				height: 10,
 				margin : {
 					top: 20,
 					right: 20,
@@ -138,10 +138,10 @@ app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interva
 				}
 			}
 		};
-		$scope.chart.data = createChartData(data);
-		console.log($scope.chart.data)
+		$scope.generalChart.data = createChartData(data);
+		console.log($scope.generalChart)
 		function createChartData(data) {
-			var limit = 40;
+			var limit = 20;
 			if(data!=null){
 				data.splice(0, data.length - limit);
 			} else {
