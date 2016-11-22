@@ -187,21 +187,21 @@ net.createServer(function(sock) {
         var arduino = JSON.parse(data).arduino;
         // console.log("custo total "+custoTotal);
         // console.log("preco kilowatt "+precoKilowatt.valor);
-        // console.log("gasto recebido "+gastoRecebido);
         if (arrayCustoArduino[arduino]==undefined) {
             arrayCustoArduino[arduino]=0;
         }
         if (arrayCustoEquipamento[idEquipamento]==undefined) {
             arrayCustoEquipamento[idEquipamento]=0;
         }
-        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+((127*gastoRecebido)*precoKilowatt.valor)
-        arrayCustoEquipamento[idEquipamento]=arrayCustoArduino[idEquipamento]+(precoKilowatt.valor*gastoRecebido)
-        gasto.intervalo(ultimoEnvio,idEquipamento); 
+        arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
+        arrayCustoEquipamento[idEquipamento]= arrayCustoEquipamento[idEquipamento]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
-            
+            if (body>0) {
+                console.log("intervalo"+body);
+            }
+            gasto.intervalo(ultimoEnvio,idEquipamento); 
         }).form({equipamento:idEquipamento,data:ultimoEnvio})
-
-
+        
         // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosEquipamento[idEquipamento] == undefined) {
             arrayDadosEquipamento[idEquipamento] = new Array(0);
@@ -223,7 +223,7 @@ net.createServer(function(sock) {
         
         for (var i = 0; i <= arrayDadosEquipamento[idEquipamento].length - 1; i++) {
             if (i==599) {
-                console.log("create id equipamento"+idEquipamento);
+                console.log(arrayCustoEquipamento[idEquipamento]);
                 gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
                 ultimoEnvioData= new Date();
                 arrayDadosEquipamento[idEquipamento] = new Array(0);
@@ -255,11 +255,14 @@ net.createServer(function(sock) {
         for (var i = 0; i <= arrayIpArduino.length - 1; i++) {
             if (arrayIpArduino[i]==sock.remoteAddress +':'+ sock.remotePort) {
                 arduino=i;
-                console.log("ip: "+sock.remoteAddress +':'+ sock.remotePort+" desconectou,idEquipamento= "+i);
+                console.log("ip: "+sock.remoteAddress +':'+ sock.remotePort+" desconectou,idArduino= "+i);
             }
         };
-        console.log("create id equipamento"+idEquipamento);
-        gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
+
+        if (idEquipamento!=0) {
+            gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
+        }
+        
         arrayDadosEquipamento[idEquipamento] = new Array(0);
         arrayCustoEquipamento[idEquipamento] = new Array(0);
         io.sockets.emit('noConnection',data);

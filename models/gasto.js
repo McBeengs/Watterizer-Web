@@ -362,18 +362,18 @@ if (res!=null) {
 // MOSTRA O INTERVALO
 this.getIntervalo = function(data,idEquipamento, res) {
 	connection.acquire(function(err, con) {
-		console.log("data "+data+" equipamento "+idequipamento);
 		var segundos=0;
 		con.query('SELECT * FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[idEquipamento], function(err, result) {
 
 			if (JSON.stringify(result)=='[]') {
-
+				
 			} else {
 				con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_equipamento=?',[data,idEquipamento], function(err, result) {
-					var gastos='';
+					console.log("data "+data+"ultimo update"+result[0].ultimo_update);
 					var intervalo = result[0].intervalo;
 						intervalo = intervalo.split(':'); // split it at the colons
 						segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
+						console.log(result[0].intervalo);
 					});
 
 			}
