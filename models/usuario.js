@@ -305,7 +305,7 @@ else{
 			con.release();
 			token = null;
 		});
-	};
+};
 	// CONTROLA O ACESSO AO SISTEMA COM BASE NOS DADOS DO USUARIO
 	this.loginWeb = function(login,senha,req, res) {
 		connection.acquire(function(err, con) {
@@ -313,7 +313,6 @@ else{
 			var token = randtoken.generate(16);	
 			con.query('SELECT usuario.id,username,senha,email,nome,telefone,hora_entrada,id_perfil,id_setor,id_pergunta,resposta_pergunta,token_web,token_desktop,hora_saida,hora_intervalo,data_exclusao,perfil.perfil FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) WHERE (email = ? OR username = ?) AND senha = ? AND data_exclusao IS NULL', [login,login,senha], function(err, result) {
 				if (result[0] != null) {
-					console.log("ad")
 					if (result[0].username!="admin" || result[0].token_web==null) {
 						con.query('UPDATE usuario SET token_web = ? WHERE (email = ? OR username = ?) AND senha = ?', [token, login,login,senha], function(err, result) {
 						});
@@ -322,13 +321,18 @@ else{
 						sess.nome=result[0].nome;
 						sess.idUser=result[0].id;
 						sess.perfil=result[0].perfil;
-						if (result[0].token_web==null) {
+						if (result[0].token_web==null || result[0].username!="admin") {
 							sess.token=token;
 						}
 						else{
 							sess.token=result[0].token_web;
 						}
-						res.redirect("/portal");
+						if (result[0].id_pergunta==null || result[0].resposta_pergunta==null) {
+							res.redirect("/portal/configuracoes");
+						}
+						else{
+							res.redirect("/portal");
+						}
 					}
 					
 				}
@@ -340,9 +344,9 @@ else{
 
 				}
 			});
-			con.release();
-		});
-	};
+con.release();
+});
+};
 } 
 
 module.exports = new Usuario();

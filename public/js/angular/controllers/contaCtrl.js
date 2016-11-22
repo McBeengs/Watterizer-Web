@@ -33,6 +33,9 @@ app.controller('contaCtrl', function($scope, $http,$window) {
 				date=$scope.usuario.hora_saida.split(':')
 				date = new Date(1970, 0, 1, date[0], date[1], date[2]);
 				$scope.usuario.hora_saida=date;
+				if ($scope.usuario.id_pergunta==null || $scope.usuario.resposta_pergunta==null) {
+					$("#primeiroAcessoWarn").fadeIn();
+				};
 
 			}, function(response){
 				console.log("Falhou")
@@ -47,6 +50,7 @@ $scope.update = function() {
 		$http.put("/dados/usuarioConta", $scope.usuario)
 		.then(function (response) {
 			$("#sucesso").fadeIn();
+			$("#primeiroAcessoWarn").fadeOut();
 			setTimeout(function() {
 				$("#sucesso").fadeOut();
 			}, 3000);

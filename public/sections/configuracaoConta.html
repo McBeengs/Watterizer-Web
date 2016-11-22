@@ -55,6 +55,9 @@
 							<p id="name" href="#">Usuário: {{usuarioLogado.data[0]}}</p>
 						</form>
 					</div>
+					<div class="alert alert-warning" id="primeiroAcessoWarn">
+							<strong>Olá!</strong> Por favor preencha os dados que faltam.
+						</div>
 					<div id="conta-container" ng-if="load">
 						<div>
 							<h4 id="conta-label">Configurações do Usuário</h4>
@@ -70,12 +73,31 @@
 									<input type="text" minlength="6" maxlength="54" class="form-control" id="txt-username" placeholder="FulanoBeltrano1234" ng-model="usuario.username" readonly required>
 								</div>
 								<div class="form-group col-sm-6">
+									<label for="txt-senha">Senha</label>
+									<input type="password" minlength="5" maxlength="35" class="form-control" id="txt-senha" placeholder="senha" ng-model="usuario.senha" required>
+								</div>
+								<div class="form-group col-sm-6">
+									<label for="txt-confsenha">Confirmação de senha</label>
+									<input type="password" minlength="5" maxlength="16" class="form-control" id="txt-confsenha" placeholder="senha" ng-model="usuario.confsenha" required>
+								</div>
+								<div class="form-group col-sm-6">
 									<label for="txt-email">Email</label>
 									<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" placeholder="fulano@email.com" ng-model="usuario.email" required>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="txt-telefone">Telefone</label>
 									<input type="text" minlength="8" maxlength="16" class="form-control" id="txt-telefone" placeholder="(11) 98765-4321" ng-model="usuario.telefone" ng-change="telMask()" required>
+								</div>
+								<div class="form-group col-sm-6">
+									<label for="txt-id_pergunta">Pergunta</label>
+									<select ng-options="pergunta.id as pergunta.pergunta for pergunta in perguntas" ng-model="usuario.id_pergunta" class="form-control" id="txt-id_pergunta" placeholder="" required>
+										<option value="">-- Selecione uma Pergunta --</option>
+										<option value="usuario.id_pergunta">{{pergunta.id}}</option>
+									</select>
+								</div>
+								<div class="form-group col-sm-6">
+									<label for="txt-resposta">Resposta</label>
+									<input type="text" minlength="3" maxlength="35" class="form-control" id="txt-resposta" placeholder="Sim" ng-model="usuario.resposta_pergunta"  required>
 								</div>
 								<div class="form-group col-sm-4">
 									<label for="txt-hr-entrada">Hora de Entrada</label>
