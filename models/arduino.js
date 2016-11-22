@@ -38,6 +38,7 @@ function Arduino() {
 			con.query('INSERT INTO arduino SET ?', arduino, function(err, result) {
 				con.release();
 				if (err) {
+					console.log(err);
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)

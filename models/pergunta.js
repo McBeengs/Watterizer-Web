@@ -71,6 +71,6 @@ function Pergunta() {
 			});
 		});
 	};
-} 
+	} 
 
 module.exports = new Pergunta();

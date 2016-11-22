@@ -71,6 +71,6 @@ function Perfil() {
 			});
 		});
 	};
-} 
+	} 
 
 module.exports = new Perfil();

@@ -49,9 +49,24 @@ var storage =   multer.diskStorage({
 var upload = multer({ storage : storage}).single('user-photo');
 var sess;
 
+
 // MANUSEIA AS DIFERENTES AÇÕES PARA DIFERENTES URLS
 module.exports = {
   configure: function(app) {
+    //Url de upload de imagem
+    app.post('/upload',function(req,res){
+        upload(req,res,function(err) {
+            if(err) {
+                return res.end("Error uploading file.");
+            }
+            else if (isvalid) {
+                res.redirect("/portal/configuracoes")
+            }
+            else {
+                res.end("File is invalid");
+            }
+        });
+    });
     // ACESSO A PAGINA INICIAL
     app.get('/index',function(req,res){
         sess = req.session;
@@ -108,19 +123,6 @@ module.exports = {
         res.sendFile(__dirname + "/public/sections/advertencia.html");
     });
 
-    app.post('/upload',function(req,res){
-        upload(req,res,function(err) {
-            if(err) {
-                return res.end("Error uploading file.");
-            }
-            else if (isvalid) {
-                res.redirect("/portal/configuracoes")
-            }
-            else {
-                res.end("File is invalid");
-            }
-        });
-    });
 
     // ACESSO AOS DADOS
     app.use(prefixoDados+'*', function(req,res,next){
@@ -173,6 +175,9 @@ module.exports = {
     /* ARDUINOS */
     // MOSTRA TODOS OS ARDUINOS
     app.get(prefixoDados+'/arduino/', function(req, res) {
+        arduino.listAll(res);
+    });
+    app.get('/arduino/', function(req, res) {
         arduino.listAll(res);
     });
     app.get(prefixoDados+'/contador/', function(req, res) {
@@ -248,206 +253,209 @@ module.exports = {
         equipamento.update(req.body, res);
     });
 
-    // DELETA UM EQUIPAMENTO
+    // DELETA UM EQUIPAMENTO //
     app.delete(prefixoDados+'/equipamento/:id/', function(req, res) {
         equipamento.delete(req.params.id, res);
     });
     /* GASTOS */
-    // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS
+    // MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/', function(req, res) {
         gasto.listAll(res);
     });
 
-    // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS
+    // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/hoje', function(req, res) {
         gasto.listHoje(res);
     });
 
-    // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA
+    // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA //
     app.get(prefixoDados+'/gasto/:id/', function(req, res) {
         gasto.getOne(req.params.id, res);
     });
     
-    // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
+    // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE //
     app.get(prefixoDados+'/gasto/hoje/:id/', function(req, res) {
         gasto.getOneHoje(req.params.id, res);
     });
-     // MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
+     // MOSTRA O GASTO DE UM ARDUINO HOJE //
      app.get(prefixoDados+'/gasto/arduino/:id/', function(req, res) {
         gasto.getOneHojeArduino(req.params.id, res);
     });
 
-    // MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA
+    // MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA //
     app.get(prefixoDados+'/gasto/:data', function(req, res) {
         gasto.listData(req.params.data,res);
     });
 
-    // ADICIONA UM NOVO GASTO
+    // ADICIONA UM NOVO GASTO //
     app.post(prefixoDados+'/gasto/', function(req, res) {
         gasto.create(req.body, res);
     });
 
-    // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
+    // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE //
     app.post(prefixoDados+'/gasto/nulo', function(req, res) {
         gasto.intervalo(req.body, res);
     });
 
-
+    ///
     app.delete(prefixoDados+'/gasto/:id/', function(req, res) {
         gasto.delete(req.params.id, res);
     });
-    //GASTO ESPECIFICO
+    //GASTO ESPECIFICO //
     app.get(prefixoDados+'/gastoespecifico/', function(req, res) {
         gastoespecifico.listAll(res);
     });
 
-    // MOSTRA TODOS OS gastoespecificoS DE HOJE DE TODOS OS ARDUINOS
+    // MOSTRA TODOS OS gastoespecificoS DE HOJE DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gastoespecifico/hoje', function(req, res) {
         gastoespecifico.listHoje(res);
     });
 
-    // MOSTRA O gastoespecifico DE UM ARDUINO EM UMA DATA ESPECIFICADA
+    // MOSTRA O gastoespecifico DE UM ARDUINO EM UMA DATA ESPECIFICADA //
     app.get(prefixoDados+'/gastoespecifico/:id/', function(req, res) {
         gastoespecifico.getOne(req.params.id, res);
     });
     
-    // MOSTRA O gastoespecifico DE UM ARDUINO HOJE
+    // MOSTRA O gastoespecifico DE UM ARDUINO HOJE //
     app.get(prefixoDados+'/gastoespecifico/hoje/:id/', function(req, res) {
         gastoespecifico.getOneHoje(req.params.id, res);
     });
 
-    // MOSTRA TODOS OS gastoespecificoS DE UMA DATA ESPECIFICADA
+    // MOSTRA TODOS OS gastoespecificoS DE UMA DATA ESPECIFICADA //
     app.get(prefixoDados+'/gastoespecifico/:data', function(req, res) {
         gastoespecifico.listData(req.params.data,res);
     });
 
-    // ADICIONA UM NOVO gastoespecifico
+    // ADICIONA UM NOVO gastoespecifico //
     app.post(prefixoDados+'/gastoespecifico/', function(req, res) {
         gastoespecifico.create(req.body, res);
     });
 
-    // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE
+    // ADICIONA VALORES NULOS PARA COBRIR PERIODO DE INATIVIDADE //
     app.post(prefixoDados+'/gastoespecifico/nulo', function(req, res) {
         gastoespecifico.intervalo(req.body, res);
     });
 
-
+    ///
     app.delete(prefixoDados+'/gastoespecifico/:id/', function(req, res) {
         gastoespecifico.delete(req.params.id, res);
     });
     /* PERFIL */
+    ///
     app.get(prefixoDados+'/perfil/', function(req, res) {
         perfil.listAll(res);
     });
-
+    ///
     app.get(prefixoDados+'/perfil/:id/', function(req, res) {
         perfil.getOne(req.params.id, res);
     });
-
+    ///
     app.post(prefixoDados+'/perfil/', function(req, res) {
         perfil.create(req.body, res);
     });
-
+    ///
     app.put(prefixoDados+'/perfil/', function(req, res) {
         perfil.update(req.body, res);
     });
-
+    ///
     app.delete(prefixoDados+'/perfil/:id/', function(req, res) {
         perfil.delete(req.params.id, res);
     });
 
     /* CANVAS */
+    ///
     app.get('/canvas/', function(req, res) {
         canvas.listAll(res);
     });
-
+    ///
     app.get('/canvas/:setor/', function(req, res) {
         canvas.getOne(req.params.setor, res);
     });
-
+    ///
     app.post('/canvas/', function(req, res) {
         canvas.create(req.body, res);
     });
-
+    ///
     app.put('/canvas/', function(req, res) {
         canvas.update(req.body, res);
     });
-
+    ///
     app.delete('/canvas/', function(req, res) {
         canvas.delete(req.body, res);
     });
 
     /* PERGUNTAS */
+    ///
     app.get(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.listAll(res);
     });
-
+    ///
     app.get(prefixoDados+'/pergunta/:id/', function(req, res) {
         pergunta.getOne(req.params.id, res);
     });
-
+    ///
     app.post(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.create(req.body, res);
     });
-
+    ///
     app.put(prefixoDados+'/pergunta/', function(req, res) {
         pergunta.update(req.body, res);
     });
-
+    ///
     app.delete(prefixoDados+'/pergunta/:id/', function(req, res) {
       pergunta.delete(req.params.id, res);
   });
 
     /* SETORES */
-    // MOSTRA TODOS OS SETORES
+    // MOSTRA TODOS OS SETORES //
     app.get('/setor/', function(req, res) {
         setor.listAll(res);
     });
-
+    ///
     app.get('/setor/arduino', function(req, res) {
         setor.listAllWArduino(res);
     });
 
-    // MOSTRA UM SETOR
+    // MOSTRA UM SETOR //
     app.get(prefixoDados+'/setor/:id/', function(req, res) {
         setor.getOne(req.params.id, res);
     });
 
-    // CRIA UM NOVO SETOR
+    // CRIA UM NOVO SETOR //
     app.post(prefixoDados+'/setor/', function(req, res) {
         setor.create(req.body, res);
     });
-    
+    ///
     app.post('/emailcheck', function(req, res) {
         usuario.checaEmailCadastrado(req.body, res);
     });
 
-    // MODIFICA UM SETOR
+    // MODIFICA UM SETOR //
     app.put(prefixoDados+'/setor/', function(req, res) {
         setor.update(req.body, res);
     });
 
-    // DELETA UM SETOR
+    // DELETA UM SETOR //
     app.delete(prefixoDados+'/setor/:id/', function(req, res) {
         setor.delete(req.params.id, res);
     });
 
-    // VERIFICA SE EXISTEM SETORES CADASTRADOS
+    // VERIFICA SE EXISTEM SETORES CADASTRADOS //
     app.get('/setorcheck', function(req, res) {
         setor.check(res);
     });
 
     /* USUARIOS */
-    // MOSTRA TODOS OS USUARIOS
+    // MOSTRA TODOS OS USUARIOS //
     app.get(prefixoDados+'/usuario/', function(req, res) {
         usuario.listAll(res);
     });
 
-    // MOSTRA UM USUARIO
+    // MOSTRA UM USUARIO //
     app.get(prefixoDados+'/usuario/:id/', function(req, res) {
         usuario.getOne(req.params.id, res);
     });
-    
+    ///
     app.get('/sessao', function(req, res) {
         var array=[];
         array.push(sess.nome);
@@ -457,25 +465,26 @@ module.exports = {
         
         res.send(array);
     });
+    ///
     app.post('/gerausuario', function(req, res) {
         usuario.geraUsuario(req.body,req, res);
     });
 
-    // ADICIONA UM NOVO USUARIO
+    // ADICIONA UM NOVO USUARIO //
     app.post(prefixoDados+'/usuario/', function(req, res) {
         usuario.create(req.body,req, res);
     });
 
-    // MODIFICA UM USUARIO
+    // MODIFICA UM USUARIO //
     app.put(prefixoDados+'/usuario/', function(req, res) {
         usuario.update(req.body,req, res);
     });
-    // MODIFICA UM USUARIO
+    // MODIFICA UM USUARIO //
     app.put(prefixoDados+'/usuarioConta/', function(req, res) {
         usuario.updateConta(req.body, res);
     });
 
-    // DELETA UM USUARIO
+    // DELETA UM USUARIO //
     app.delete(prefixoDados+'/usuario/:id/', function(req, res) {
         usuario.delete(req.params.id,req, res);
     });
