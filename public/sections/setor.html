@@ -44,94 +44,95 @@
 		<!-- CONTEUDO DO SITE -->
 		<div id="content-portal" class="container-fluid">
 			<div id="canvas">
-	        	<canvas id="canvas-drawer" width="1920" height="500"></canvas>
-	        
-		        <div id="controles">
-		            <div id="btns-zoom">
-		                <button class="btn btn-default" id="btn-zoom-in">+</button>
-		                <button class="btn btn-default" id="btn-zoom-out">-</button>
-		            </div>
-		            <div id="btns-create">
-		                <button class="btn btn-default" id="btn-create-box">Adicionar Divisor</button>
-		                <button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
-		                <button class="btn btn-default" id="btn-create-pc">Adicionar PC</button>
-		                <input id="txt-pc-name" type="text" required="true"/>
-		            </div>
-		            <div id="btns-canvas">
-		                <button class="btn btn-default" id="btn-canvas-obj-delete">Remover Objeto</button>
-		                <button class="btn btn-primary" id="btn-canvas-save">Salvar Planta</button>
-		                <button class="btn btn-default" id="btn-canvas-download">Download como Imagem</button>
-		                <select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores" ng-model="canvasSel.id">
-		                	<option value=''>-- Selecione --</option>
-		                </select>
-		            </div>
-		        </div>
+				<canvas id="canvas-drawer" width="1920" height="500"></canvas>
 
-		        <div id="context-menu" style="display:none; position: absolute;">
-		            <ul>
-		                <li><button>Desligar</button></li>
-		                <li><button>Editar</button></li>
-		                <li><button>Remover</button></li>
-		                <li><button>Girar 90° para a direita</button></li>
-		                <li><button>Girar 90° para a esquerda</button></li>
-		            </ul>
-		        </div>
-			</div>
-			<div id="setores" class="panel-group row">
-				<h3 id="no-data" ng-if="setores.length==0">Nenhum registro foi encontrado</h3>
-				<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="setor in setores">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
-						</h4>
+				<div id="controles">
+					<div id="btns-zoom">
+						<button class="btn btn-default" id="btn-zoom-in">+</button>
+						<button class="btn btn-default" id="btn-zoom-out">-</button>
 					</div>
-					<div id="setor-{{setor.id}}" class="panel-collapse collapse">
-						<ul class="list-group">
-							<li class="list-group-item" ng-repeat="arduino in setor.arduinos">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title" >
-											<a data-toggle="collapse" href="#arduino-{{setor.id}}-{{arduino.id}}">Arduíno {{arduino.id}}</a>
-										</h4>
-									</div>
-									<div id="arduino-{{setor.id}}-{{arduino.id}}" class="panel-collapse collapse">
-										<ul class="list-group">
-											<li class="list-group-item">Localização: <p>{{arduino.localizacao}}</p></li>
-											<li class="list-group-item">Computador Responsável: {{arduino.id_computador_responsavel}}</l>
-										</ul>
-									</div>
-								</div>
-							</li>
-						</ul>
+					<div id="btns-create">
+						<button class="btn btn-default" id="btn-create-box">Adicionar Divisor</button>
+						<button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
+						<button class="btn btn-default" id="btn-create-pc">Adicionar PC</button>
+						<input id="txt-pc-name" type="text" required="true"/>
 					</div>
-				</div>				
-			</div>
-		</div>
-		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-label">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="log-out-label">Confirmação Logout</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja sair?</p>
-						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
-					</div>
-					<div class="modal-footer">
+					<div id="btns-canvas">
+						<button class="btn btn-default" id="btn-canvas-obj-delete">Remover Objeto</button>
+						<button class="btn btn-primary" id="btn-canvas-save">Salvar Planta</button>
+						<button class="btn btn-default" id="btn-canvas-download">Download como Imagem</button>
+						<select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores" ng-model="canvasSel.id">
+							<option value=''>-- Selecione --</option>
+						</select>
 					</div>
 				</div>
+
+				<div style="display:none; position:absolute" id="context-menu">
+					<ul>
+						<li><button id="desligar">Desligar</button></li>
+						<li><button id="editar">Editar</button><input class="form-edit-name" id="txt-new-name-pc" required="true" 
+							type="text" placeholder="Digite o novo nome"></li>
+							<li><button id="remover">Remover</button></li>
+							<li><button id="direita">Girar para direita</button></li>
+							<li><button id="esquerda">Girar para esquerda</button></li>
+						</ul>
+					</div>
+				</div>
+				<div id="setores" class="panel-group row">
+					<h3 id="no-data" ng-if="setores.length==0">Nenhum registro foi encontrado</h3>
+					<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="setor in setores">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
+							</h4>
+						</div>
+						<div id="setor-{{setor.id}}" class="panel-collapse collapse">
+							<ul class="list-group">
+								<li class="list-group-item" ng-repeat="arduino in setor.arduinos">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h4 class="panel-title" >
+												<a data-toggle="collapse" href="#arduino-{{setor.id}}-{{arduino.id}}">Arduíno {{arduino.id}}</a>
+											</h4>
+										</div>
+										<div id="arduino-{{setor.id}}-{{arduino.id}}" class="panel-collapse collapse">
+											<ul class="list-group">
+												<li class="list-group-item">Localização: <p>{{arduino.localizacao}}</p></li>
+												<li class="list-group-item">Computador Responsável: {{arduino.id_computador_responsavel}}</l>
+												</ul>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>				
+					</div>
+				</div>
+				<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-label">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="log-out-label">Confirmação Logout</h4>
+							</div>
+							<div class="modal-body">
+								<p>Tem certeza que deseja sair?</p>
+								<a href="/logout">Sim</span></a>
+								<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
+							</div>
+							<div class="modal-footer">
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- RODAPÉ -->
 			</div>
-		</div>
-		<!-- RODAPÉ -->
-	</div>
-</body>
-<!-- IMPORTAÇÕES JAVASCRIPT -->
-<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
-<script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
-<script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
-<script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
-<script src="/js/canvas/fabric.js"></script> <!-- JS DO FABRICS -->
-<script src="/js/canvas/canvas.js"></script> <!-- JS DO CANVAS -->
-</html>
+		</body>
+		<!-- IMPORTAÇÕES JAVASCRIPT -->
+		<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+		<script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
+		<script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+		<script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
+		<script src="/js/canvas/fabric.js"></script> <!-- JS DO FABRICS -->
+		<script src="/js/canvas/canvas.js"></script> <!-- JS DO CANVAS -->
+		</html>
