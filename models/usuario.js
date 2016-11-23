@@ -154,11 +154,11 @@ else{
 	// MODIFICA UM USUARIO
 	this.update = function(usuario,req, res) {
 		var sess = req.session;
-		usuario.senha=aes.encText(usuario.senha,key,init);
+		if (usuario.senha!=null || usuario.senha!=undefined) {
+			usuario.senha=aes.encText(usuario.senha,key,init);
+		};
 		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
-				if (sess.autoUser!='' && sess!=undefined) {
-					usuario.username=sess.autoUser;
 					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
 						con.release();
 						if (err) {
@@ -171,7 +171,7 @@ else{
 							.send('OK');
 						}
 					});
-				}
+				
 			});
 		}
 		else{
