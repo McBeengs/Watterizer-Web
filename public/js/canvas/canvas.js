@@ -206,50 +206,53 @@ $("#btn-create-door").click(function() {
 // ADICIONA UM PC COM TEXTO
 var idimg = 0;
 $("#btn-create-pc").click(function() {
-    idimg++;
+    if ($("#slt-pc").val() != '') {
+        idimg++;
+        var pcSelecionado;
+        fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
+            var text = new fabric.Text(texto, {
+                fontFamily: 'Arial',
+                fontSize: 20,
 
-    var pcSelecionado;
-    fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
-        var text = new fabric.Text(texto, {
-            fontFamily: 'Arial',
-            fontSize: 20,
-
+            });
+            // text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
+            // text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
+            var group = new fabric.Group([img, text], {
+                left: 10,
+                top: 10,
+            });
+            group.id = idimg;
+            img.id = idimg
+            group.setWidth(70 * canvasScale);
+            group.setHeight(70 * canvasScale);
+            img.setWidth(70 * canvasScale);
+            img.setHeight(70 * canvasScale);
+            text.setHeight(70 * canvasScale);
+            text.setWidth(70 * canvasScale);
+            text.setLeft(-13 - text.text.length * 4);
+            text.setTop(20);
+            img.setTop();
+            img.setLeft();
+            text.setTextAlign("center center");
+            group.setControlsVisibility({
+                mt: false,
+                mb: false,
+                ml: false,
+                mr: false,
+                bl: false,
+                br: false,
+                tl: false,
+                tr: false,
+                mtr: true
+            });
+            img.crossOrigin = texto;
+            console.log(img.crossOrigin)
+            texto = lastTarget;
+            canvas.add(group);
         });
-        // text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
-        // text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
-        var group = new fabric.Group([img, text], {
-            left: 10,
-            top: 10,
-        });
-        group.id = idimg;
-        img.id = idimg
-        group.setWidth(70 * canvasScale);
-        group.setHeight(70 * canvasScale);
-        img.setWidth(70 * canvasScale);
-        img.setHeight(70 * canvasScale);
-        text.setHeight(70 * canvasScale);
-        text.setWidth(70 * canvasScale);
-        text.setLeft(-13 - text.text.length * 4);
-        text.setTop(20);
-        img.setTop();
-        img.setLeft();
-        text.setTextAlign("center center");
-        group.setControlsVisibility({
-            mt: false,
-            mb: false,
-            ml: false,
-            mr: false,
-            bl: false,
-            br: false,
-            tl: false,
-            tr: false,
-            mtr: true
-        });
-        img.crossOrigin = texto;
-        console.log(img.crossOrigin)
-        texto = lastTarget;
-        canvas.add(group);
-    });
+    } else {
+        alert(aSome);
+    }
 });
 
 //EDITANDO NOME PC
