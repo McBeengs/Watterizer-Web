@@ -18,6 +18,7 @@ function Advertencia() {
 			con.query('INSERT INTO advertencia SET ?, data = NOW()', advertencia, function(err, result) {
 				con.release();
 				if (err) {
+					
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.send({
 						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)

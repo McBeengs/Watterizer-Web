@@ -160,6 +160,9 @@ module.exports = {
     app.post(prefixoDados+'/advertencia/', function(req, res){
         advertencia.create(req.body, res);
     });
+    app.post('/advertencia/', function(req, res){
+        advertencia.create(req.body, res);
+    });
     app.get('/foto.png', function (req, res) {
         res.contentType('png')
         try{
@@ -236,6 +239,10 @@ module.exports = {
     // MOSTRA TODOS OS EQUIPAMENTOS //
     app.get(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.listAll(res);
+    });
+
+    app.get(prefixoDados+'/computadores/', function(req, res) {
+        equipamento.listAllPcs(res);
     });
 
     // MOSTRA UM EQUIPAMENTO //

@@ -129,7 +129,6 @@ app.get('/logout', function(req, res) {
 var precoKilowatt={};
 precoKilowatt.valor=0;
 app.post('/kilowatt', function(req, res) {
-    console.log(req.body.valor);
     precoKilowatt.valor=req.body.valor;
     precoKilowatt.data = new Date();
     res.end();
@@ -196,9 +195,8 @@ net.createServer(function(sock) {
         arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         arrayCustoEquipamento[idEquipamento]= arrayCustoEquipamento[idEquipamento]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
-            if (body>0) {
-                console.log("intervalo"+body);
-            }
+            console.log("body"+body);
+            console.log("response"+response);
             gasto.intervalo(ultimoEnvio,idEquipamento); 
         }).form({equipamento:idEquipamento,data:ultimoEnvio})
         
