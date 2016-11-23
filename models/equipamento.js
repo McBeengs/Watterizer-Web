@@ -11,6 +11,14 @@ function Equipamento() {
 			});
 		});
 	};
+	this.listAllPcs = function(res) {
+		connection.acquire(function(err, con) {
+			con.query('SELECT * FROM equipamento WHERE mac IS NOT NULL', function(err, result) {
+				con.release();
+				res.send(result);
+			});
+		});
+	};
 	// LISTA EQUIPAMENTO POR ID
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
@@ -86,27 +94,27 @@ function Equipamento() {
 				else{
 					if (result[0].mac!=null) {
 						con.query('UPDATE equipamento SET ? WHERE mac = ? ', [equipamento, equipamento.mac], function(err, result) {
-						if (err) {
-							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-							.send({
-								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-							});
-						} else {
-							res.status(HttpStatus.OK).send(result.insertId.toString())
-						}
-					});
+							if (err) {
+								res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+								.send({
+									error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+								});
+							} else {
+								res.status(HttpStatus.OK).send(result.insertId.toString())
+							}
+						});
 					}
 					else{
 						con.query('UPDATE equipamento SET ? WHERE nome = ? ', [equipamento, equipamento.nome], function(err, result) {
-						if (err) {
-							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-							.send({
-								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-							});
-						} else {
-							res.status(HttpStatus.OK).send(result.insertId.toString())
-						}
-					});
+							if (err) {
+								res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+								.send({
+									error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+								});
+							} else {
+								res.status(HttpStatus.OK).send(result.insertId.toString())
+							}
+						});
 					}
 				}
 				con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {
@@ -121,8 +129,8 @@ function Equipamento() {
 
 			});
 
-		});
-	};
+});
+};
 	// APENAS ATUALIZA O EQUIPAMENTO
 	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
