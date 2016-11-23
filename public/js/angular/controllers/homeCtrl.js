@@ -2,7 +2,8 @@
 app.requires.push('nvd3');
 app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interval, $timeout) {
 	// LISTA TODOS OS SETORES
-	var intervalo = $interval(function () {
+	var intervalo = setInterval(function () {
+
 		if ($scope.load) {
 			$http.get("/pcligado")
 			.then(function (response) {
