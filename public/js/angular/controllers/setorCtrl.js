@@ -10,5 +10,13 @@ app.controller('setorCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou")
 		});
+		$http.get("/dados/computadores")
+		.then(function (response) {
+			$scope.setores = response.data;
+			$scope.canvasSel = response.data[0];
+			console.log($scope.setores)
+		}, function(response){
+			console.log("Falhou")
+		});
 	}, 50);
 });

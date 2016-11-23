@@ -208,7 +208,7 @@ var idimg = 0;
 $("#btn-create-pc").click(function() {
     idimg++;
 
-    var texto = $("#txt-pc-name").val();
+    var pcSelecionado;
     if (texto != "") {
         fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
             var text = new fabric.Text(texto, {
@@ -219,8 +219,8 @@ $("#btn-create-pc").click(function() {
             // text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
             // text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
             var group = new fabric.Group([img, text], {
-                left: 0,
-                top: 0,
+                left: 10,
+                top: 10,
             });
             group.id = idimg;
             img.id = idimg
@@ -251,8 +251,6 @@ $("#btn-create-pc").click(function() {
             texto = lastTarget;
             canvas.add(group);
         });
-    } else {
-        alert("É necessário inserir um nome no PC")
     }
 });
 
