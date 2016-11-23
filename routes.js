@@ -57,13 +57,13 @@ module.exports = {
     app.post('/upload',function(req,res){
         upload(req,res,function(err) {
             if(err) {
-                return res.end("Error uploading file.");
+                return res.end("Erro.");
             }
             else if (isvalid) {
                 res.redirect("/portal/configuracoes")
             }
             else {
-                res.end("File is invalid");
+                res.end("Arquivo inválido");
             }
         });
     });

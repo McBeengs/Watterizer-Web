@@ -33,7 +33,7 @@ function Usuario() {
 	// MOSTRA UM USUARIO
 	this.getOne = function(id, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) INNER JOIN setor ON(usuario.id_setor=setor.id) WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
+			con.query('SELECT usuario.id,usuario.id_perfil,usuario.id_setor, username, perfil, email, nome, telefone, hora_entrada, hora_saida, TIMEDIFF(hora_saida, hora_entrada) AS expediente, hora_intervalo FROM usuario INNER JOIN perfil ON(usuario.id_perfil=perfil.id) INNER JOIN setor ON(usuario.id_setor=setor.id) WHERE usuario.id = ? AND data_exclusao IS NULL', [id], function(err, result) {
 				con.release();
 				res.send(result);
 			});
