@@ -245,6 +245,10 @@ module.exports = {
         equipamento.listAllPcs(res);
     });
 
+    app.put(prefixoDados+'/computadores/', function(req, res) {
+        equipamento.updatePc(req.body,res);
+    });
+
     // MOSTRA UM EQUIPAMENTO //
     app.get(prefixoDados+'/equipamento/:id/', function(req, res) {
         equipamento.getOne(req.params.id, res);

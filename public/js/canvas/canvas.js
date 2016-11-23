@@ -207,49 +207,50 @@ $("#btn-create-door").click(function() {
 var idimg = 0;
 $("#btn-create-pc").click(function() {
     idimg++;
-
-    var pcSelecionado;
-    fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
-        var text = new fabric.Text(texto, {
-            fontFamily: 'Arial',
-            fontSize: 20,
-
+    if ($("#slt-pc").val() != '') {
+        var textoSel = $("#slt-pc option:selected").text();
+        var idSel = $("#slt-pc option:selected").val();
+        $("#slt-pc option:selected").remove();
+        var pcSelecionado;
+        fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
+            var text = new fabric.Text(textoSel, {
+                fontFamily: 'Arial',
+                fontSize: 20,
+            });
+            var group = new fabric.Group([img, text], {
+                left: 10,
+                top: 10,
+            });
+            group.id = idSel;
+            img.id = idimg;
+            group.setWidth(70 * canvasScale);
+            group.setHeight(70 * canvasScale);
+            img.setWidth(70 * canvasScale);
+            img.setHeight(70 * canvasScale);
+            text.setHeight(70 * canvasScale);
+            text.setWidth(70 * canvasScale);
+            text.setLeft(-13 - text.text.length * 4);
+            text.setTop(20);
+            img.setTop();
+            img.setLeft();
+            text.setTextAlign("center center");
+            group.setControlsVisibility({
+                mt: false,
+                mb: false,
+                ml: false,
+                mr: false,
+                bl: false,
+                br: false,
+                tl: false,
+                tr: false,
+                mtr: true
+            });
+            img.crossOrigin = textoSel;
+            console.log(img.crossOrigin)
+            textoSel = lastTarget;
+            canvas.add(group);
         });
-        // text.set("top", (img.getBoundingRectHeight() / 2) - (text.width / 2));
-        // text.set("left", (img.getBoundingRectWidth() / 2) - (text.height / 2));
-        var group = new fabric.Group([img, text], {
-            left: 10,
-            top: 10,
-        });
-        group.id = idimg;
-        img.id = idimg
-        group.setWidth(70 * canvasScale);
-        group.setHeight(70 * canvasScale);
-        img.setWidth(70 * canvasScale);
-        img.setHeight(70 * canvasScale);
-        text.setHeight(70 * canvasScale);
-        text.setWidth(70 * canvasScale);
-        text.setLeft(-13 - text.text.length * 4);
-        text.setTop(20);
-        img.setTop();
-        img.setLeft();
-        text.setTextAlign("center center");
-        group.setControlsVisibility({
-            mt: false,
-            mb: false,
-            ml: false,
-            mr: false,
-            bl: false,
-            br: false,
-            tl: false,
-            tr: false,
-            mtr: true
-        });
-        img.crossOrigin = texto;
-        console.log(img.crossOrigin)
-        texto = lastTarget;
-        canvas.add(group);
-    });
+    }
 });
 
 //EDITANDO NOME PC
@@ -268,22 +269,7 @@ $("#editar").click(function editar() {
 
 // DELETA O OBJETO SELECIONADO
 $("#btn-canvas-obj-delete").click(function() {
-    var activeObject = canvas.getActiveObject(),
-        activeGroup = canvas.getActiveGroup();
-    if (activeObject) {
-        if (confirm('Tem certeza ?')) {
-            canvas.remove(activeObject);
-        }
-    } else if (activeGroup) {
-        if (confirm('Tem certeza ?')) {
-            var objectsInGroup = activeGroup.getObjects();
-            canvas.discardActiveGroup();
-            objectsInGroup.forEach(function(object) {
-                canvas.remove(object);
-            });
-        }
-    }
-    canvas.renderAll();
+    del();
 });
 
 //ATALHOS DO TECLADO
@@ -449,19 +435,27 @@ function redo() {
 function del() {
     var activeObject = canvas.getActiveObject(),
         activeGroup = canvas.getActiveGroup();
-    if (activeObject) {
+    if (activeGroup) {
+        console.log("else if 1");
         if (confirm('Tem certeza ?')) {
-            canvas.remove(activeObject);
-        }
-    } else if (activeGroup) {
-        if (confirm('Tem certeza ?')) {
+        console.log("if 3");
             var objectsInGroup = activeGroup.getObjects();
             canvas.discardActiveGroup();
             objectsInGroup.forEach(function(object) {
                 canvas.remove(object);
             });
         }
-    }
+    } else if (activeObject) {
+        console.log(activeObject);
+        console.log("if 1");
+        if (confirm('Tem certeza ?')) {
+            if (activeObject.id!=undefined){
+                $("#slt-pc").append("<option value='"+activeObject.id+"'>"+activeObject._objects[1].text+"</option>");
+            }
+            canvas.remove(activeObject);
+            console.log("if 2");
+        }
+    } 
     canvas.renderAll();
 }
 

@@ -129,12 +129,29 @@ function Equipamento() {
 
 			});
 
-});
-};
+		});
+	};
 	// APENAS ATUALIZA O EQUIPAMENTO
 	this.update = function(equipamento, res) {
 		connection.acquire(function(err, con) {
 			con.query('UPDATE equipamento SET ? WHERE mac = ?', [equipamento, equipamento.mac], function(err, result) {
+				con.release();
+				if (err) {
+					res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.send({
+						error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+					});
+				} else {
+					res.status(HttpStatus.OK)
+					.send('OK');
+				}
+			});
+		});
+	};
+	// APENAS ATUALIZA O EQUIPAMENTO
+	this.updatePc = function(equipamento, res) {
+		connection.acquire(function(err, con) {
+			con.query('UPDATE equipamento SET ? WHERE id = ?', [equipamento, equipamento.id], function(err, result) {
 				con.release();
 				if (err) {
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)

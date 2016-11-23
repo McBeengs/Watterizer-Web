@@ -10,17 +10,28 @@ app.controller('setorCtrl', function($scope, $http) {
 		}, function(response){
 			console.log("Falhou")
 		});
-		$http.get("/dados/computadores")
-		.then(function (response) {
-			$scope.computadores = [];
-			for (var i = 0; i <= response.data.length - 1; i++) {
-				if (response.data[0].posicionado==0) {
-					$scope.computadores.push(response.data[i]);
+
+		$scope.addPc = function () {
+			$http.put("/dados/computadores", {
+				id:id,
+				posicionado:1
+			});
+			$scope.getPcs();
+		}
+
+		$scope.getPcs = function (id) {
+			$http.get("/dados/computadores")
+			.then(function (response) {
+				$scope.computadores = [];
+				for (var i = 0; i <= response.data.length - 1; i++) {
+					if (response.data[0].posicionado==0) {
+						$scope.computadores.push(response.data[i]);
+					}
 				}
-			}
-			console.log($scope.computadores)
-		}, function(response){
-			console.log("Falhou")
-		});
+				console.log($scope.computadores)
+			}, function(response){
+				console.log("Falhou")
+			});
+		}
 	}, 50);
 });

@@ -54,7 +54,7 @@
 					<div id="btns-create">
 						<button class="btn btn-default" id="btn-create-box">Adicionar Divisor</button>
 						<button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
-						<button class="btn btn-default" id="btn-create-pc">Adicionar PC</button>
+						<button class="btn btn-default" id="btn-create-pc" ng-click="addPc()">Adicionar PC</button>
 						<select id="slt-pc" ng-options="pc.id as pc.nome for pc in computadores" ng-model="computador.id">
 							<option value=''>-- Selecione --</option>
 						</select>
