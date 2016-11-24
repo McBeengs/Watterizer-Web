@@ -134,7 +134,7 @@ app.post('/kilowatt', function(req, res) {
     res.end();
 });
 app.post('/intervalo', function(req, res) {
-    gasto.getIntervalo(req.body.data,req.body.equipamento,res)
+    gasto.getIntervalo(req.body.data,req.body.arduino,res)
 });
 // CAPTURA IP DA MAQUINA
 var ip = require("ip");
@@ -178,7 +178,7 @@ net.createServer(function(sock) {
         }
         else{
 
-            var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+        var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
@@ -196,9 +196,8 @@ net.createServer(function(sock) {
         arrayCustoEquipamento[idEquipamento]= arrayCustoEquipamento[idEquipamento]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
             console.log("body"+body);
-            console.log(response.body);
             gasto.intervalo(ultimoEnvio,idEquipamento); 
-        }).form({equipamento:idEquipamento,data:ultimoEnvio})
+        }).form({arduino:arduino,data:ultimoEnvio})
         
         // console.log('ultimoEnvio'+ultimoEnvio);
         if (arrayDadosEquipamento[idEquipamento] == undefined) {
