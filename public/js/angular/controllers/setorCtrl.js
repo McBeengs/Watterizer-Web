@@ -37,12 +37,18 @@ app.controller('setorCtrl', function($scope, $http) {
 		}
 
 		$scope.addPc = function () {
-			console.log($scope.pcSel);
 			$http.put("/dados/computadores", {
 				id:$scope.pcSel,
 				posicionado:1
 			});
 			$scope.getPcs();
+		}
+
+		$scope.saveCanvas = function (setor, code) {
+			$http.post("/canvas/", {
+				codificacao:code,
+				setor:setor
+			})
 		}
 	}, 50);
 });
