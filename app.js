@@ -42,7 +42,7 @@ for (var i = css.length - 1; i >= 0; i--) {
 // FAZ A CONEXÃO E DEFINE AS ROTAS
 connection.init();
 routes.configure(app);
-var server = app.listen(1515, function() {
+var server = app.listen(process.env.PORT || 1515, function() {
 	console.log('Server listening on port ' + server.address().port);
 });
 var macDesliga=[];
@@ -196,7 +196,7 @@ net.createServer(function(sock) {
         arrayCustoEquipamento[idEquipamento]= arrayCustoEquipamento[idEquipamento]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         request.post('http://localhost:1515/intervalo', function (error, response, body) {
             console.log("body"+body);
-            console.log("response"+response);
+            console.log(response.body);
             gasto.intervalo(ultimoEnvio,idEquipamento); 
         }).form({equipamento:idEquipamento,data:ultimoEnvio})
         

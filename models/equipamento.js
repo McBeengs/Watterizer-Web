@@ -31,9 +31,9 @@ function Equipamento() {
 	// CHECA EQUIPAMENTO COM SETOR E ARDUINO
 	this.check = function(mac, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
+			con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, equipamento.id_setor, setor.setor, equipamento.id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(equipamento.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
 				if (result[0]==null) {
-					con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao FROM equipamento  WHERE mac = ?', [mac], function(err, result) {
+					con.query('SELECT equipamento.mac, equipamento.nome, equipamento.descricao, equipamento.id_setor, setor.setor FROM equipamento INNER JOIN setor ON(equipamento.id_setor=setor.id) WHERE mac = ?', [mac], function(err, result) {
 						con.release();
 						res.send(result);
 					});
@@ -57,6 +57,7 @@ function Equipamento() {
 	};
 	// SELECIONA EQUIPAMENTO COM O MESMO ID ARDUINO
 	this.checkArduino = function(mac, res) {
+		console.log(mac);
 		connection.acquire(function(err, con) {
 			var idArduino=0;
 			con.query('SELECT id_arduino FROM equipamento WHERE mac = ?', [mac], function(err, result) {
@@ -64,7 +65,7 @@ function Equipamento() {
 				if (result[0]!=null) {
 					idArduino=result[0].id_arduino;
 				}
-				con.query('SELECT equipamento.id,equipamento.numero_porta,equipamento.mac, equipamento.nome, equipamento.descricao, setor.id AS id_setor, setor.setor, arduino.id AS id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(arduino.id_setor=setor.id) WHERE id_arduino = ?', idArduino, function(err, result) {
+				con.query('SELECT equipamento.id,equipamento.numero_porta,equipamento.mac, equipamento.nome, equipamento.descricao, equipamento.id_setor, setor.setor, equipamento.id_arduino FROM equipamento INNER JOIN arduino ON(equipamento.id_arduino=arduino.id) INNER JOIN setor ON(equipamento.id_setor=setor.id) WHERE id_arduino = ?', idArduino, function(err, result) {
 
 					con.release();
 					res.send(result);
