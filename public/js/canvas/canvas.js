@@ -12,7 +12,7 @@ canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 setTimeout(function () {
     var scope = angular.element($("body")).scope();
     console.log(scope) 
-});
+}, 1);
 
 // RESPONSIVIDADE
 $(document).ready(function() {
@@ -443,13 +443,13 @@ function saveCanvas() {
     $("#setores option:selected").each(function() {
         savedCanvas.push(JSON.stringify(canvas.toJSON()));
     });
+    scope.saveCanvas($("#slt-setores").val(), savedCanvas)
     currentCanvas = JSON.stringify(canvas);
     console.log(canvas.toJSON());
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
 var currentCanvas;
-var savedCanvas = [];
 $("#btn-canvas-save").click(function() {
     saveCanvas();
 });
@@ -521,8 +521,6 @@ function mostrarMenu(event) {
     }
 
 }
-
-
 
 //Rodar imagens
 function rotateObject(angleOffset) {
