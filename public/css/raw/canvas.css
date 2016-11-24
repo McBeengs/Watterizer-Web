@@ -52,6 +52,7 @@
 	color: white;
 	height: 30px;
 	cursor: pointer;
+	padding: 3px 5px; 
 }
 
 #btns-create button, #btns-canvas button

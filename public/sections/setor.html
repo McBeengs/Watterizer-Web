@@ -10,11 +10,12 @@
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="/css/raw/canvas.css">
+	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
 	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
 	<script src="/js/angular/controllers/setorCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
-<body ng-controller="setorCtrl">
+<body id="body" ng-controller="setorCtrl">
 	<div class="container-fluid">
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
@@ -55,7 +56,7 @@
 						<button class="btn btn-default" id="btn-create-box">Adicionar Divisor</button>
 						<button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
 						<button class="btn btn-default" id="btn-create-pc" ng-click="addPc()">Adicionar PC</button>
-						<select id="slt-pc" ng-options="pc.id as pc.nome for pc in computadores" ng-model="computador.id">
+						<select id="slt-pc" ng-options="pc.id as pc.nome for pc in computadores" ng-model="pcSel">
 							<option value=''>-- Selecione --</option>
 						</select>
 					</div>
@@ -131,7 +132,6 @@
 			</div>
 		</body>
 		<!-- IMPORTAÇÕES JAVASCRIPT -->
-		<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 		<script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 		<script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
 		<script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->

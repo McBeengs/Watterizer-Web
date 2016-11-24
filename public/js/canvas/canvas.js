@@ -9,6 +9,10 @@ var canvas = new fabric.Canvas(
     }
 );
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
+setTimeout(function () {
+    var scope = angular.element($("body")).scope();
+    console.log(scope) 
+});
 
 // RESPONSIVIDADE
 $(document).ready(function() {
@@ -69,24 +73,6 @@ canvas.observe('mouse:down', function(options) {
     }
 });
 
-canvas.observe('mouse:down', function(options) {
-    HideMenu();
-    if (options.target) {
-        var date = new Date();
-        var timeNow = date.getTime();
-        if (timeNow - timer > 500) {
-
-            if (canvas.getActiveObject().crossOrigin == null || canvas.getActiveObject().crossOrigin == undefined) {
-                canvas.deactivateAll();
-                canvas.renderAll();
-            }
-        }
-
-        timer = timeNow;
-    }
-});
-
-
 //REMOVENDO ITEM CONTEXT-MENU
 $("#remover").click(function() {
     del();
@@ -94,6 +80,7 @@ $("#remover").click(function() {
 
 // AO PASSAR O MOUSE EM CIMA
 canvas.observe('mouse:over', function(evento) {
+
     if (evento.target) {
         target = evento.target;
 
@@ -245,8 +232,7 @@ $("#btn-create-pc").click(function() {
                 tr: false,
                 mtr: true
             });
-            img.crossOrigin = textoSel;
-            console.log(img.crossOrigin)
+            img.crossOrigin = {id:idSel, nome:textoSel};
             textoSel = lastTarget;
             canvas.add(group);
         });
@@ -265,7 +251,6 @@ $("#editar").click(function editar() {
         alert("necessário colocar um novo")
     }
 });
-
 
 // DELETA O OBJETO SELECIONADO
 $("#btn-canvas-obj-delete").click(function() {
@@ -362,8 +347,6 @@ canvas.on("object:added", function(e) {
     index++;
     index2 = index - 1;
 
-
-
     refresh = true;
 });
 
@@ -436,9 +419,7 @@ function del() {
     var activeObject = canvas.getActiveObject(),
         activeGroup = canvas.getActiveGroup();
     if (activeGroup) {
-        console.log("else if 1");
         if (confirm('Tem certeza ?')) {
-        console.log("if 3");
             var objectsInGroup = activeGroup.getObjects();
             canvas.discardActiveGroup();
             objectsInGroup.forEach(function(object) {
@@ -447,13 +428,11 @@ function del() {
         }
     } else if (activeObject) {
         console.log(activeObject);
-        console.log("if 1");
         if (confirm('Tem certeza ?')) {
             if (activeObject.id!=undefined){
-                $("#slt-pc").append("<option value='"+activeObject.id+"'>"+activeObject._objects[1].text+"</option>");
+                scope.removePc(activeObject.crossOrigin.id);
             }
             canvas.remove(activeObject);
-            console.log("if 2");
         }
     } 
     canvas.renderAll();
@@ -463,20 +442,16 @@ function saveCanvas() {
     console.log("salvo")
     $("#setores option:selected").each(function() {
         savedCanvas.push(JSON.stringify(canvas.toJSON()));
-        setores.push($(this).text());
     });
     currentCanvas = JSON.stringify(canvas);
+    console.log(canvas.toJSON());
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
 var currentCanvas;
 var savedCanvas = [];
 $("#btn-canvas-save").click(function() {
-    $("#setores option:selected").each(function() {
-        savedCanvas.push(JSON.stringify(canvas.toJSON()));
-        setores.push($(this).text());
-    });
-    currentCanvas = JSON.stringify(canvas);
+    saveCanvas();
 });
 
 // BAIXA A IMAGEM DO CANVAS
@@ -625,28 +600,6 @@ canvas.observe('mouse:out', function(evento) {
     target = false;
     // $('#context-menu').hide();
 });
-
-function showImageTools(evento) {
-    $("#context-menu").html(evento.target.crossOrigin);
-    moveImageTools(evento);
-};
-
-function moveImageTools(evento) {
-    var w = $('#context-menu').width();
-    var h = $('#context-menu').height();
-    var e = evento;
-
-    var top = evento.target.top;
-    var left = evento.target.left;
-    $('#context-menu').show();
-    $('#context-menu').css({
-        top: top - 18,
-        left: left - 78
-    });
-
-
-    canvas.renderAll();
-}
 
 //SEGURANDO
 // var mouseDown = 0;
