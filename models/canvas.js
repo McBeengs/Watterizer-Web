@@ -14,7 +14,7 @@ function Canvas() {
 	// LISTA OS CANVAS POR SETOR
 	this.getOne = function(setor, res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas) WHERE setor = ?', [setor], function(err, result) {
+			con.query('SELECT * FROM canvas INNER JOIN setor ON(canvas.id=setor.id_canvas) WHERE id = ?', [setor], function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -25,7 +25,7 @@ function Canvas() {
 		connection.acquire(function(err, con) {
 			var setor = canvas.setor;
 			delete canvas.setor;
-			con.query('SELECT * FROM canvas,setor WHERE setor.setor=? AND setor.id_canvas=canvas.id ', [setor], function(err, result) {
+			con.query('SELECT * FROM canvas,setor WHERE setor.id=? AND setor.id_canvas=canvas.id ', [setor], function(err, result) {
 				var resultado = result;
 				var id;
 				if(resultado.length>0){
@@ -44,7 +44,7 @@ function Canvas() {
 						res.status(HttpStatus.CREATED)
 						.send('CREATED');
 					}
-					con.query('UPDATE setor SET id_canvas=? WHERE setor = ?', [id,setor], function(err, result) {
+					con.query('UPDATE setor SET id_canvas=? WHERE id = ?', [id,setor], function(err, result) {
 						con.release();
 					});
 				});;
@@ -77,7 +77,7 @@ function Canvas() {
 			var setor = canvas.setor;
 			console.log(setor)
 			delete canvas.setor;
-			con.query('UPDATE `setor` set id_canvas=NULL WHERE setor=?', [setor], function(err, result) {
+			con.query('UPDATE `setor` set id_canvas=NULL WHERE id=?', [setor], function(err, result) {
 				console.log(result)
 				if (err) {
 					console.log(err)
