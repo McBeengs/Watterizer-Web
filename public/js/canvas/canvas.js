@@ -8,6 +8,9 @@ var canvas = new fabric.Canvas(
 
     }
 );
+
+var canvasScale = 1;
+var scaleFactor = 1.1;
 var scope;
 var setores;
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
@@ -31,8 +34,24 @@ function loadCanvas(id) {
         canvas.clear();
         for (var i = setores.length - 1; i >= 0; i--) {
             if (setores[i].id = id){
-                canvasToLoad = JSON.parse(setores[i].canvas);
+                canvasToLoad = {"canvasScale":1,"objects":{"pcs":[{"id":"number:8","top":192,"left":281,"angle":0,"text":"Roteador"}],"doors":[{"scaleX":1,"scaleY":1,"angle":0,"top":197,"left":459}],"boxes":[{"scaleX":1,"scaleY":1,"top":86,"left":736}]}};
                 console.log()
+            }
+        }
+        canvasScale = canvasToLoad.canvasScale;
+        if (canvasToLoad.objects.pcs!=null){
+            for (var i = canvasToLoad.objects.pcs.length - 1; i >= 0; i--) {
+                createPc(canvasToLoad.objects.pcs[i]);
+            }
+        }
+        if (canvasToLoad.objects.doors!=null){
+            for (var i = canvasToLoad.objects.doors.length - 1; i >= 0; i--) {
+                createDoor(canvasToLoad.objects.doors[i]);
+            }
+        }
+        if (canvasToLoad.objects.boxes!=null){
+            for (var i = canvasToLoad.objects.boxes.length - 1; i >= 0; i--) {
+                createBox(canvasToLoad.objects.boxes[i]);
             }
         }
     }, 200);
@@ -134,8 +153,6 @@ canvas.observe('mouse:out', function(evento) {
 /* FUNCIONAMENTO DOS BOTÕES */
 
 // CONFIGURAÇÕES DE ZOOM
-var canvasScale = 1;
-var scaleFactor = 1.1;
 
 $(function() {
     // ZOOM +
@@ -194,18 +211,33 @@ $(function() {
 $("#btn-create-box").click(function() {
     createBox();
 });
-function createBox() {
-    var rect = new fabric.Rect({
-        left: 10 * canvasScale,
-        top: 10 * canvasScale,
-        hasRotatingPoint: false,
-        stroke: 'black',
-        fill: 'transparent',
-        strokeWidth: 2,
-        width: 300 * canvasScale,
-        height: 300 * canvasScale
+function createBox(boxParams) {
+    if (boxParams!=null && boxParams!=undefined){
+        var rect = new fabric.Rect({
+            left: boxParams.left * canvasScale,
+            top: boxParams.top * canvasScale,
+            hasRotatingPoint: false,
+            stroke: 'black',
+            fill: 'transparent',
+            strokeWidth: 2,
+            width: 300 * canvasScale,
+            height: 300 * canvasScale,
+            scaleX:boxParams.scaleX,
+            scaleY:boxParams.scaleY,
+        });
+    } else {
+        var rect = new fabric.Rect({
+            left: 10 * canvasScale,
+            top: 10 * canvasScale,
+            hasRotatingPoint: false,
+            stroke: 'black',
+            fill: 'transparent',
+            strokeWidth: 2,
+            width: 300 * canvasScale,
+            height: 300 * canvasScale
 
-    });
+        });
+    }
     canvas.add(rect);
     canvas.renderAll();
 }
@@ -214,15 +246,30 @@ function createBox() {
 $("#btn-create-door").click(function() {
     createDoor();
 });
-function createDoor() {
-    fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
-        img.id = null;
-        img.setWidth(100 * canvasScale);
-        img.setHeight(100 * canvasScale);
-        img.crossOrigin = null;
-        canvas.add(img);
-        canvas.renderAll();
-    });
+function createDoor(doorParams) {
+    if (doorParams!=null && doorParams!=undefined) {
+        fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
+            img.id = null;
+            img.setWidth(100 * canvasScale);
+            img.setHeight(100 * canvasScale);
+            img.crossOrigin = null;
+            img.scaleX = doorParams.scaleX;
+            img.scaleY = doorParams.scaleY;
+            img.top = doorParams.top;
+            img.left = doorParams.left;
+            canvas.add(img);
+            canvas.renderAll();
+        });
+    } else {
+        fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
+            img.id = null;
+            img.setWidth(100 * canvasScale);
+            img.setHeight(100 * canvasScale);
+            img.crossOrigin = null;
+            canvas.add(img);
+            canvas.renderAll();
+        });
+    }
 }
 
 // ADICIONA UM PC COM TEXTO
@@ -230,7 +277,52 @@ var idimg = 0;
 $("#btn-create-pc").click(function() {
     createPc();
 });
-function createPc() {
+
+function createPc(pcParams) {
+    if (pcParams!=null && pcParams!=undefined){
+        var textoSel = $("#slt-pc option:selected").text();
+        var idSel = pcParams.id;
+        $("#slt-pc option:selected").remove();
+        var pcSelecionado;
+        fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
+            var text = new fabric.Text(pcParams.text, {
+                fontFamily: 'Arial',
+                fontSize: 20,
+            });
+            var group = new fabric.Group([img, text], {
+                left: pcParams.left * canvasScale,
+                top: pcParams.top * canvasScale,
+            });
+            group.id = idSel;
+            img.id = idimg;
+            group.setWidth(70 * canvasScale);
+            group.setHeight(70 * canvasScale);
+            img.setWidth(70 * canvasScale);
+            img.setHeight(70 * canvasScale);
+            text.setHeight(70 * canvasScale);
+            text.setWidth(70 * canvasScale);
+            text.setLeft(-13 - text.text.length * 4);
+            text.setTop(20);
+            img.setTop();
+            img.setLeft();
+            text.setTextAlign("center center");
+            group.setControlsVisibility({
+                mt: false,
+                mb: false,
+                ml: false,
+                mr: false,
+                bl: false,
+                br: false,
+                tl: false,
+                tr: false,
+                mtr: true
+            });
+            img.crossOrigin = {id:idSel, nome:textoSel};
+            textoSel = lastTarget;
+            group.angle=pcParams.angle;
+            canvas.add(group);
+        });
+    }
     idimg++;
     if ($("#slt-pc").val() != '') {
         var textoSel = $("#slt-pc option:selected").text();
@@ -484,7 +576,7 @@ function del() {
 }
 var obj;
 function saveCanvas() {
-    if (lastCanvas!=undefined && lastCanvas!=undefined){
+    if (lastCanvas!=undefined && lastCanvas!=null){
         setTimeout(function () {
             console.log(canvas._objects);
             canvasToSave = {
@@ -505,7 +597,7 @@ function saveCanvas() {
                         angle:obj.angle,
                         text:obj._objects[1].text
                     });
-                } else if (obj.id == null) {
+                } else if (obj.fill != "transparent") {
                     canvasToSave.objects.doors.push({
                         scaleX:obj.scaleX,
                         scaleY:obj.scaleY,
