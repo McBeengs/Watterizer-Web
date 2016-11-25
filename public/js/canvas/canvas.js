@@ -8,11 +8,13 @@ var canvas = new fabric.Canvas(
 
     }
 );
+var scope;
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 setTimeout(function () {
-    var scope = angular.element($("body")).scope();
-    console.log(scope) 
-}, 1);
+    scope = angular.element($("body")).scope();
+    var setores = scope.setores;
+    console.log(scope);
+}, 500);
 
 // RESPONSIVIDADE
 $(document).ready(function() {
@@ -237,6 +239,7 @@ $("#btn-create-pc").click(function() {
             canvas.add(group);
         });
     }
+    saveCanvas();
 });
 
 //EDITANDO NOME PC
@@ -370,6 +373,10 @@ canvas.on("object:modified", function(e) {
     index++;
     index2 = index - 1;
     refresh = true;
+    object.crossOrigin;
+    if (object._objects[0].crossOrigin!=undefined){
+        saveCanvas();
+    }
 });
 
 //UNDO FUNCTION
@@ -429,8 +436,9 @@ function del() {
     } else if (activeObject) {
         console.log(activeObject);
         if (confirm('Tem certeza ?')) {
-            if (activeObject.id!=undefined){
-                scope.removePc(activeObject.crossOrigin.id);
+            if (activeObject._objects[0].id!=undefined){
+                scope.removePc(activeObject._objects[0].id);
+                saveCanvas();
             }
             canvas.remove(activeObject);
         }
@@ -439,13 +447,12 @@ function del() {
 }
 
 function saveCanvas() {
-    console.log("salvo")
-    $("#setores option:selected").each(function() {
-        savedCanvas.push(JSON.stringify(canvas.toJSON()));
-    });
-    scope.saveCanvas($("#slt-setores").val(), savedCanvas)
-    currentCanvas = JSON.stringify(canvas);
-    console.log(canvas.toJSON());
+    setTimeout(function () {
+        console.log(canvas._objects);
+        // var savedCanvas = JSON.stringify(canvas.toJSON());
+        // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
+        // console.log($("#slt-setores").val(), savedCanvas);
+    }, 200);
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
@@ -465,12 +472,11 @@ $("#btn-canvas-download").click(function() {
 });
 
 // CARREGA O CANVAS SELECIONADO
-var setores = [];
 $("#slt-setores").change(function() {
     canvas.clear();
     for (var i = setores.length - 1; i >= 0; i--) {
-        if (setores[i] == $("#setores option:selected").text()) {
-            canvas.loadFromJSON(savedCanvas[i]);
+        if (setores[i] == $("#slt-setores option:selected").text()) {
+            canvas.loadFromJSON(setores[i].canvas);
         }
     }
     setTimeout(function() {
@@ -483,6 +489,7 @@ $(document).bind("contextmenu", function(e) {
     return true;
 });
 
+var out = 0;
 
 //DESATIVAR MENU DE CONTEXTO
 $(document).ready(function() {
