@@ -23,7 +23,6 @@ const usuario = require('./models/usuario');
 const canvas = require('./models/canvas');
 const equipamento = require('./models/equipamento');
 const ip = require("ip");
-
 //UPLOAD DE ARQUIVOS
 const multer  =   require('multer');
 var isvalid;
@@ -277,6 +276,10 @@ module.exports = {
     // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/hoje', function(req, res) {
         gasto.listHoje(res);
+    });
+    // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS //
+    app.get(prefixoDados+'/gasto/mensal', function(req, res) {
+        gasto.listaPorMes(res);
     });
 
     // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA //
