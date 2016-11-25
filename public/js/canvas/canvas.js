@@ -34,7 +34,7 @@ function loadCanvas(id) {
         canvas.clear();
         for (var i = setores.length - 1; i >= 0; i--) {
             if (setores[i].id = id){
-                canvasToLoad = {"canvasScale":1,"objects":{"pcs":[{"id":"number:8","top":192,"left":281,"angle":0,"text":"Roteador"}],"doors":[{"scaleX":1,"scaleY":1,"angle":0,"top":197,"left":459}],"boxes":[{"scaleX":1,"scaleY":1,"top":86,"left":736}]}};
+                canvasToLoad = /*setores[i].canvas*/{"canvasScale":1,"objects":{"pcs":[{"id":"number:8","top":192,"left":281,"angle":0,"text":"Roteador"}],"doors":[{"scaleX":1,"scaleY":1,"angle":0,"top":197,"left":459}],"boxes":[{"scaleX":1,"scaleY":1,"top":86,"left":736}]}};
                 console.log()
             }
         }
