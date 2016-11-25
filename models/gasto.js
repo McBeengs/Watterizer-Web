@@ -369,12 +369,15 @@ this.getIntervalo = function(data,idArduino, res) {
 				
 			} else {
 				con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=?',[data,idArduino], function(err, result) {
-					var intervalo = result[0].intervalo;
+					var intervalo=0
+					if (intervalo!=undefined) {
+						 intervalo= result[0].intervalo;
+					}
 					intervalo = intervalo.split(':'); // split it at the colons
 					segundos = (+intervalo[0]) * 60 * 60 + (+intervalo[1]) * 60 + (+intervalo[2]); 
 					if (res!=undefined) {
 						con.release();
-						
+
 						res.status(HttpStatus.OK).send(segundos.toString())
 					}
 
