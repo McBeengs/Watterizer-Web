@@ -11,7 +11,6 @@ function Gasto() {
 				for (var i = 0; i <= result.length - 1; i++) {
 					if (i==result.length-1) {
 						gastos+=result[i].gasto;
-						console.log(result[i])
 
 					}
 					else{
@@ -33,6 +32,87 @@ function Gasto() {
 				};
 				con.release();
 				res.send(arraygastos)
+
+			});
+		});
+	};
+
+		// MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS E EQUIPAMENTOS
+	this.listaPorMes = function(res) {
+		connection.acquire(function(err, con) {
+			con.query("SELECT CONVERT(gasto USING utf8) AS gasto,MONTH(data) as month FROM gasto", function(err, result) {
+				var somaMensal={janeiro:0,fevereiro:0,marco:0,abril:0,maio:0,junho:0,julho:0,agosto:0,setembro:0,outubro:0,novembro:0,dezembro:0}
+				for (var i = result.length - 1; i >= 0; i--) {
+					result[i].gasto=result[i].gasto.split(",")
+					switch(result[i].month) {
+						case 1:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.janeiro=somaMensal.janeiro+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 2:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.fevereiro=somaMensal.fevereiro+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 3:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.marco=somaMensal.marco+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 4:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.abril=somaMensal.abril+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 5:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.maio=somaMensal.maio+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 6:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.junho=somaMensal.junho+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 7:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.julho=somaMensal.julho+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 8:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.agosto=somaMensal.agosto+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 9:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.setembro=somaMensal.setembro+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 10:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.outubro=somaMensal.outubro+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 11:
+							console.log(result[i].gasto.length);
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+								somaMensal.novembro=somaMensal.novembro+Number((result[i].gasto[j]*127)/1000)
+							};
+							break;
+						case 12:
+							for (var j = result[i].gasto.length - 1; j >= 0; j--) {
+
+								somaMensal.dezembro+=result[i].gasto[j]
+							};
+							break;
+					}
+					
+				};
+
+				con.release();
+				res.send(somaMensal)
 
 			});
 		});
@@ -370,7 +450,7 @@ this.getIntervalo = function(data,idArduino, res) {
 			} else {
 				con.query('SELECT CONVERT(gasto USING utf8) as gasto,ultimo_update,TIMEDIFF(?,gasto.ultimo_update) as intervalo FROM gasto WHERE data = CURDATE() AND id_arduino=?',[data,idArduino], function(err, result) {
 					var intervalo=0
-					if (intervalo!=undefined) {
+					if (result[0].intervalo!=undefined) {
 						 intervalo= result[0].intervalo;
 					}
 					intervalo = intervalo.split(':'); // split it at the colons

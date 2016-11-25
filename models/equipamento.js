@@ -77,6 +77,7 @@ function Equipamento() {
 	};
 	// CRIA UM EQUIPAMENTO OU ATUALIZA O MESMO
 	this.create = function(equipamento, res) {
+		console.log(equipamento);
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
 			con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {

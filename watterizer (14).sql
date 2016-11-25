@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24-Nov-2016 às 19:49
+-- Generation Time: 25-Nov-2016 às 16:46
 -- Versão do servidor: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -47,6 +47,13 @@ CREATE TABLE `arduino` (
   `id_computador_responsavel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `arduino`
+--
+
+INSERT INTO `arduino` (`id`, `id_setor`, `localizacao`, `id_computador_responsavel`) VALUES
+(6, 1, 'null', 7);
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +70,14 @@ CREATE TABLE `equipamento` (
   `id_setor` int(11) NOT NULL,
   `numero_porta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `equipamento`
+--
+
+INSERT INTO `equipamento` (`id`, `mac`, `nome`, `descricao`, `posicionado`, `id_arduino`, `id_setor`, `numero_porta`) VALUES
+(7, '70-54-D2-C6-A7-7E', 'LAB10-07', 'null', 0, 6, 1, 1),
+(8, 'null', 'Roteador', 'beep beep', 0, 6, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -91,6 +106,14 @@ CREATE TABLE `perfil` (
   `perfil` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `perfil`
+--
+
+INSERT INTO `perfil` (`id`, `perfil`) VALUES
+(1, 'Administrador'),
+(2, 'Funcionário');
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +124,14 @@ CREATE TABLE `perguntasecreta` (
   `id` int(11) NOT NULL,
   `pergunta` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `perguntasecreta`
+--
+
+INSERT INTO `perguntasecreta` (`id`, `pergunta`) VALUES
+(1, 'Bolo de que?'),
+(2, 'Nescau ou Toddy?');
 
 -- --------------------------------------------------------
 
@@ -113,6 +144,14 @@ CREATE TABLE `setor` (
   `setor` varchar(255) NOT NULL,
   `canvas` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `setor`
+--
+
+INSERT INTO `setor` (`id`, `setor`, `canvas`) VALUES
+(1, 'Informática', ''),
+(2, 'RH', '');
 
 -- --------------------------------------------------------
 
@@ -138,6 +177,13 @@ CREATE TABLE `usuario` (
   `hora_intervalo` time NOT NULL,
   `data_exclusao` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `username`, `senha`, `email`, `nome`, `telefone`, `hora_entrada`, `id_perfil`, `id_setor`, `id_pergunta`, `resposta_pergunta`, `token_web`, `token_desktop`, `hora_saida`, `hora_intervalo`, `data_exclusao`) VALUES
+(1, 'admin', 'WCwLwn04k8xqKrTWuBCx8Q==', 'administrador@admin.com', 'Adminstrador', '(11) 98765-4321', '13:00:00', 1, 1, 2, 'Ovomaltine', '9aTKf3iHvvgjFmlW', 'dFI2YD3RPWPkNXWL', '17:00:00', '15:00:00', NULL);
 
 --
 -- Indexes for dumped tables
@@ -214,12 +260,12 @@ ALTER TABLE `advertencia`
 -- AUTO_INCREMENT for table `arduino`
 --
 ALTER TABLE `arduino`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `equipamento`
 --
 ALTER TABLE `equipamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `gasto`
 --
@@ -229,22 +275,22 @@ ALTER TABLE `gasto`
 -- AUTO_INCREMENT for table `perfil`
 --
 ALTER TABLE `perfil`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `perguntasecreta`
 --
 ALTER TABLE `perguntasecreta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `setor`
 --
 ALTER TABLE `setor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --
