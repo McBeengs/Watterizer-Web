@@ -9,11 +9,12 @@ var canvas = new fabric.Canvas(
     }
 );
 var scope;
+var setores;
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 setTimeout(function () {
     scope = angular.element($("body")).scope();
-    var setores = scope.setores;
-    console.log(scope);
+    setores = scope.setores;
+    console.log(setores);
 }, 500);
 
 // RESPONSIVIDADE
@@ -21,7 +22,32 @@ $(document).ready(function() {
     canvas.setWidth($(window).width());
     $(window).resize(function() {
         canvas.setWidth($(window).width());
-    }); 
+    });
+});
+
+var canvasToLoad;
+function loadCanvas(id) {
+    setTimeout(function () {
+        canvas.clear();
+        for (var i = setores.length - 1; i >= 0; i--) {
+            if (setores[i].id = id){
+                canvasToLoad = setores[i].canvas;
+            }
+        }
+    }, 200);
+};
+
+var lastCanvas;
+// CARREGA O CANVAS SELECIONADO
+$("#slt-setores").change(function() {
+    saveCanvas();
+    setTimeout(function() {
+        lastCanvas = $("#slt-setores").val();
+    }, 300);
+    loadCanvas($("#slt-setores").val().substr($("#slt-setores").val().lastIndexOf(":")+1,$("#slt-setores").val().length-1));
+    setTimeout(function() {
+        canvas.renderAll();
+    }, 50);
 });
 
 /* EVENT LISTENERS DO CANVAS */
@@ -457,57 +483,50 @@ function del() {
 }
 var obj;
 function saveCanvas() {
-    setTimeout(function () {
-        console.log(canvas._objects);
-        canvasToSave = {
-            canvasScale:canvasScale,
-            objects:{
-                pcs:[],
-                doors:[],
-                boxes:[]
+    if (lastCanvas!=undefined && lastCanvas!=undefined){
+        setTimeout(function () {
+            console.log(canvas._objects);
+            canvasToSave = {
+                canvasScale:canvasScale,
+                objects:{
+                    pcs:[],
+                    doors:[],
+                    boxes:[]
+                }
             }
-        }
-        for (var i = canvas._objects.length - 1; i >= 0; i--) {
-            obj = canvas._objects[i]
-            if (obj.id!=null && obj.id!=undefined) {
-                canvasToSave.objects.pcs.push({
-                    id:obj.id,
-                    top:obj.top,
-                    left:obj.left,
-                    angle:obj.angle,
-                    text:obj._objects[1].text
-                });
-            } else if (obj.id == null) {
-                canvas.toSave.objects.doors.push({
-                    scaleX:obj.scaleX,
-                    scaleY:obj.scaleY,
-                    angle:obj.angle,
-                    top:obj.top,
-                    left:obj.left
-                });
-            } else {
-                canvas.toSave.objects.boxes.push({
-                    scaleX:obj.scaleX,
-                    scaleY:obj.scaleY,
-                    top:obj.top,
-                    left:obj.left
-                });
+            for (var i = canvas._objects.length - 1; i >= 0; i--) {
+                obj = canvas._objects[i]
+                if (obj.id!=null && obj.id!=undefined) {
+                    canvasToSave.objects.pcs.push({
+                        id:obj.id,
+                        top:obj.top,
+                        left:obj.left,
+                        angle:obj.angle,
+                        text:obj._objects[1].text
+                    });
+                } else if (obj.id == null) {
+                    canvasToSave.objects.doors.push({
+                        scaleX:obj.scaleX,
+                        scaleY:obj.scaleY,
+                        angle:obj.angle,
+                        top:obj.top,
+                        left:obj.left
+                    });
+                } else {
+                    canvasToSave.objects.boxes.push({
+                        scaleX:obj.scaleX,
+                        scaleY:obj.scaleY,
+                        top:obj.top,
+                        left:obj.left
+                    });
+                }
+                scope.saveCanvas(lastCanvas, canvasToSave);
             }
-            scope.saveCanvas($("#slt-setores").val(), canvasToSave);
-        }
-        // var savedCanvas = JSON.stringify(canvas.toJSON());
-        // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
-        // console.log($("#slt-setores").val(), savedCanvas);
-    }, 200);
-};
-
-function loadCanvas() {
-    setTimeout(function () {
-        console.log(canvas._objects);
-        // var savedCanvas = JSON.stringify(canvas.toJSON());
-        // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
-        // console.log($("#slt-setores").val(), savedCanvas);
-    }, 200);
+            // var savedCanvas = JSON.stringify(canvas.toJSON());
+            // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
+            // console.log($("#slt-setores").val(), savedCanvas);
+        }, 200);
+    }
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
@@ -524,19 +543,6 @@ $("#btn-canvas-download").click(function() {
         return;
     }
     window.open(canvas.toDataURL('png'));
-});
-
-// CARREGA O CANVAS SELECIONADO
-$("#slt-setores").change(function() {
-    canvas.clear();
-    for (var i = setores.length - 1; i >= 0; i--) {
-        if (setores[i] == $("#slt-setores option:selected").text()) {
-            canvas.loadFromJSON(setores[i].canvas);
-        }
-    }
-    setTimeout(function() {
-        canvas.renderAll();
-    }, 50);
 });
 
 $(document).bind("contextmenu", function(e) {
