@@ -152,6 +152,30 @@ arrayDadosEquipamento[0] = new Array(0);
 var arrayDadosArduino = new Array(0);
 arrayDadosArduino[0] = new Array(0);
 var io = require('socket.io')(server);
+/*
+io.configure(function() {
+    io.set('transports', [ 'websocket' ]);
+    if (process.env.IISNODE_VERSION) {
+        // If this node.js application is hosted in IIS, assume it is hosted 
+        // in IIS virtual directory named 'dante' and set up the socket.io's resource
+        // value for socket.io to recognize requests that target it. 
+        // Note a corresponding change in the client index-socketio.html, as well
+        // as necessary URL rewrite rule in web.config. 
+
+        io.set('resource', '/watterizer/socket.io');
+    }
+});
+Socket back
+*/
+
+
+/*
+var address = window.location.protocol + '//' + window.location.host;  
+var details = {  
+    resource: (window.location.pathname.split('/').slice(0, -1).join('/') + '/socket.io').substring(1)  
+};  
+  Socket client
+*/
 
 io.sockets.on('connection', function (socket) {
     console.log("conectou");
@@ -163,6 +187,7 @@ io.sockets.on('connection', function (socket) {
     });
     
 });
+
 var request = require('request');
 
 net.createServer(function(sock) {
