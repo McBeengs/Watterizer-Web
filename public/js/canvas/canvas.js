@@ -31,7 +31,8 @@ function loadCanvas(id) {
         canvas.clear();
         for (var i = setores.length - 1; i >= 0; i--) {
             if (setores[i].id = id){
-                canvasToLoad = setores[i].canvas;
+                canvasToLoad = JSON.parse(setores[i].canvas);
+                console.log()
             }
         }
     }, 200);
@@ -520,7 +521,7 @@ function saveCanvas() {
                         left:obj.left
                     });
                 }
-                scope.saveCanvas(lastCanvas, canvasToSave);
+                scope.saveCanvas(lastCanvas, JSON.stringify(canvasToSave));
             }
             // var savedCanvas = JSON.stringify(canvas.toJSON());
             // scope.saveCanvas($("#slt-setores").val(), savedCanvas);

@@ -25,7 +25,6 @@ function Canvas() {
 	this.create = function(canvas, res) {
 		console.log(canvas)
 		canvas.setor=canvas.setor.substr(canvas.setor.lastIndexOf(":")+1,canvas.setor.length-1);
-		canvas.codigo=JSON.stringify(canvas.codigo)
 		connection.acquire(function(err, con) {
 			con.query('UPDATE setor SET canvas=? WHERE id = ?', [canvas.codigo,canvas.setor], function(err, result) {
 				console.log(err)
