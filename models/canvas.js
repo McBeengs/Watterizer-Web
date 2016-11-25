@@ -15,6 +15,7 @@ function Canvas() {
 	this.getOne = function(setor, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT canvas FROM setor WHERE id = ?', [setor], function(err, result) {
+
 				con.release();
 				res.send(result);
 			});
@@ -22,11 +23,15 @@ function Canvas() {
 	};
 	// CRIA O CANVAS COM BASE NO SETOR
 	this.create = function(canvas, res) {
+		canvas.setor=canvas.setor.substr(canvas.setor.lastIndexOf(":")+1,canvas.setor.length-1);
+		canvas.codigo=JSON.stringify(canvas.codigo)
 		connection.acquire(function(err, con) {
 			con.query('UPDATE setor SET canvas=? WHERE id = ?', [canvas.codigo,canvas.setor], function(err, result) {
+								console.log(err)
 				con.release();
+				res.status(HttpStatus.OK)
+				.send('OK');
 			});
-
 		});
 	};
 	// ATUALIZA UM CANVAS BASEADO NO SETOR

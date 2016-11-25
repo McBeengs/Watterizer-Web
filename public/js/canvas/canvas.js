@@ -165,6 +165,9 @@ $(function() {
 
 // CRIA UM DIVISOR
 $("#btn-create-box").click(function() {
+    createBox();
+});
+function createBox() {
     var rect = new fabric.Rect({
         left: 10 * canvasScale,
         top: 10 * canvasScale,
@@ -178,10 +181,13 @@ $("#btn-create-box").click(function() {
     });
     canvas.add(rect);
     canvas.renderAll();
-});
+}
 
 // CRIA UMA PORTA
 $("#btn-create-door").click(function() {
+    createDoor();
+});
+function createDoor() {
     fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
         img.id = null;
         img.setWidth(100 * canvasScale);
@@ -190,11 +196,14 @@ $("#btn-create-door").click(function() {
         canvas.add(img);
         canvas.renderAll();
     });
-});
+}
 
 // ADICIONA UM PC COM TEXTO
 var idimg = 0;
 $("#btn-create-pc").click(function() {
+    createPc();
+});
+function createPc() {
     idimg++;
     if ($("#slt-pc").val() != '') {
         var textoSel = $("#slt-pc option:selected").text();
@@ -207,8 +216,8 @@ $("#btn-create-pc").click(function() {
                 fontSize: 20,
             });
             var group = new fabric.Group([img, text], {
-                left: 10,
-                top: 10,
+                left: 10 * canvasScale,
+                top: 10 * canvasScale,
             });
             group.id = idSel;
             img.id = idimg;
@@ -236,11 +245,12 @@ $("#btn-create-pc").click(function() {
             });
             img.crossOrigin = {id:idSel, nome:textoSel};
             textoSel = lastTarget;
+            group.angle=0;
             canvas.add(group);
         });
     }
     saveCanvas();
-});
+}
 
 //EDITANDO NOME PC
 $("#editar").click(function editar() {
@@ -374,7 +384,7 @@ canvas.on("object:modified", function(e) {
     index2 = index - 1;
     refresh = true;
     object.crossOrigin;
-    if (object._objects[0].crossOrigin!=undefined){
+    if (object._objects!=undefined){
         saveCanvas();
     }
 });
@@ -445,8 +455,53 @@ function del() {
     } 
     canvas.renderAll();
 }
-
+var obj;
 function saveCanvas() {
+    setTimeout(function () {
+        console.log(canvas._objects);
+        canvasToSave = {
+            canvasScale:canvasScale,
+            objects:{
+                pcs:[],
+                doors:[],
+                boxes:[]
+            }
+        }
+        for (var i = canvas._objects.length - 1; i >= 0; i--) {
+            obj = canvas._objects[i]
+            if (obj.id!=null && obj.id!=undefined) {
+                canvasToSave.objects.pcs.push({
+                    id:obj.id,
+                    top:obj.top,
+                    left:obj.left,
+                    angle:obj.angle,
+                    text:obj._objects[1].text
+                });
+            } else if (obj.id == null) {
+                canvas.toSave.objects.doors.push({
+                    scaleX:obj.scaleX,
+                    scaleY:obj.scaleY,
+                    angle:obj.angle,
+                    top:obj.top,
+                    left:obj.left
+                });
+            } else {
+                canvas.toSave.objects.boxes.push({
+                    scaleX:obj.scaleX,
+                    scaleY:obj.scaleY,
+                    top:obj.top,
+                    left:obj.left
+                });
+            }
+            scope.saveCanvas($("#slt-setores").val(), canvasToSave);
+        }
+        // var savedCanvas = JSON.stringify(canvas.toJSON());
+        // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
+        // console.log($("#slt-setores").val(), savedCanvas);
+    }, 200);
+};
+
+function loadCanvas() {
     setTimeout(function () {
         console.log(canvas._objects);
         // var savedCanvas = JSON.stringify(canvas.toJSON());
