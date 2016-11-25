@@ -46,7 +46,7 @@ app.controller('setorCtrl', function($scope, $http) {
 
 		$scope.saveCanvas = function (setor, code) {
 			$http.post("/canvas/", {
-				codificacao:code,
+				codigo:code,
 				setor:setor
 			})
 		}
