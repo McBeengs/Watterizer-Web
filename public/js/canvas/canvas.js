@@ -32,28 +32,32 @@ setTimeout(function () {
     var socket = io.connect(scope.ip+':1515');
     socket.on("pcLigado",function(data) {
         setTimeout(function() {
-            for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
-                if ($scope.equipamentos[i].mac==data) {
-                    $scope.pcsLigadosFull.push($scope.equipamentos[i])
+            for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+                if (scope.equipamentos[i].mac==data) {
+                    for (var j = canvas._objects.length - 1; j >= 0; j--) {
+                        if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
+                            canvas._objects[j]
+                        }
+                    };
                 }
             };
         }, 1000);
     })
     socket.on("pcDesligado",function(data) {
         setTimeout(function() {
-            for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-                if ($scope.pcsLigadosFull[i].mac==data) {
-                    $scope.pcsLigadosFull.splice(i, 1);
+            for (var i = scope.pcsLigadosFull.length - 1; i >= 0; i--) {
+                if (scope.pcsLigadosFull[i].mac==data) {
+                    scope.pcsLigadosFull.splice(i, 1);
                 }
             };
         }, 1000);
     })
     socket.on("continuaUsando",function(data) {
          setTimeout(function() {
-            for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-                if ($scope.pcsLigadosFull[i].mac!=data) {
-                    $("#resposta").html("Computador está sendo utilizado")
-                    $("#resposta").fadeIn();
+            for (var i = scope.pcsLigadosFull.length - 1; i >= 0; i--) {
+                if (scope.pcsLigadosFull[i].mac!=data) {
+                    ("#resposta").html("Computador está sendo utilizado")
+                    ("#resposta").fadeIn();
                 }
             };
         }, 1000);
@@ -446,6 +450,17 @@ $("#editar").click(function editar() {
     } else {
         alert("necessário colocar um novo")
     }
+});
+//EDITANDO NOME PC
+$("#desligar").click(function desliga() {
+    if (canvas.getActiveObject()._objects[0].stroke=='green') {
+        for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+            if(scope.equipamentos[i].id==Number(canvas.getActiveObject().id.substr(canvas.getActiveObject().id.lastIndexOf(":")+1,canvas.getActiveObject().id.length-1))){
+                scope.desliga(scope.equipamentos[i].mac)
+            }
+        };
+    };
+    
 });
 
 // DELETA O OBJETO SELECIONADO

@@ -5,7 +5,8 @@ function Setor() {
 	// MOSTRA TODOS OS SETORES
 	this.listAll = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM setor', function(err, result) {
+			console.log("list all")
+			con.query('SELECT id,setor FROM setor', function(err, result) {
 				con.release();
 				res.send(result);
 			});
@@ -14,13 +15,12 @@ function Setor() {
 
 	// MOSTRA TODOS OS SETORES COM SEUS RESPECTIVOS ARDUINOS
 	this.listAllWArduino = function(res) {
+		console.log("list arduino")
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM setor', function(err, result) {
 				var setores=result;
-				console.log(setores);
 				con.query('SELECT arduino.id, localizacao, mac, nome, arduino.id_setor FROM arduino INNER JOIN equipamento ON(arduino.id_computador_responsavel=equipamento.id)', function(err, result) {
 					for (var j = setores.length - 1; j >= 0; j--) {
-						console.log("tipo:"+typeof(setores[j].canvas));
 						setores[j].arduinos=[];
 					}
 					for (var i = 0; i <= result.length - 1; i++) {

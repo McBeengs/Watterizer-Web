@@ -92,6 +92,7 @@ app.get('/pcligado', function(req, res) {
     res.send(pcsLigados);
 });
 app.post('/desligapc', function(req, res) {
+    console.log("desliga"+req.body.mac)
     var repetido=false
     for (var i = macDesliga.length - 1; i >= 0; i--) {
         if (macDesliga[i].mac==req.body.mac) {

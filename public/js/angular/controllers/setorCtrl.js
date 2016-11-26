@@ -1,70 +1,73 @@
 // CONTROLLER DE SETORES
 app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 	// LISTA TODOS OS SETORES
-	setTimeout(function() {
-		$scope.getCanvas=function () {
-			$http.get("/setor/arduino")
-			.then(function (response) {
-				$scope.setores = response.data;
-			}, function(response){
-				console.log("Falhou")
-			});
-		}
-		$scope.getCanvas();
-		$scope.getPcs = function () {
-			$http.get("/dados/computadores")
-			.then(function (response) {
-				$scope.equipamentos=response.data
-				$http.get("/pcligado")
+	var intervalo=setInterval(function () {
+		if ($scope.load) {
+			$scope.getCanvas=function () {
+				$http.get("/setor/arduino")
 				.then(function (response) {
-					$scope.pcsligados=response.data;
-					$scope.pcsligados.push("70-54-D2-C6-A7-7E")
-					console.log($scope.pcsligados);
+					$scope.setores = response.data;
 				}, function(response){
 					console.log("Falhou")
 				});
-				$scope.computadores = [];
-				for (var i = 0; i <= response.data.length - 1; i++) {
-					if (response.data[i].posicionado==0) {
-						$scope.computadores.push(response.data[i]);
+			}
+			$scope.getCanvas();
+			$scope.getPcs = function () {
+				$http.get("/dados/computadores")
+				.then(function (response) {
+					$scope.equipamentos=response.data
+					$http.get("/pcligado")
+					.then(function (response) {
+						$scope.pcsligados=response.data;
+						console.log($scope.pcsligados);
+					}, function(response){
+						console.log("Falhou")
+					});
+					$scope.computadores = [];
+					for (var i = 0; i <= response.data.length - 1; i++) {
+						if (response.data[i].posicionado==0) {
+							$scope.computadores.push(response.data[i]);
+						}
 					}
-				}
-				console.log($scope.computadores)
-			}, function(response){
-				console.log("Falhou")
-			});
-		}
-		$scope.getPcs();
-
-		$scope.removePc = function (pcSel) {
-			console.log(pcSel);
-			$http.put("/dados/computadores", {
-				id:pcSel,
-				posicionado:0
-			});
+					console.log($scope.computadores)
+				}, function(response){
+					console.log("Falhou")
+				});
+			}
 			$scope.getPcs();
-		}
 
-		$scope.addPc = function () {
-			$http.put("/dados/computadores", {
-				id:$scope.pcSel,
-				posicionado:1
-			});
-			$scope.getPcs();
-		}
+			$scope.removePc = function (pcSel) {
+				console.log(pcSel);
+				$http.put("/dados/computadores", {
+					id:pcSel,
+					posicionado:0
+				});
+				$scope.getPcs();
+			}
 
-		$scope.saveCanvas = function (setor, code) {
-			$http.post("/canvas/", {
-				codigo:code,
-				setor:setor
-			})
+			$scope.addPc = function () {
+				$http.put("/dados/computadores", {
+					id:$scope.pcSel,
+					posicionado:1
+				});
+				$scope.getPcs();
+			}
+
+			$scope.saveCanvas = function (setor, code) {
+				$http.post("/canvas/", {
+					codigo:code,
+					setor:setor
+				})
+			}
+			clearInterval(intervalo);
 		}
-	}, 500);
+	}, 0);
 
 var pcligado={};
 $scope.desliga = function (mac) {
-	for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-		if ($scope.pcsLigadosFull[i].mac==mac) {
+	console.log(mac)
+	for (var i = $scope.pcsligados.length - 1; i >= 0; i--) {
+		if ($scope.pcsligados[i]==mac) {
 			pcligado.mac=mac
 			$http.post("/desligapc", pcligado)
 			.then(function (response) {
