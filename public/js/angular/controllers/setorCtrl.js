@@ -65,7 +65,7 @@ app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 
 var pcligado={};
 $scope.desliga = function (mac) {
-	console.log(mac)
+	console.log(mac,$scope.pcsligados[i])
 	for (var i = $scope.pcsligados.length - 1; i >= 0; i--) {
 		if ($scope.pcsligados[i]==mac) {
 			pcligado.mac=mac

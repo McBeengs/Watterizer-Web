@@ -18,7 +18,7 @@ setTimeout(function () {
     scope = angular.element($("body")).scope();
     setores = scope.setores;
     console.log(scope)
-}, 1000);
+}, 700);
 
 // RESPONSIVIDADE
 $(document).ready(function() {
@@ -31,12 +31,15 @@ $(document).ready(function() {
 setTimeout(function () {
     var socket = io.connect(scope.ip+':1515');
     socket.on("pcLigado",function(data) {
+        scope.getPcs();
         setTimeout(function() {
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
                 if (scope.equipamentos[i].mac==data) {
                     for (var j = canvas._objects.length - 1; j >= 0; j--) {
                         if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
-                            canvas._objects[j]
+                            canvas._objects[j]._objects[0].stroke='green'
+                            canvas.renderAll();
+                            
                         }
                     };
                 }
@@ -44,23 +47,22 @@ setTimeout(function () {
         }, 1000);
     })
     socket.on("pcDesligado",function(data) {
+        scope.getPcs();
         setTimeout(function() {
-            for (var i = scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-                if (scope.pcsLigadosFull[i].mac==data) {
-                    scope.pcsLigadosFull.splice(i, 1);
+            for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+                if (scope.equipamentos[i].mac==data) {
+                    for (var j = canvas._objects.length - 1; j >= 0; j--) {
+                        if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
+                            canvas._objects[j]._objects[0].stroke='red'
+                            canvas.renderAll();
+                        }
+                    };
                 }
             };
         }, 1000);
     })
     socket.on("continuaUsando",function(data) {
-         setTimeout(function() {
-            for (var i = scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-                if (scope.pcsLigadosFull[i].mac!=data) {
-                    ("#resposta").html("Computador está sendo utilizado")
-                    ("#resposta").fadeIn();
-                }
-            };
-        }, 1000);
+        alert("pc continua usando")
     })
 }, 1000);
 var canvasToLoad;
