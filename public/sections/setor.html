@@ -57,7 +57,7 @@
 						<button class="btn btn-default" id="btn-create-door">Adicionar Porta</button>
 						<button class="btn btn-default" id="btn-create-pc" ng-click="addPc()">Adicionar PC</button>
 						<select id="slt-pc" ng-options="pc.id as pc.nome for pc in computadores" ng-model="pcSel">
-							<option value=''>-- Selecione --</option>
+							<option value=''>-- Computador --</option>
 						</select>
 					</div>
 					<div id="btns-canvas">
@@ -65,19 +65,19 @@
 						<button class="btn btn-primary" id="btn-canvas-save">Salvar Planta</button>
 						<button class="btn btn-default" id="btn-canvas-download">Download como Imagem</button>
 						<select id="slt-setores" ng-options="setor.id as setor.setor for setor in setores" ng-model="canvasSel.id">
-							<option value=''>-- Selecione --</option>
+							<option value=''>-- Setor --</option>
 						</select>
 					</div>
 				</div>
 
-				<div style="display:none; position:absolute" id="context-menu">
+				<div  id="context-menu">
 					<ul>
-						<li><button id="desligar">Desligar</button></li>
-						<li><button id="editar">Editar</button><input class="form-edit-name" id="txt-new-name-pc" required="true" 
+						<li id="desligar">Desligar</li>
+						<li ><button id="editar" >Editar</button><input class="form-edit-name" id="txt-new-name-pc" required="true" 
 							type="text" placeholder="Digite o novo nome"></li>
-							<li><button id="remover">Remover</button></li>
-							<li><button id="direita">Girar para direita</button></li>
-							<li><button id="esquerda">Girar para esquerda</button></li>
+							<li id="remover">Remover</li>
+							<li id="direita">Girar para direita</li>
+							<li id="esquerda">Girar para esquerda</li>
 						</ul>
 					</div>
 				</div>
@@ -87,6 +87,8 @@
 						<div class="panel-heading">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
+								<button ng-click="editar(setor)" data-toggle="modal" data-target="#modal-dados-setor">Editar</button>
+								<button ng-click="preparaExclusao(setor.setor,setor.id)"data-toggle="modal" data-target="#modal-excluir">Excluir</button>
 							</h4>
 						</div>
 						<div id="setor-{{setor.id}}" class="panel-collapse collapse">
@@ -109,6 +111,50 @@
 								</ul>
 							</div>
 						</div>				
+					</div>
+					<button id="new-setor" type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-setor">
+						Novo Setor
+					</button>
+
+				</div>
+				<div class="modal fade" id="modal-dados-setor" tabindex="-1" role="dialog" aria-labelledby="user-data-label">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="user-data-label">{{titulo}}</h4>
+							</div>
+							<div class="modal-body">
+								<form ng-submit="create()">
+									<div class="form-group col-sm-12">
+										<label for="txt-setor">Setor:</label>
+										<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-setor" placeholder="Setor" ng-model="setor.setor" required>
+									</div>
+									<div class="col-xs-12">
+										<input type="submit" value="Cadastrar" class="form-control btn-primary centered">
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="modal-excluir" tabindex="-1" role="dialog" aria-labelledby="delete-label">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="delete-label">Excluir Setor</h4>
+							</div>
+							<div class="modal-body">
+								<p>Tem certeza que deseja excluir o setor ( {{setorExclusao.setor}} )?</p>
+								<button class="btn btn-primary btn-lg" ng-click="excluir(setorExclusao.id)" data-toggle="modal" data-target="#modal-excluir">Sim</button>
+								<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-excluir">Não</button>
+							</div>
+							<div class="modal-footer">
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-label">
@@ -134,6 +180,7 @@
 		<!-- IMPORTAÇÕES JAVASCRIPT -->
 		<script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 		<script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
+		<script src="/socket.io/socket.io.js"></script>	<!-- LINK DO SOCKET-IO -->
 		<script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
 		<script src="/js/canvas/fabric.js"></script> <!-- JS DO FABRICS -->
 		<script src="/js/canvas/canvas.js"></script> <!-- JS DO CANVAS -->

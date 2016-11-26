@@ -17,28 +17,65 @@ canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 setTimeout(function () {
     scope = angular.element($("body")).scope();
     setores = scope.setores;
-    console.log(setores);
-}, 500);
+    console.log(scope)
+}, 1000);
 
 // RESPONSIVIDADE
 $(document).ready(function() {
     canvas.setWidth($(window).width());
+    $( "#controles" ).find("button").prop( "disabled", true );
     $(window).resize(function() {
         canvas.setWidth($(window).width());
     });
 });
-
+setTimeout(function () {
+    var socket = io.connect(scope.ip+':1515');
+    socket.on("pcLigado",function(data) {
+        setTimeout(function() {
+            for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
+                if ($scope.equipamentos[i].mac==data) {
+                    $scope.pcsLigadosFull.push($scope.equipamentos[i])
+                }
+            };
+        }, 1000);
+    })
+    socket.on("pcDesligado",function(data) {
+        setTimeout(function() {
+            for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
+                if ($scope.pcsLigadosFull[i].mac==data) {
+                    $scope.pcsLigadosFull.splice(i, 1);
+                }
+            };
+        }, 1000);
+    })
+    socket.on("continuaUsando",function(data) {
+         setTimeout(function() {
+            for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
+                if ($scope.pcsLigadosFull[i].mac!=data) {
+                    $("#resposta").html("Computador está sendo utilizado")
+                    $("#resposta").fadeIn();
+                }
+            };
+        }, 1000);
+    })
+}, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
     setTimeout(function () {
         canvas.clear();
         for (var i = setores.length - 1; i >= 0; i--) {
-            if (setores[i].id = id){
-                canvasToLoad = /*setores[i].canvas*/{"canvasScale":1,"objects":{"pcs":[{"id":"number:8","top":192,"left":281,"angle":0,"text":"Roteador"}],"doors":[{"scaleX":1,"scaleY":1,"angle":0,"top":197,"left":459}],"boxes":[{"scaleX":1,"scaleY":1,"top":86,"left":736}]}};
-                console.log()
+            if (setores[i].id == Number(id)){
+                if (setores[i].canvas!="") {
+                    canvasToLoad = JSON.parse(setores[i].canvas);
+                }
+                else{
+                    canvasToLoad = setores[i].canvas;
+                }
+                
             }
         }
-        canvasScale = canvasToLoad.canvasScale;
+        if (canvasToLoad!="") {
+            canvasScale = canvasToLoad.canvasScale;
         if (canvasToLoad.objects.pcs!=null){
             for (var i = canvasToLoad.objects.pcs.length - 1; i >= 0; i--) {
                 createPc(canvasToLoad.objects.pcs[i]);
@@ -54,14 +91,27 @@ function loadCanvas(id) {
                 createBox(canvasToLoad.objects.boxes[i]);
             }
         }
+        };
+        
     }, 200);
 };
 
 var lastCanvas;
 // CARREGA O CANVAS SELECIONADO
 $("#slt-setores").change(function() {
+    if ($("#slt-setores").val()!='') {
+        $( "#controles" ).find("button").prop( "disabled", false );
+    }
+    else{
+        $( "#controles" ).find("button").prop( "disabled", true );
+    }
+    
     saveCanvas();
+    scope.getCanvas();
     setTimeout(function() {
+        scope = angular.element($("body")).scope();
+        setores = scope.setores;
+
         lastCanvas = $("#slt-setores").val();
     }, 300);
     loadCanvas($("#slt-setores").val().substr($("#slt-setores").val().lastIndexOf(":")+1,$("#slt-setores").val().length-1));
@@ -280,9 +330,10 @@ $("#btn-create-pc").click(function() {
 
 function createPc(pcParams) {
     if (pcParams!=null && pcParams!=undefined){
+        
         var textoSel = $("#slt-pc option:selected").text();
         var idSel = pcParams.id;
-        $("#slt-pc option:selected").remove();
+        // $("#slt-pc option:selected").remove();
         var pcSelecionado;
         fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
             var text = new fabric.Text(pcParams.text, {
@@ -320,7 +371,20 @@ function createPc(pcParams) {
             img.crossOrigin = {id:idSel, nome:textoSel};
             textoSel = lastTarget;
             group.angle=pcParams.angle;
+            img.stroke='red'
+            img.strokeWidth=1
+            console.log(img)
+            for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+            if (scope.equipamentos[i].id==Number(pcParams.id.substr(pcParams.id.lastIndexOf(":")+1,pcParams.id.length-1))) {
+                for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
+                    if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
+                        img.stroke='green'
+                    };
+                };
+            };
+        };
             canvas.add(group);
+
         });
     }
     idimg++;
@@ -563,12 +627,14 @@ function del() {
             });
         }
     } else if (activeObject) {
-        console.log(activeObject);
+
         if (confirm('Tem certeza ?')) {
-            if (activeObject._objects[0].id!=undefined){
-                scope.removePc(activeObject._objects[0].id);
+            if (activeObject._objects!=undefined) {
+                if (activeObject.id!=undefined){
+                scope.removePc(activeObject.id.substr(activeObject.id.lastIndexOf(":")+1,activeObject.id.length-1));
                 saveCanvas();
             }
+            };
             canvas.remove(activeObject);
         }
     } 
@@ -578,7 +644,7 @@ var obj;
 function saveCanvas() {
     if (lastCanvas!=undefined && lastCanvas!=null){
         setTimeout(function () {
-            console.log(canvas._objects);
+
             canvasToSave = {
                 canvasScale:canvasScale,
                 objects:{
