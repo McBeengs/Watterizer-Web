@@ -23,7 +23,6 @@ function Canvas() {
 	};
 	// CRIA O CANVAS COM BASE NO SETOR
 	this.create = function(canvas, res) {
-		console.log(canvas)
 		canvas.setor=canvas.setor.substr(canvas.setor.lastIndexOf(":")+1,canvas.setor.length-1);
 		connection.acquire(function(err, con) {
 			con.query('UPDATE setor SET canvas=? WHERE id = ?', [canvas.codigo,canvas.setor], function(err, result) {
@@ -56,7 +55,6 @@ function Canvas() {
 	this.delete = function(setor, res) {
 		connection.acquire(function(err, con) {
 			con.query('UPDATE `setor` set canvas=NULL WHERE id=?', [setor], function(err, result) {
-				console.log(result)
 				if (err) {
 					console.log(err)
 					res.status(HttpStatus.INTERNAL_SERVER_ERROR)

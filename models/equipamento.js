@@ -57,7 +57,6 @@ function Equipamento() {
 	};
 	// SELECIONA EQUIPAMENTO COM O MESMO ID ARDUINO
 	this.checkArduino = function(mac, res) {
-		console.log(mac);
 		connection.acquire(function(err, con) {
 			var idArduino=0;
 			con.query('SELECT id_arduino FROM equipamento WHERE mac = ?', [mac], function(err, result) {
@@ -77,7 +76,6 @@ function Equipamento() {
 	};
 	// CRIA UM EQUIPAMENTO OU ATUALIZA O MESMO
 	this.create = function(equipamento, res) {
-		console.log(equipamento);
 		connection.acquire(function(err, con) {
 			delete equipamento.command;
 			con.query('SELECT * FROM equipamento WHERE mac = ?', [equipamento.mac], function(err, result) {

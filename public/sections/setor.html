@@ -86,7 +86,7 @@
 					<div class="panel panel-default col-sm-6" ng-if="load" ng-repeat="setor in setores">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
+								<a data-toggle="collapse"  data-parent="#setores" href="#setor-{{setor.id}}">{{setor.setor}}<label class="badge">{{setor.arduinos.length}} Arduínos</label></a>
 								<button ng-click="editar(setor)" data-toggle="modal" data-target="#modal-dados-setor">Editar</button>
 								<button ng-click="preparaExclusao(setor.setor,setor.id)"data-toggle="modal" data-target="#modal-excluir">Excluir</button>
 							</h4>
@@ -103,7 +103,7 @@
 										<div id="arduino-{{setor.id}}-{{arduino.id}}" class="panel-collapse collapse">
 											<ul class="list-group">
 												<li class="list-group-item">Localização: <p>{{arduino.localizacao}}</p></li>
-												<li class="list-group-item">Computador Responsável: {{arduino.id_computador_responsavel}}</l>
+												<li onclick="changeCanvas(this)" id="{{setor.id}}" class="list-group-item">Computador Responsável: {{arduino.nome}}</l>
 												</ul>
 											</div>
 										</div>
