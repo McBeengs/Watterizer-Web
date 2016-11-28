@@ -27,6 +27,11 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 					$scope.getRecentData();
 				}, 200);
 				
+			});
+
+			$http.get("/dados/gasto/custo/"+$scope.arduinoSel)
+			.then(function (response) {
+				$rootScope.custo=response.data[0].custo
 			});	
 		}
 
@@ -62,6 +67,10 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 					$scope.createChart($scope.gastos);
 				}, 1000);
 				$rootScope.i++;
+				for (var i = data.custo.length - 1; i >= 0; i--) {
+					$scope.custo+=data.custo[i]
+				};
+				
 			}
 		});
 

@@ -36,11 +36,14 @@ setTimeout(function () {
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
                 if (scope.equipamentos[i].mac==data) {
                     for (var j = canvas._objects.length - 1; j >= 0; j--) {
-                        if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
+                        if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
+                            if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
                             canvas._objects[j]._objects[0].stroke='green'
                             canvas.renderAll();
                             
                         }
+                        };
+                        
                     };
                 }
             };
@@ -52,10 +55,12 @@ setTimeout(function () {
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
                 if (scope.equipamentos[i].mac==data) {
                     for (var j = canvas._objects.length - 1; j >= 0; j--) {
+                        if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
                         if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
                             canvas._objects[j]._objects[0].stroke='red'
                             canvas.renderAll();
                         }
+                    }
                     };
                 }
             };
@@ -102,6 +107,7 @@ function loadCanvas(id) {
 
 var lastCanvas;
 function changeCanvas (id) {
+    console.log(id)
     id='number:'+id.id
     $('#slt-setores').val(id).change()
 }

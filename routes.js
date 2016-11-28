@@ -239,11 +239,11 @@ module.exports = {
     app.get(prefixoDados+'/equipamento/', function(req, res) {
         equipamento.listAll(res);
     });
-
+    ///
     app.get(prefixoDados+'/computadores/', function(req, res) {
         equipamento.listAllPcs(res);
     });
-
+    ///mensa
     app.put(prefixoDados+'/computadores/', function(req, res) {
         equipamento.updatePc(req.body,res);
     });
@@ -277,9 +277,14 @@ module.exports = {
     app.get(prefixoDados+'/gasto/hoje', function(req, res) {
         gasto.listHoje(res);
     });
-    // MOSTRA TODOS OS GASTOS DE HOJE DE TODOS OS ARDUINOS //
+    // MOSTRA TODOS OS GASTOS POR MES DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/mensal', function(req, res) {
         gasto.listaPorMes(res);
+    });
+
+    // MOSTRA TODOS OS GASTOS POR MES DE TODOS OS ARDUINOS //
+    app.get(prefixoDados+'/gasto/custo/:id', function(req, res) {
+        gasto.custoArduino(req.params.id,res);
     });
 
     // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA //

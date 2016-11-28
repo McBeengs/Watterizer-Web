@@ -21,6 +21,7 @@
 </head>
 <body ng-controller="gastoCtrl">
 	<div class="container-fluid">
+	
 		<!-- CABEÇALHO -->
 		<header class="col-xs-12">
 			<div class="wrapper col-xs-12">
@@ -47,7 +48,9 @@
 			</div>
 		</header>
 		<!-- CONTEUDO DO SITE -->
+
 		<div id="content-portal" class="container-fluid">
+		<h2 id="custo">Custo: rs{{custo}}</h2>
 			<h3 id="no-data" ng-if="setores.length==0">Nenhum setor foi encontrado</h3>
 			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length==0">Nenhum arduíno foi encontrado</h3>
 			<form id="chart-select" class='form-inline'>
@@ -73,7 +76,9 @@
 					<div id="mask"><h2>Não Medindo No Momento</h2></div>
 				</div>
 			</div>
+
 		</div>
+
 		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">

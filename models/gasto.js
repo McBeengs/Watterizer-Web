@@ -36,6 +36,15 @@ function Gasto() {
 			});
 		});
 	};
+	this.custoArduino = function(id,res) {
+		connection.acquire(function(err, con) {
+			con.query("SELECT SUM(custo) as custo FROM gasto WHERE id_arduino=?",[id], function(err, result) {
+				con.release();
+				res.send(result)
+
+			});
+		});
+	};
 
 		// MOSTRA TODOS OS GASTOS DE TODOS OS ARDUINOS E EQUIPAMENTOS
 	this.listaPorMes = function(res) {

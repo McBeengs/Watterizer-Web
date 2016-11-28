@@ -255,7 +255,7 @@ net.createServer(function(sock) {
             }
         };
 
-        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo:arrayCustoEquipamento[arduino] });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo:arrayCustoArduino[arduino] });
         sock.write(data);
     }
 
