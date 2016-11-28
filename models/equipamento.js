@@ -13,7 +13,7 @@ function Equipamento() {
 	};
 	this.listAllPcs = function(res) {
 		connection.acquire(function(err, con) {
-			con.query('SELECT * FROM equipamento WHERE mac IS NOT NULL', function(err, result) {
+			con.query("SELECT * FROM equipamento WHERE mac IS NOT NULL AND mac !='null'", function(err, result) {
 				con.release();
 				res.send(result);
 			});

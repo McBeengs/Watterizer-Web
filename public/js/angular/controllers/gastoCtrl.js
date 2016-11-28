@@ -41,6 +41,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			console.log($scope.arduinoSel);
 			socket.emit("load",$scope.arduinoSel);
 			socket.on('toClientLoad', function (data) {
+				$rootScope.custo+=data.custo;
 				// CASO OS GASTOS SEJAM NULOS
 				if (data.gasto==null) {
 					console.log('null');
@@ -51,6 +52,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 					$scope.gastos.push({x: $rootScope.i, y: Number(data.gasto[j].substr(data.gasto[j].lastIndexOf("\'")+1))});
 					$rootScope.i++;
 				}
+
 				$timeout(function() {
 					$scope.createChart($scope.gastos);
 				}, 500);

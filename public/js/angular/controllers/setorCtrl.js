@@ -16,7 +16,6 @@ app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 			$http.get("/pcligado")
 			.then(function (response) {
 				$scope.pcsligados=response.data;
-				console.log($scope.pcsligados);
 			}, function(response){
 				console.log("Falhou")
 			});

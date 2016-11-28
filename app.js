@@ -117,7 +117,7 @@ app.post('/logout', function(req, res) {
     var index = macDesliga.indexOf(req.body.mac);
     pcsLigados.splice(index, 1);
     console.log("deslogou");
-    io.sockets.emit('pcLigado', req.body.mac);
+    io.sockets.emit('pcDesligado', req.body.mac);
     io.sockets.emit('pcCount', pcsLigados);
     req.session.destroy(function(err) {
     });
@@ -255,7 +255,7 @@ net.createServer(function(sock) {
             }
         };
 
-        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo:arrayCustoArduino[arduino] });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo:(127*gastoRecebido/1000)*precoKilowatt.valor/3600 });
         sock.write(data);
     }
 

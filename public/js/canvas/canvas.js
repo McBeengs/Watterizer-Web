@@ -50,7 +50,6 @@ setTimeout(function () {
         }, 1000);
     })
     socket.on("pcDesligado",function(data) {
-        scope.getPcs();
         setTimeout(function() {
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
                 if (scope.equipamentos[i].mac==data) {
@@ -64,6 +63,7 @@ setTimeout(function () {
                     };
                 }
             };
+             scope.getPcs();
         }, 1000);
     })
     socket.on("continuaUsando",function(data) {
@@ -342,7 +342,6 @@ $("#btn-create-pc").click(function() {
 });
 
 function createPc(pcParams) {
-    console.log("createpc")
     if (pcParams!=null && pcParams!=undefined){
         var textoSel = pcParams.text;
         var idSel = pcParams.id;
@@ -351,7 +350,7 @@ function createPc(pcParams) {
         fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
             var text = new fabric.Text(pcParams.text, {
                 fontFamily: 'Arial',
-                fontSize: 20,
+                fontSize: 20 * canvasScale,
             });
             var group = new fabric.Group([img, text], {
                 left: pcParams.left * canvasScale,
