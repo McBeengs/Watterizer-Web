@@ -116,7 +116,7 @@ app.post('/logout', function(req, res) {
     usuario.logoutDesktop(req.body.token, res);
     var index = macDesliga.indexOf(req.body.mac);
     pcsLigados.splice(index, 1);
-    console.log("deslogou");
+    console.log(req.body.mac);
     io.sockets.emit('pcDesligado', req.body.mac);
     io.sockets.emit('pcCount', pcsLigados);
     req.session.destroy(function(err) {

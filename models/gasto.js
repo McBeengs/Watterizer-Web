@@ -36,9 +36,9 @@ function Gasto() {
 			});
 		});
 	};
-	this.custoArduino = function(id,res) {
+	this.custoEquipamento = function(id,res) {
 		connection.acquire(function(err, con) {
-			con.query("SELECT SUM(custo) as custo FROM gasto WHERE id_arduino=?",[id], function(err, result) {
+			con.query("SELECT SUM(custo) as custo FROM gasto WHERE id_equipamento=? AND data = CURDATE()",[id], function(err, result) {
 				con.release();
 				res.send(result)
 
@@ -274,7 +274,58 @@ function Gasto() {
 
 		});
 };
+// MOSTRA O GASTO DE UM EQUIPAMENTO HOJE
+	this.getOneHojeEquipamento = function(id,res) {
+		connection.acquire(function(err, con) {
+			con.query("SELECT ultimo_update, CONVERT(gasto USING utf8) AS gasto FROM gasto WHERE data = CURDATE() AND id_equipamento = ?",[id], function(err, result) {
+				var gastos='';
+				
+				for (var i = 0; i <= result.length - 1; i++) {
+					
+					if (i==result.length-1) {
+						gastos+=result[i].gasto;
+					}
+					else{
+						gastos+=result[i].gasto+',';
+					}
 
+				};
+				
+				var arraygastos = gastos.split(",");
+				var soma = 0;
+				for (var i = arraygastos.length - 1; i >= 0; i--) {
+					soma+=Number(arraygastos[i]);
+					
+				};
+
+				for (var i = 0; i <= arraygastos.length - 1; i++) {
+					if (gastos!=='') {
+						arraygastos[i] = i + "':'" + arraygastos[i];
+
+					}
+				};
+				con.release();
+
+				if (gastos=='') {
+					// if (res==null) {
+					// 	return '[]';
+					// }
+					res.send('[]');
+
+				}
+				else {
+					arraygastos[arraygastos.length]= "hora':'" + result[0].ultimo_update;
+					// if (res==null) {
+						
+					// 	return arraygastos;
+					// }
+					res.send(arraygastos);
+				}
+
+			});
+
+		});
+};
 	// MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA
 	this.listData = function(data,res) {
 		connection.acquire(function(err, con) {
