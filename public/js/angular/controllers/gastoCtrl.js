@@ -72,7 +72,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				};
 				
 			}
-		});
+		}); 
 
 		// ADICIONA E REMOVE MÁSCARA QUE INDICA ATIVIDADE
 		$interval( function() {
