@@ -184,7 +184,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('load',function(data) {
         // var aasd = gasto.getOneHoje(data, null);
         // console.log(aasd);
-        socket.emit('toClientLoad', {gasto:arrayDadosArduino[data], custo:arrayCustoArduino[data]});
+        socket.emit('toClientLoad', {gasto:arrayDadosEquipamento[data], custo:arrayCustoEquipamento [data]});
     });
     
 });
@@ -220,7 +220,7 @@ net.createServer(function(sock) {
         }
         arrayCustoArduino[arduino]=arrayCustoArduino[arduino]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
         arrayCustoEquipamento[idEquipamento]= arrayCustoEquipamento[idEquipamento]+(127*gastoRecebido/1000)*precoKilowatt.valor/3600
-        request.post('http://localhost:1515/intervalo', function (error, response, body) {
+        request.post("http://"+ip.address()+":1515/intervalo", function (error, response, body) {
             console.log("body"+body);
             gasto.intervalo(ultimoEnvio,idEquipamento); 
         }).form({arduino:arduino,data:ultimoEnvio})
@@ -255,7 +255,7 @@ net.createServer(function(sock) {
             }
         };
 
-        io.sockets.emit('toClient', { gasto: gastoRecebido, arduino: arduino, custo:(127*gastoRecebido/1000)*precoKilowatt.valor/3600 });
+        io.sockets.emit('toClient', { gasto: gastoRecebido, equipamento: idEquipamento, custo:(127*gastoRecebido/1000)*precoKilowatt.valor/3600 });
         sock.write(data);
     }
 
@@ -284,11 +284,20 @@ net.createServer(function(sock) {
 
         if (idEquipamento!=0) {
             gasto.create(arrayDadosEquipamento[idEquipamento],idEquipamento,arrayCustoEquipamento[idEquipamento], null);
+            arrayDadosEquipamento[idEquipamento] = new Array(0);
+            arrayCustoEquipamento[idEquipamento] = new Array(0);
+            request.get("http://"+ip.address()+":1515/equipamento/"+idEquipamento+"", function (error, response, body) {
+            io.sockets.emit('pcDesligado', body.mac);
+            io.sockets.emit('pcCount', pcsLigados);
+            var index = pcsLigados.indexOf(body.mac);
+            pcsLigados.splice(index, 1);
+            var index = macDesliga.indexOf(body.mac);
+            macDesliga.splice(index, 1);
+            console.log(pcsLigados);
+        })
         }
         
-        arrayDadosEquipamento[idEquipamento] = new Array(0);
-        arrayCustoEquipamento[idEquipamento] = new Array(0);
-        io.sockets.emit('noConnection',data);
+
     });
 
     // SE OCORRER UM ERRO
