@@ -30,6 +30,30 @@ app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 			console.log("Falhou")
 		});
 	}
+	$scope.getPcsChange = function (id) {
+		if (id!=0) {
+			$http.get("/dados/computadores")
+		.then(function (response) {
+			$scope.equipamentos=response.data
+			$http.get("/pcligado")
+			.then(function (response) {
+				$scope.pcsligados=response.data;
+				console.log($scope.pcsligados);
+			}, function(response){
+				console.log("Falhou")
+			});
+			$scope.computadores = [];
+			for (var i = 0; i <= response.data.length - 1; i++) {
+				if (response.data[i].posicionado==0 && response.data[i].id_setor==id) {
+					$scope.computadores.push(response.data[i]);
+				}
+			}
+		}, function(response){
+			console.log("Falhou")
+		});
+	}
+		
+	}
 	var intervalo=setInterval(function () {
 		if ($scope.load) {
 			

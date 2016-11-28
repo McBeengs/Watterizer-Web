@@ -115,7 +115,7 @@ $("#slt-setores").change(function() {
     }
     // scope = angular.element($("body")).scope();
     scope.getCanvas();
-    scope.getPcs();
+    scope.getPcsChange(Number($("#slt-setores").val().substr($("#slt-setores").val().lastIndexOf(":")+1)));
     setores = scope.setores;
     lastCanvas = $("#slt-setores").val();
     setTimeout(function() {
