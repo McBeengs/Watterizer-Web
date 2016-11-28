@@ -82,7 +82,7 @@ label.badge
 {
 	margin-top: 4px;
 	margin-left: 15px;
-	background: rgb(45,45,45);
+	background: rgb(45,45,45) !important;
 	font-family: sans-serif;
 }
 

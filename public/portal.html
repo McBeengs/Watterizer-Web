@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/bower_components/nvd3/build/nv.d3.css"> <!-- JS NVD3 -->
 	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
 	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
@@ -90,5 +91,7 @@
 	setTimeout(function () {
 		$("nvd3").removeAttr("class");
 	}, 1);
+	adjustsMain();
+	$(window).resize(function () {adjusts();});
 </script>
 </html>

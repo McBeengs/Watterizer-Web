@@ -93,7 +93,7 @@ label.badge
 {
 	margin-top: 4px;
 	margin-left: 15px;
-	background: var(--mainGray);
+	background: var(--mainGray) !important;
 	font-family: sans-serif;
 }
 

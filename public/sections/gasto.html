@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
 	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
 	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"> <!-- CSS JQUERY UI -->
 	<link rel="stylesheet" type="text/css" href="/bower_components/nvd3/build/nv.d3.css"> <!-- JS NVD3 -->
 	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
@@ -51,22 +52,29 @@
 
 		<div id="content-portal" class="container-fluid">
 		<h2 id="custo">Custo: rs{{custo}}</h2>
-			<h3 id="no-data" ng-if="setores.length==0">Nenhum setor foi encontrado</h3>
-			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length==0">Nenhum arduíno foi encontrado</h3>
 			<form id="chart-select" class='form-inline'>
 				<div class="form-group">
 					<label><b>Setor:</b></label>
 					<select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
-						<option value=''>-- Selecione --</option>
+						<option value=''>-- Setor --</option>
 					</select>
 				</div> 
 				<div class="form-group">
-					<label><b>Arduíno:</b></label>
-					<select ng-options='arduino.id as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel' ng-change='startChart()'>
-						<option value=''>-- Selecione --</option>
+					<label><b>Arduino:</b></label>
+					<select ng-options='arduino as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'>
+						<option value=''>-- Arduino --</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label><b>Equipamento:</b></label>
+					<select ng-options='equipamento.id as equipamento.nome for equipamento in arduinoSel.equipamentos' ng-model='equipSel' ng-change='startChart()'>
+						<option value=''>-- Equipamento --</option>
 					</select>
 				</div>
 			</form>
+			<h3 id="no-data" ng-if="setores.length==0">Nenhum setor foi encontrado</h3>
+			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length==0">Nenhum arduíno foi encontrado</h3>
+			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length!=0 && arduinoSel.equipamentos.length==0">Nenhum equipamento foi encontrado</h3>
 			<div id="all-arround-chart">
 				<div id="container-chart">
 					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>

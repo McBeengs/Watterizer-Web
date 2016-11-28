@@ -150,5 +150,4 @@ app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 		$scope.setorExclusao.setor=setor;
 		$scope.setorExclusao.id=id;
 	}
-
 });

@@ -16,7 +16,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		// INICIA A FORMAÇÃO DO GRÁFICO QUANDO UM ARDUÍNO FOR SELECIONADO
 		$scope.startChart = function () {
 			// PEGA OS GASTOS DO BANCO DE DADOS
-			$http.get("/dados/gasto/arduino/"+$scope.arduinoSel)
+			$http.get("/dados/gasto/equipamento/"+$scope.equipSel)
 			.then(function (response) {
 				$rootScope.gastos = [];
 				for (var i = 0; i <= response.data.length - 2; i++) {
@@ -29,7 +29,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				
 			});
 
-			$http.get("/dados/gasto/custo/"+$scope.arduinoSel)
+			$http.get("/dados/gasto/custo/"+$scope.equipSel)
 			.then(function (response) {
 				$rootScope.custo=response.data[0].custo
 			});	
@@ -38,8 +38,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		// PEGA OS DADOS TEMPORÁRIOS NO SERVIDOR
 		$scope.getRecentData = function () {
 			// ENVIA EVENTO LOAD AO SOCKET
-			console.log($scope.arduinoSel);
-			socket.emit("load",$scope.arduinoSel);
+			socket.emit("load",$scope.equipSel);
 			socket.on('toClientLoad', function (data) {
 				// CASO OS GASTOS SEJAM NULOS
 				if (data.gasto==null) {
@@ -60,7 +59,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 		// LISTENER PARA DADOS DO SOCKET
 		socket.on('toClient', function (data) {
 			// FILTRA PARA INSERIR APENAS OS VALORES DO ARDUÍNO SELECIONADO
-			if (data.arduino == $scope.arduinoSel) {
+			if (data.equipamento == $scope.equipSel) {
 				$scope.gastos.push({x: $rootScope.i, y: data.gasto});
 				active = true;
 				$timeout(function() {

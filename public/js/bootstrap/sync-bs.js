@@ -4,7 +4,7 @@ var secsPortalDivs = $("#sections-portal div");
 // var footer = $("footer");
 // var title = $("#title");
 
-function adjusts() {
+function adjustsMain() {
 	screenW = $(window).width();
 	if (screenW >= 1200) { // SOMENTE PARA TELAS GRANDES (DESKTOP)
 		
@@ -23,21 +23,9 @@ function adjusts() {
 		secsPortal.css({
 			"margin-top":"20px"
 		});
-
-		// title.css({
-		// 	"font-size":"28px",
-		// 	"margin-left":"7%"
-		// });
 	}
 
 	if (screenW >= 768) { // PARA TELAS PEQUENAS OU MAIORES
-	// footer.css({
-	// 	"top":$(document).height() - 140
-	// });
-	// title.css({
-		// 	"font-size":"28px"
-		// });
-
 		secsPortal.css({
 			"margin-top":"180px"
 		});
@@ -61,13 +49,9 @@ function adjusts() {
 		$("#sec-computador").css({
 			"border-left": "5px solid rgb(45,45,45)"
 		});
-	} else {
-	// footer.css({
-	// 	"top":$(document).height() - 60
-	// });
+
+
 	}
 };
 
-adjusts();
-
-$(window).resize(function () {adjusts();});
+var panels = $("div.panel.panel-default.col-sm-6");
