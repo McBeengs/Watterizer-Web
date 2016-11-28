@@ -52,7 +52,7 @@ setTimeout(function () {
     socket.on("pcDesligado",function(data) {
         setTimeout(function() {
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
-                if (scope.equipamentos[i].mac==data) {
+                if (scope.equipamentos[i].mac==data || scope.equipamentos[i].id==data) {
                     for (var j = canvas._objects.length - 1; j >= 0; j--) {
                         if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
                         if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){

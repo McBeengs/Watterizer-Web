@@ -51,7 +51,7 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 				for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
 						if ($scope.equipamentos[i].mac==data) {
 							var repetido=false;
-							for (var i = Things.length - 1; i >= 0; i--) {
+							for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
 								if ($scope.pcsLigadosFull[i]==$scope.equipamentos[i]) {
 									repetido=true;
 								}
@@ -66,7 +66,6 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 			}, 1000);
 		})
 		socket.on("pcDesligado",function(data) {
-			console.log(data);
 			$timeout(function() {
 				for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
 						if ($scope.pcsLigadosFull[i].mac==data) {

@@ -226,6 +226,9 @@ module.exports = {
         }
         
     });
+    app.get('/equipamento/:id', function(req, res) {
+        equipamento.getOne(req.params.id,res);
+    });
     ///
     app.get('/equipamentonew', function(req, res) {
       equipamento.checkNovo(res);
