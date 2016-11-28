@@ -25,14 +25,31 @@ function Setor() {
 					}
 					for (var i = 0; i <= result.length - 1; i++) {
 						for (var j = 0; j <= setores.length - 1; j++) {
-
 							if (result[i].id_setor==setores[j].id) {
 								setores[j].arduinos.push(result[i]);
+
 							}
 						}
 					}
-					con.release();
-					res.send(setores);
+					con.query('SELECT * FROM equipamento', function(err, result) {
+						for (var i = 0; i <= result.length - 1; i++) {
+							for (var j = 0; j <= setores.length - 1; j++) {
+								for (var k = setores[j].arduinos.length - 1; k >= 0; k--) {
+									if (setores[j].arduinos[k].equipamentos==undefined) {
+										setores[j].arduinos[k].equipamentos=[]
+									}
+									if (setores[j].arduinos[k].id==result[i].id_arduino) {
+										setores[j].arduinos[k].equipamentos.push(result[i])
+									}
+
+								};
+
+							}
+						}
+						con.release();
+						res.send(setores);
+					});
+					
 				});
 			});
 		});

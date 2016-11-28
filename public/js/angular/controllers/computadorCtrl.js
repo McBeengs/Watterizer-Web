@@ -50,12 +50,23 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 			$timeout(function() {
 				for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
 						if ($scope.equipamentos[i].mac==data) {
-							$scope.pcsLigadosFull.push($scope.equipamentos[i])
+							var repetido=false;
+							for (var i = Things.length - 1; i >= 0; i--) {
+								if ($scope.pcsLigadosFull[i]==$scope.equipamentos[i]) {
+									repetido=true;
+								}
+								
+							};
+							if (!repetido) {
+								$scope.pcsLigadosFull.push($scope.equipamentos[i])
+							}
+							
 						}
 				};
 			}, 1000);
 		})
 		socket.on("pcDesligado",function(data) {
+			console.log(data);
 			$timeout(function() {
 				for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
 						if ($scope.pcsLigadosFull[i].mac==data) {

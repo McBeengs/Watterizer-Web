@@ -284,7 +284,7 @@ module.exports = {
 
     // MOSTRA TODOS OS GASTOS POR MES DE TODOS OS ARDUINOS //
     app.get(prefixoDados+'/gasto/custo/:id', function(req, res) {
-        gasto.custoArduino(req.params.id,res);
+        gasto.custoEquipamento(req.params.id,res);
     });
 
     // MOSTRA O GASTO DE UM ARDUINO EM UMA DATA ESPECIFICADA //
@@ -299,6 +299,9 @@ module.exports = {
      // MOSTRA O GASTO DE UM ARDUINO HOJE //
      app.get(prefixoDados+'/gasto/arduino/:id/', function(req, res) {
         gasto.getOneHojeArduino(req.params.id, res);
+    });
+      app.get(prefixoDados+'/gasto/equipamento/:id/', function(req, res) {
+        gasto.getOneHojeEquipamento(req.params.id, res);
     });
 
     // MOSTRA TODOS OS GASTOS DE UMA DATA ESPECIFICADA //
