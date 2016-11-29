@@ -10,9 +10,8 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 				.then(function (response) {
 					$scope.pcsligados=response.data;
 					for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
-						console.log(i);
 						for (var j = $scope.pcsligados.length - 1; j >= 0; j--) {
-							console.log(j);
+							console.log($scope.pcsligados[j]);
 							if ($scope.equipamentos[i].mac==$scope.pcsligados[j]) {
 								$scope.pcsLigadosFull.push($scope.equipamentos[i])
 							}
@@ -49,28 +48,20 @@ app.controller('pcCtrl', function($scope,$timeout, $http) {
 		socket.on("pcLigado",function(data) {
 			$timeout(function() {
 				for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
-						if ($scope.equipamentos[i].mac==data) {
-							var repetido=false;
-							for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-								if ($scope.pcsLigadosFull[i]==$scope.equipamentos[i]) {
-									repetido=true;
-								}
-								
-							};
-							if (!repetido) {
-								$scope.pcsLigadosFull.push($scope.equipamentos[i])
-							}
-							
-						}
+					if ($scope.equipamentos[i].mac==data) {
+
+						$scope.pcsLigadosFull.push($scope.equipamentos[i])
+
+					}
 				};
 			}, 1000);
 		})
 		socket.on("pcDesligado",function(data) {
 			$timeout(function() {
 				for (var i = $scope.pcsLigadosFull.length - 1; i >= 0; i--) {
-						if ($scope.pcsLigadosFull[i].mac==data) {
-							$scope.pcsLigadosFull.splice(i, 1);
-						}
+					if ($scope.pcsLigadosFull[i].mac==data) {
+						$scope.pcsLigadosFull.splice(i, 1);
+					}
 				};
 			}, 1000);
 		})

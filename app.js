@@ -56,12 +56,13 @@ app.post('/desligaconf', function(req, res) {
             io.sockets.emit('continuaUsando', req.body.mac);
         }
         else if (req.body.option=="nao") {
-            io.sockets.emit('pcDesligado', req.body.mac);
-            io.sockets.emit('pcCount', pcsLigados);
-            var index = pcsLigados.indexOf(req.body.mac);
-            pcsLigados.splice(index, 1);
+            console.log(req.body.mac);
             var index = macDesliga.indexOf(req.body.mac);
             macDesliga.splice(index, 1);
+            var index = macDesliga.indexOf(req.body.mac);
+            pcsLigados.splice(index, 1);
+            io.sockets.emit('pcDesligado', req.body.mac);
+            io.sockets.emit('pcCount', pcsLigados);
             
         }
     }
@@ -116,7 +117,6 @@ app.post('/logout', function(req, res) {
     usuario.logoutDesktop(req.body.token, res);
     var index = macDesliga.indexOf(req.body.mac);
     pcsLigados.splice(index, 1);
-    console.log(req.body.mac);
     io.sockets.emit('pcDesligado', req.body.mac);
     io.sockets.emit('pcCount', pcsLigados);
     req.session.destroy(function(err) {
@@ -176,9 +176,9 @@ var details = {
     resource: (window.location.pathname.split('/').slice(0, -1).join('/') + '/socket.io').substring(1)  
 };  
   Socket client
-*/
+  */
 
-io.sockets.on('connection', function (socket) {
+  io.sockets.on('connection', function (socket) {
     console.log("conectou");
     sockets = socket;
     socket.on('load',function(data) {
@@ -189,9 +189,9 @@ io.sockets.on('connection', function (socket) {
     
 });
 
-var request = require('request');
+  var request = require('request');
 
-net.createServer(function(sock) {
+  net.createServer(function(sock) {
     // NOTIFICA A CONEXÃO RECEBIDA
     console.log('CONNECTED: ' + sock.remoteAddress +':'+ sock.remotePort);
     var ultimoEnvioData= new Date();
@@ -204,7 +204,7 @@ net.createServer(function(sock) {
         }
         else{
 
-        var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
+            var ultimoEnvio = ultimoEnvioData.getHours()+":"+ultimoEnvioData.getMinutes()+":"+ultimoEnvioData.getSeconds();
 
         // REENVIA O QUE FOI RECEBIDO
         var idEquipamento = JSON.parse(data).equipamento;
@@ -287,14 +287,14 @@ net.createServer(function(sock) {
             arrayDadosEquipamento[idEquipamento] = new Array(0);
             arrayCustoEquipamento[idEquipamento] = new Array(0);
             request.get("http://"+ip.address()+":1515/equipamento/"+idEquipamento+"", function (error, response, body) {
-            io.sockets.emit('pcDesligado', body.mac);
-            io.sockets.emit('pcCount', pcsLigados);
-            var index = pcsLigados.indexOf(body.mac);
-            pcsLigados.splice(index, 1);
-            var index = macDesliga.indexOf(body.mac);
-            macDesliga.splice(index, 1);
-            console.log(pcsLigados);
-        })
+                io.sockets.emit('pcDesligado', body.mac);
+                io.sockets.emit('pcCount', pcsLigados);
+                var index = pcsLigados.indexOf(body.mac);
+                pcsLigados.splice(index, 1);
+                var index = macDesliga.indexOf(body.mac);
+                macDesliga.splice(index, 1);
+                console.log(pcsLigados);
+            })
         }
         
 

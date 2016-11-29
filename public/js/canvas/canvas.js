@@ -47,7 +47,6 @@ setTimeout(function () {
                                     objeto.stroke='green'
                                     canvas.renderAll()
                                 }
-
                                 imagem.src="/img/canvas-icons/pc-icon-on.png";
 
                             }
@@ -61,16 +60,22 @@ setTimeout(function () {
 socket.on("pcDesligado",function(data) {
     setTimeout(function() {
         for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
-            if (scope.equipamentos[i].mac==data || scope.equipamentos[i].id==data) {
+            console.log("for1");
+            if (scope.equipamentos[i].mac.trim().toString()==data.trim().toString()) {
+                console.log("if1");
                 for (var j = canvas._objects.length - 1; j >= 0; j--) {
+                    console.log('for2');
                     if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
+                        console.log('if2');
                         if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
+                          console.log('if final');
                           var imagem=new Image();
                           var objeto = canvas._objects[j]._objects[0]
                           imagem.onload=function(){
                             imagem.width=70*canvasScale
                             imagem.height=70*canvasScale
                             objeto.setElement(imagem);
+                            objeto.stroke='';
                             canvas.renderAll()
                         }
 
@@ -84,7 +89,12 @@ socket.on("pcDesligado",function(data) {
 }, 1000);
 })
 socket.on("continuaUsando",function(data) {
-    alert("pc continua usando")
+    $("#modal-continua").fadeIn();
+    $("#modal-continua").attr("class","modal fade in");
+    setTimeout(function () {
+     $("#modal-continua").fadeOut();
+     $("#modal-continua").attr("class","modal fade");
+ }, 3000);
 })
 }, 1000);
 var canvasToLoad;
@@ -407,7 +417,6 @@ function createPc(pcParams) {
             img.crossOrigin = {id:idSel, nome:textoSel};
             textoSel = lastTarget;
             group.angle=pcParams.angle;
-            console.log(img)
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
                 if (scope.equipamentos[i].id==Number(pcParams.id.substr(pcParams.id.lastIndexOf(":")+1,pcParams.id.length-1))) {
                     for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
@@ -416,8 +425,9 @@ function createPc(pcParams) {
                             imagem.onload=function(){
                                 imagem.width=70*canvasScale
                                 imagem.height=70*canvasScale
-                                img.stroke=='green'
                                 img.setElement(imagem);
+                                img.stroke='green'
+                                console.log(img);
                                 canvas.renderAll()
                             }
 
@@ -455,6 +465,7 @@ if ($("#slt-pc").val() != '') {
         group.setHeight(70 * canvasScale);
         img.setWidth(70 * canvasScale);
         img.setHeight(70 * canvasScale);
+        img.stroke=''
         text.setHeight(70 * canvasScale);
         text.setWidth(70 * canvasScale);
         text.setLeft(-13 - text.text.length * 4);
@@ -476,6 +487,28 @@ if ($("#slt-pc").val() != '') {
         img.crossOrigin = {id:idSel, nome:textoSel};
         textoSel = lastTarget;
         group.angle=0;
+          for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+                if (scope.equipamentos[i].id==Number(group.id.substr(group.id.lastIndexOf(":")+1,group.id.length-1))) {
+                    for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
+                        if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
+                            var imagem=new Image();
+                            imagem.onload=function(){
+                                imagem.width=70*canvasScale
+                                imagem.height=70*canvasScale
+                                img.setElement(imagem);
+                                img.stroke='green'
+                                console.log(img);
+                                canvas.renderAll()
+                            }
+
+                            imagem.src="/img/canvas-icons/pc-icon-on.png";
+
+                            console.log(img)
+
+                        };
+                    };
+                };
+            };
         canvas.add(group);
     });
 
@@ -501,7 +534,9 @@ $("#editar").click(function editar() {
 });
 //EDITANDO NOME PC
 $("#desligar").click(function desliga() {
+    console.log(canvas.getActiveObject()._objects[0]);
     if (canvas.getActiveObject()._objects[0].stroke=='green') {
+        console.log("sedfsdf");
         for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
             if(scope.equipamentos[i].id==Number(canvas.getActiveObject().id.substr(canvas.getActiveObject().id.lastIndexOf(":")+1,canvas.getActiveObject().id.length-1))){
                 scope.desliga(scope.equipamentos[i].mac)
