@@ -56,17 +56,42 @@ function Usuario() {
 	this.geraUsuario = function(nome,req, res) {
 		connection.acquire(function(err, con) {
 			con.query('SELECT * FROM usuario WHERE data_exclusao IS NULL', function(err, result) {
-				var user = nome.nome.replace(/ /g,"");
+				var countEspaco=0;
+				for (var i = nome.nome.length - 1; i >= 0; i--) {
+					if (nome.nome[i].trim()=="") {
+						countEspaco++;
+					}
+
+				};
+				var user = nome.nome;
+				var newUser;
+				if (countEspaco>=2) {
+					newUser=user.split(" ")
+					user=''
+					for (var i = 0; i <= newUser.length - 1; i++) {
+						if (i==0 || i==newUser.length - 1) {
+							user+=newUser[i]
+						}
+					};
+				}
+				else{
+					user = nome.nome.replace(/ /g,"");
+				}
+				
+				
 				var count=[];
+				
 
 				for (var i = 0; i <= 3; i++) {
 					count.push(Math.floor((Math.random() * 9) + 1));
 					user += count[i];
 				};
+
 				for (var i = result.length - 1; i >= 0; i--) {
 					if (result[i].username==user) {
 						count.splice(1, 1);
 						count.push(Math.floor((Math.random() * 9) + 1));
+						
 						user=nome.nome.replace(/ /g,"")+count.toString().replace(/,/g,"");
 					};
 				};
@@ -159,18 +184,18 @@ else{
 		};
 		if (usuario.id!=sess.idUser ) {
 			connection.acquire(function(err, con) {
-					con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
-						con.release();
-						if (err) {
-							res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-							.send({
-								error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
-							});
-						} else {
-							res.status(HttpStatus.OK)
-							.send('OK');
-						}
-					});
+				con.query('UPDATE usuario SET ? WHERE id = ? AND data_exclusao IS NULL', [usuario, usuario.id], function(err, result) {
+					con.release();
+					if (err) {
+						res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						.send({
+							error: HttpStatus.getStatusText(HttpStatus.INTERNAL_SERVER_ERROR)
+						});
+					} else {
+						res.status(HttpStatus.OK)
+						.send('OK');
+					}
+				});
 				
 			});
 		}

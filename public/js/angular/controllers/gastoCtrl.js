@@ -40,7 +40,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			// ENVIA EVENTO LOAD AO SOCKET
 			socket.emit("load",$scope.equipSel);
 			socket.on('toClientLoad', function (data) {
-				$rootScope.custo+=data.custo;
+				$rootScope.custo+=Number(data.custo);
 				// CASO OS GASTOS SEJAM NULOS
 				if (data.gasto==null) {
 					console.log('null');
