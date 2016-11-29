@@ -7,7 +7,7 @@ var canvas = new fabric.Canvas(
         allowTouchScrolling: false
 
     }
-);
+    );
 
 var canvasScale = 1;
 var scaleFactor = 1.1;
@@ -38,57 +38,81 @@ setTimeout(function () {
                     for (var j = canvas._objects.length - 1; j >= 0; j--) {
                         if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
                             if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
-                            canvas._objects[j]._objects[0].stroke='green'
-                            canvas.renderAll();
-                            
-                        }
+                                var imagem=new Image();
+                                var objeto = canvas._objects[j]._objects[0]
+                                imagem.onload=function(){
+                                    imagem.width=70*canvasScale
+                                    imagem.height=70*canvasScale
+                                    objeto.setElement(imagem);
+                                    objeto.stroke='green'
+                                    canvas.renderAll()
+                                }
+
+                                imagem.src="/img/canvas-icons/pc-icon-on.png";
+
+                            }
                         };
                         
                     };
                 }
             };
         }, 1000);
-    })
-    socket.on("pcDesligado",function(data) {
-        setTimeout(function() {
-            for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
-                if (scope.equipamentos[i].mac==data || scope.equipamentos[i].id==data) {
-                    for (var j = canvas._objects.length - 1; j >= 0; j--) {
-                        if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
+})
+socket.on("pcDesligado",function(data) {
+    setTimeout(function() {
+        for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+            if (scope.equipamentos[i].mac==data || scope.equipamentos[i].id==data) {
+                for (var j = canvas._objects.length - 1; j >= 0; j--) {
+                    if (canvas._objects[j].id!= null && canvas._objects[j].id!=undefined) {
                         if(scope.equipamentos[i].id==Number(canvas._objects[j].id.substr(canvas._objects[j].id.lastIndexOf(":")+1,canvas._objects[j].id.length-1))){
-                            canvas._objects[j]._objects[0].stroke='red'
-                            canvas.renderAll();
+                          var imagem=new Image();
+                          var objeto = canvas._objects[j]._objects[0]
+                          imagem.onload=function(){
+                            imagem.width=70*canvasScale
+                            imagem.height=70*canvasScale
+                            objeto.setElement(imagem);
+                            canvas.renderAll()
                         }
+
+                        imagem.src="/img/canvas-icons/pc-icon.png";
                     }
-                    };
                 }
             };
-             scope.getPcs();
-        }, 1000);
-    })
-    socket.on("continuaUsando",function(data) {
-        alert("pc continua usando")
-    })
+        }
+    };
+    scope.getPcs();
+}, 1000);
+})
+socket.on("continuaUsando",function(data) {
+    alert("pc continua usando")
+})
 }, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
-        canvas.clear();
-        for (var i = setores.length - 1; i >= 0; i--) {
-            if (setores[i].id == Number(id)){
-                if (setores[i].canvas!="") {
-                    canvasToLoad = JSON.parse(setores[i].canvas);
-                }
-                else{
-                    canvasToLoad = setores[i].canvas;
-                }
-                
+    canvas.clear();
+    for (var i = setores.length - 1; i >= 0; i--) {
+        if (setores[i].id == Number(id)){
+            if (setores[i].canvas!="") {
+                canvasToLoad = JSON.parse(setores[i].canvas);
             }
+            else{
+                canvasToLoad = setores[i].canvas;
+            }
+
         }
-        if (canvasToLoad!="") {
-            canvasScale = canvasToLoad.canvasScale;
+    }
+    if (canvasToLoad!="") {
+        canvasScale = canvasToLoad.canvasScale;
         if (canvasToLoad.objects.pcs!=null){
             for (var i = canvasToLoad.objects.pcs.length - 1; i >= 0; i--) {
-                createPc(canvasToLoad.objects.pcs[i]);
+                for (var j = scope.equipamentos.length - 1; j >= 0; j--) {
+                    if (scope.equipamentos[j].id==Number(canvasToLoad.objects.pcs[i].id.substr(canvasToLoad.objects.pcs[i].id.lastIndexOf(":")+1,canvasToLoad.objects.pcs[i].id.length-1))) {
+                        if (scope.equipamentos[j].posicionado==1) {
+                            createPc(canvasToLoad.objects.pcs[i]);
+                        };
+                    };
+                };
+                
             }
         }
         if (canvasToLoad.objects.doors!=null){
@@ -101,7 +125,7 @@ function loadCanvas(id) {
                 createBox(canvasToLoad.objects.boxes[i]);
             }
         }
-        };
+    };
 
 };
 
@@ -383,74 +407,84 @@ function createPc(pcParams) {
             img.crossOrigin = {id:idSel, nome:textoSel};
             textoSel = lastTarget;
             group.angle=pcParams.angle;
-            img.stroke='red'
-            img.strokeWidth=1
             console.log(img)
             for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
-            if (scope.equipamentos[i].id==Number(pcParams.id.substr(pcParams.id.lastIndexOf(":")+1,pcParams.id.length-1))) {
-                for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
-                    if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
-                        img.stroke='green'
+                if (scope.equipamentos[i].id==Number(pcParams.id.substr(pcParams.id.lastIndexOf(":")+1,pcParams.id.length-1))) {
+                    for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
+                        if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
+                            var imagem=new Image();
+                            imagem.onload=function(){
+                                imagem.width=70*canvasScale
+                                imagem.height=70*canvasScale
+                                img.stroke=='green'
+                                img.setElement(imagem);
+                                canvas.renderAll()
+                            }
+
+                            imagem.src="/img/canvas-icons/pc-icon-on.png";
+
+                            console.log(img)
+
+                        };
                     };
                 };
             };
-        };
+
             canvas.add(group);
+            
 
         });
-    }
-    idimg++;
-    if ($("#slt-pc").val() != '') {
-        var textoSel = $("#slt-pc option:selected").text();
-        var idSel = $("#slt-pc option:selected").val();
-        var pcSelecionado;
-        fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
-            var text = new fabric.Text(textoSel, {
-                fontFamily: 'Arial',
-                fontSize: 20,
-            });
-            var group = new fabric.Group([img, text], {
-                left: 10 * canvasScale,
-                top: 10 * canvasScale,
-            });
-            group.id = idSel;
-            img.id = idimg;
-            group.setWidth(70 * canvasScale);
-            group.setHeight(70 * canvasScale);
-            img.setWidth(70 * canvasScale);
-            img.setHeight(70 * canvasScale);
-            text.setHeight(70 * canvasScale);
-            text.setWidth(70 * canvasScale);
-            text.setLeft(-13 - text.text.length * 4);
-            text.setTop(20);
-            img.setTop();
-            img.setLeft();
-            text.setTextAlign("center center");
-            group.setControlsVisibility({
-                mt: false,
-                mb: false,
-                ml: false,
-                mr: false,
-                bl: false,
-                br: false,
-                tl: false,
-                tr: false,
-                mtr: true
-            });
-            img.crossOrigin = {id:idSel, nome:textoSel};
-            textoSel = lastTarget;
-            img.stroke='red'
-            img.strokeWidth=1
-            group.angle=0;
-            canvas.add(group);
+}
+idimg++;
+if ($("#slt-pc").val() != '') {
+    var textoSel = $("#slt-pc option:selected").text();
+    var idSel = $("#slt-pc option:selected").val();
+    var pcSelecionado;
+    fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
+        var text = new fabric.Text(textoSel, {
+            fontFamily: 'Arial',
+            fontSize: 20,
         });
+        var group = new fabric.Group([img, text], {
+            left: 10 * canvasScale,
+            top: 10 * canvasScale,
+        });
+        group.id = idSel;
+        img.id = idimg;
+        group.setWidth(70 * canvasScale);
+        group.setHeight(70 * canvasScale);
+        img.setWidth(70 * canvasScale);
+        img.setHeight(70 * canvasScale);
+        text.setHeight(70 * canvasScale);
+        text.setWidth(70 * canvasScale);
+        text.setLeft(-13 - text.text.length * 4);
+        text.setTop(20);
+        img.setTop();
+        img.setLeft();
+        text.setTextAlign("center center");
+        group.setControlsVisibility({
+            mt: false,
+            mb: false,
+            ml: false,
+            mr: false,
+            bl: false,
+            br: false,
+            tl: false,
+            tr: false,
+            mtr: true
+        });
+        img.crossOrigin = {id:idSel, nome:textoSel};
+        textoSel = lastTarget;
+        group.angle=0;
+        canvas.add(group);
+    });
 
-        $("#slt-pc option:selected").remove();
-    }
-    if (pcParams==null || pcParams==undefined) {
-        saveCanvas();
-    };
-    
+$("#slt-pc option:selected").remove();
+}
+if (pcParams==null || pcParams==undefined) {
+    saveCanvas();
+};
+
 }
 
 //EDITANDO NOME PC
@@ -504,47 +538,47 @@ function onKeyDownHandler(event) {
     switch (key) {
         //Del (Delete)
         case 46: // Delete
-            if (ableToShortcut()) {
-                del();
-            }
-            break;
+        if (ableToShortcut()) {
+            del();
+        }
+        break;
             //Selecionar tudo (Crtl+z)
         case 90: // Ctrl+Z
-            if (ableToShortcut()) {
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    undo();
-                    return false;
-                }
+        if (ableToShortcut()) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+                undo();
+                return false;
             }
-            break;
+        }
+        break;
         case 89: // Ctrl+y
-            if (ableToShortcut()) {
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    redo();
-                }
+        if (ableToShortcut()) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+                redo();
             }
-            break;
+        }
+        break;
         case 83: // Ctrl+s
-            if (ableToShortcut()) {
-                if (event.ctrlKey) {
-                    event.preventDefault();
-                    saveCanvas();
-                }
+        if (ableToShortcut()) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+                saveCanvas();
             }
-            break;
+        }
+        break;
 
         default:
             // TODO
             break;
+        }
     }
-}
 
 
-function ableToShortcut() {
-    return true;
-}
+    function ableToShortcut() {
+        return true;
+    }
 
 //SALVA O ESTADO DO OBJETO
 
@@ -644,7 +678,7 @@ function redo() {
 
 function del() {
     var activeObject = canvas.getActiveObject(),
-        activeGroup = canvas.getActiveGroup();
+    activeGroup = canvas.getActiveGroup();
     if (activeGroup) {
         if (confirm('Tem certeza ?')) {
             var objectsInGroup = activeGroup.getObjects();
@@ -658,9 +692,9 @@ function del() {
         if (confirm('Tem certeza ?')) {
             if (activeObject._objects!=undefined) {
                 if (activeObject.id!=undefined){
-                scope.removePc(activeObject.id.substr(activeObject.id.lastIndexOf(":")+1,activeObject.id.length-1));
-                saveCanvas();
-            }
+                    scope.removePc(activeObject.id.substr(activeObject.id.lastIndexOf(":")+1,activeObject.id.length-1));
+                    saveCanvas();
+                }
             };
             canvas.remove(activeObject);
         }
@@ -714,7 +748,7 @@ function saveCanvas() {
             // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
             // console.log($("#slt-setores").val(), savedCanvas);
         }, 0);
-    }
+}
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
@@ -781,7 +815,7 @@ function mostrarMenu(event) {
 //Rodar imagens
 function rotateObject(angleOffset) {
     var obj = canvas.getActiveObject(),
-        resetOrigin = false;
+    resetOrigin = false;
 
     if (!obj) return;
 
