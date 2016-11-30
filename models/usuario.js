@@ -157,7 +157,7 @@ function Usuario() {
 						    to: usuario.email, // list of receivers
 						    subject: 'Senha', // Subject line
 						    // text: text //, // plaintext body
-						     html: "<div id='logo'><img src='http://outlook.live.com/owa/service.svc/s/GetFileAttachment?id=AQMkADAwATYwMAItY2U1Zi0xOTBlLTAwAi0wMAoARgAAAyPa8roeRYFOk7uEowWXnWYHAKES%2FR8kyDdDvGHFFX5Y748AAAIBDwAAAKES%2FR8kyDdDvGHFFX5Y748AAADUI95oAAAAARIAEABNKC9E%2FhP0Qqelkd67LyWA&X-OWA-CANARY=zH7exlutuUOyJkAdqBpovWAolMsUGdQY90KTnH1ztzveggoQJ1LHMfVlUlFKMLHwohy8tQMilEE.'></div> <div id='senha'><h2>Obrigado por utilizar o Watterizer</h2><b>"+text+"</b> </div> <style type='text/css'>*{margin: 0}img{height: 200px;}#logo{background-color: black;height: 200px;}#senha{background-color: gray;color: white;height: 200px;}#senha b,#senha h2{margin: 0 21%;}</style>" // You can choose to send an HTML body instead
+						     html: "<div id='logo'><img src='https://bn1303files.storage.live.com/y3pqqlkogthGFiCHAufXEEZnLxB8SVtIx8qJxPpCbEdcgAtm4WPO-AmlLjQhiTC0lYKmCfTevZOCKvBqpK5JCqYNSwRT95439_M293fwhnzYyREm82RJkMnCofNdqJGoQdLfq10I14KfLlrTEmNiKI5Pg/logo.png?psid=1&width=563&height=170'></div> <div id='senha'><h2>Obrigado por utilizar o Watterizer</h2><b>"+text+"</b> </div> <style type='text/css'>*{margin: 0}img{height: 200px;}#logo{background-color: black;height: 200px;}#senha{background-color: gray;color: white;height: 200px;}#senha b,#senha h2{margin: 0 21%;}</style>" // You can choose to send an HTML body instead
 						};
 						transporter.sendMail(mailOptions, function(error, info){
 							if(error) {
