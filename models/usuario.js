@@ -123,6 +123,12 @@ function Usuario() {
 		connection.acquire(function(err, con) {
 			var sess=req.session;
 			var senha = randtoken.generate(8);
+			usuario.hora_entrada= new Date(usuario.hora_entrada);
+			usuario.hora_intervalo= new Date(usuario.hora_intervalo);
+			usuario.hora_saida= new Date(usuario.hora_saida);
+			usuario.hora_entrada= usuario.hora_entrada.getHours()+":"+usuario.hora_entrada.getMinutes()+":"+usuario.hora_entrada.getSeconds();
+			usuario.hora_intervalo= usuario.hora_intervalo.getHours()+":"+usuario.hora_intervalo.getMinutes()+":"+usuario.hora_intervalo.getSeconds();
+			usuario.hora_saida= usuario.hora_saida.getHours()+":"+usuario.hora_saida.getMinutes()+":"+usuario.hora_saida.getSeconds();
 			usuario.senha=aes.encText(senha,key,init);
 			if (sess.autoUser!='' && sess !=undefined) {
 				usuario.username=sess.autoUser;
@@ -138,7 +144,7 @@ function Usuario() {
 					} else {
 						res.status(HttpStatus.CREATED)
 						.send('CREATED');
-						var text = 'Senha '+senha;
+						var text = "Seu usuário é "+usuario.username+": Sua senha é "+senha;
 						var transporter = nodemailer.createTransport({
 							service: 'Gmail',
 							auth: {
@@ -150,8 +156,8 @@ function Usuario() {
 						    from: 'watterizer@gmail.com', // sender address
 						    to: usuario.email, // list of receivers
 						    subject: 'Senha', // Subject line
-						    text: text //, // plaintext body
-						    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+						    // text: text //, // plaintext body
+						     html: "<div id='logo'><img src='https://bn1303files.storage.live.com/y3pqqlkogthGFiCHAufXEEZnLxB8SVtIx8qJxPpCbEdcgAtm4WPO-AmlLjQhiTC0lYKmCfTevZOCKvBqpK5JCqYNSwRT95439_M293fwhnzYyREm82RJkMnCofNdqJGoQdLfq10I14KfLlrTEmNiKI5Pg/logo.png?psid=1&width=563&height=170'></div> <div id='senha'><h2>Obrigado por utilizar o Watterizer</h2><b>"+text+"</b> </div> <style type='text/css'>*{margin: 0}img{height: 200px;}#logo{background-color: black;height: 200px;}#senha{background-color: gray;color: white;height: 200px;}#senha b,#senha h2{margin: 0 21%;}</style>" // You can choose to send an HTML body instead
 						};
 						transporter.sendMail(mailOptions, function(error, info){
 							if(error) {

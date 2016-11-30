@@ -476,6 +476,11 @@
 	z-index: 2;
 }
 
+#all-arround-chart
+{
+	min-height: 490px;
+}
+
 #container-mask
 {
 	background-color: rgba(66,66,66,0.8);
@@ -504,6 +509,14 @@
 	color: white;
 	padding-top: 170px;
 	font-size: 40px;
+}
+
+#div
+{
+	width: 100% !important;
+	position: absolute;
+	background: rgb(240,190,17);
+	height: 3px;
 }
 
 #upload-container

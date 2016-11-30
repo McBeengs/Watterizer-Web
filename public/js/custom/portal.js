@@ -45,10 +45,13 @@ var mask = $("#container-mask");
 var chart = $("nvd3");
 function resizeMask(chart){
 	$("#container-mask").css({
-		"top":chart.offset().top+50,
+		"top":chart.offset().top-100,
 		"left":chart.offset().left
 	});
 }
+$("#div").css({
+	"margin-top":$("#all-arround-chart").offset().top-200
+})
 
 mask.fadeOut();
 

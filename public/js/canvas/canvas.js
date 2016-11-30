@@ -4,7 +4,7 @@ var canvas = new fabric.Canvas(
         selection: true,
         controlsAboveOverlay: true,
         centeredScaling: false,
-        allowTouchScrolling: false
+        allowTouchScrolling: true
 
     }
     );
