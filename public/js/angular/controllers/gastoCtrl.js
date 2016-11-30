@@ -180,3 +180,17 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 	    };
 	};
 });
+// $scope.startChart = function () {
+// 					$http.get("/dados/gasto/mensal/")
+// 					.then(function (response) {
+// 						$rootScope.gastos = [];
+// 						var meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dec"]
+// 						for (var i = 0; i <= response.data.length - 1; i++) {
+// 							$rootScope.gastos.push({x: meses[i], y: Number(response.data[i])});
+// 						}
+// 						$rootScope.i = i;
+// 						$timeout(function() {
+// 							$scope.createChart($rootScope.gastos);
+// 						}, 500);
+// 					});	
+// 				}
