@@ -55,11 +55,11 @@ app.controller('setorCtrl', function($scope, $http,$timeout,$window) {
 	}
 	var intervalo=setInterval(function () {
 		if ($scope.load) {
-			
-			$scope.getCanvas();
+			setTimeout(function (argument) {
+				$scope.getCanvas();
 			
 			$scope.getPcs();
-
+			}, 200);
 			
 			clearInterval(intervalo);
 		}
