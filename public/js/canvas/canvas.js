@@ -837,11 +837,9 @@ function mostrarMenu(event) {
     //CONTEXT-MENU
     if (target.id == null || target.id == undefined) {
         $("#editar").hide();
-        $("#txt-new-name-pc").hide();
         $("#desligar").hide();
     } else {
         $("#editar").show();
-        $("#txt-new-name-pc").show();
         $("#desligar").show();
     }
 
