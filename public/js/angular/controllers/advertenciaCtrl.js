@@ -1,8 +1,8 @@
 // CONTROLLER DE ADVERTENCIAS
 app.requires.push('datatables');
-app.controller('advertenciaCtrl', function($scope,$window, $http,DTOptionsBuilder, DTColumnBuilder) {
-	var language = {
-		"sEmptyTable": "Nenhum registro encontrado",
+app.controller('advertenciaCtrl', function($scope, $window, $http, DTOptionsBuilder, DTColumnBuilder) {
+    var language = {
+        "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
         "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
         "sInfoFiltered": "(Filtrados de _MAX_ registros)",
@@ -25,23 +25,23 @@ app.controller('advertenciaCtrl', function($scope,$window, $http,DTOptionsBuilde
         }
     }
     $scope.dtOptions = DTOptionsBuilder.newOptions()
-    .withLanguage(language)
-    // .withDOM('<"top"<"col-xs-6"i>f>tr<"bottom"<"col-xs-6"l><"col-xs-6"p>>');
-	// LISTA TODAS AS ADVERTENCIAS
-	var intervalo=setInterval(function () {
+        .withLanguage(language)
+        // .withDOM('<"top"<"col-xs-6"i>f>tr<"bottom"<"col-xs-6"l><"col-xs-6"p>>');
+        // LISTA TODAS AS ADVERTENCIAS
+    var intervalo = setInterval(function() {
         if ($scope.load) {
-		$http.get("/dados/advertencia")
-		.then(function (response) {
-			// console.log(.token);
-			$scope.advertencias = response.data;
-		}, function(response){
-			console.log("Falhou");
-		})
-	clearInterval(intervalo);
+            $http.get("/dados/advertencia")
+                .then(function(response) {
+                    // console.log(.token);
+                    $scope.advertencias = response.data;
+                }, function(response) {
+                    console.log("Falhou");
+                })
+            clearInterval(intervalo);
         };
-    },10);
+    }, 10);
 
-    $scope.mensagemModal = function (adv) {
+    $scope.mensagemModal = function(adv) {
         $scope.advertencia = adv;
     }
 });
