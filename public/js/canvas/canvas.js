@@ -101,19 +101,29 @@ socket.on("continuaUsando",function(data) {
        $("#modal-continua").attr("class","modal fade");
    }, 3000);
 })
-socket.on("save",function(data) {
-    var scope = angular.element($("body")).scope();
-    if (scope.canvasSel.id==data) {
-        loadCanvas(data)
+socket.on("saveClient",function(data) {
+
+        if (scope.canvasSel.id==data) {
+        loadCanvas(data.toString())
     }
+
+    
 })
 }, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
     canvas.clear();
-    for (var i = setores.length - 1; i >= 0; i--) {
+    setTimeout(function  (argument) {
+        scope.getCanvas()
+    }, 100);
+    setTimeout(function  (argument) {
+    
+    setores=scope.setores;
+    setTimeout(function  (argument) {
+        for (var i = setores.length - 1; i >= 0; i--) {
         if (setores[i].id == Number(id)){
             if (setores[i].canvas!="") {
+
                 canvasToLoad = JSON.parse(setores[i].canvas);
             }
             else{
@@ -147,7 +157,9 @@ function loadCanvas(id) {
             }
         }
     };
-
+    }, 100);
+    
+}, 200);
 };
 
 var lastCanvas;
@@ -772,7 +784,7 @@ function del() {
 }
 var obj;
 function saveCanvas() {
-    console.log("sdf")
+
     if (lastCanvas!=undefined && lastCanvas!=null){
         setTimeout(function () {
 
@@ -816,9 +828,12 @@ function saveCanvas() {
             // var savedCanvas = JSON.stringify(canvas.toJSON());
             // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
             // console.log($("#slt-setores").val(), savedCanvas);
+                
         }, 0);
-}
 socket.emit("save",scope.canvasSel.id);
+
+}
+
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS

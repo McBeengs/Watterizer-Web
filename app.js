@@ -189,7 +189,8 @@ var details = {
     socket.on('save',function(data) {
         // var aasd = gasto.getOneHoje(data, null);
         // console.log(aasd);
-        socket.broadcast.emit('save', data);
+        var dado = data;
+        socket.broadcast.emit('saveClient', dado);
     });
     
 });
