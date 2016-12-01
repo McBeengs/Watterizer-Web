@@ -212,15 +212,7 @@ canvas.on('object:moving', function(e) {
 
 });
 
-// AO SELECIONAR UM OBJETO
-canvas.on("touch:longpress", function(options) {
-    $("*").css("background", "blue")
-    if (target) {
-        lastTarget = target;
-        mostrarMenu(options.e)
-        canvas.setActiveObject(target)
-    }
-});
+
 
 // AO CLICAR DUAS VEZES
 var timer;
