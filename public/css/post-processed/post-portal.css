@@ -475,6 +475,10 @@
 {
 	z-index: 2;
 }
+#chartMes-container
+{
+	margin-top: 228px;
+}
 
 #all-arround-chart
 {

@@ -4,7 +4,7 @@ var canvas = new fabric.Canvas(
         selection: true,
         controlsAboveOverlay: true,
         centeredScaling: false,
-        allowTouchScrolling: true
+        allowTouchScrolling: false
 
     }
     );
@@ -21,11 +21,15 @@ setTimeout(function () {
 }, 500);
 
 // RESPONSIVIDADE
-$(document).ready(function() {
+$(document).ready(function() {      
+
     canvas.setWidth($(window).width());
+
     $( "#controles" ).find("button").prop( "disabled", true );
     $(window).resize(function() {
+
         canvas.setWidth($(window).width());
+        
     });
 });
 setTimeout(function () {
@@ -92,9 +96,9 @@ socket.on("continuaUsando",function(data) {
     $("#modal-continua").fadeIn();
     $("#modal-continua").attr("class","modal fade in");
     setTimeout(function () {
-     $("#modal-continua").fadeOut();
-     $("#modal-continua").attr("class","modal fade");
- }, 3000);
+       $("#modal-continua").fadeOut();
+       $("#modal-continua").attr("class","modal fade");
+   }, 3000);
 })
 }, 1000);
 var canvasToLoad;
@@ -147,6 +151,7 @@ function changeCanvas (id) {
 }
 // CARREGA O CANVAS SELECIONADO
 $("#slt-setores").change(function() {
+
     if ($("#slt-setores").val()!='') {
         $( "#controles" ).find("button").prop( "disabled", false );
     }
@@ -160,10 +165,21 @@ $("#slt-setores").change(function() {
     lastCanvas = $("#slt-setores").val();
     setTimeout(function() {
         loadCanvas($("#slt-setores").val().substr($("#slt-setores").val().lastIndexOf(":")+1,$("#slt-setores").val().length-1));
+
     }, 100);
     
     
     canvas.renderAll();
+    setTimeout(function() {
+        for (var i = canvas._objects.length - 1; i >= 0; i--) {
+            if (canvas._objects[i].left+canvas._objects[i].width+100>$(window).width()) {
+                canvas.setWidth(canvas._objects[i].left+canvas._objects[i].width+100)
+            };
+            
+        };
+    }, 1000);
+   
+
 });
 
 /* EVENT LISTENERS DO CANVAS */
@@ -173,6 +189,7 @@ var lastTarget;
 
 // LIMITE DE BORDAS
 canvas.on('object:moving', function(e) {
+    console.log(e)
     var obj = e.target;
 
     if (obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width) {
@@ -195,8 +212,7 @@ canvas.on('object:moving', function(e) {
 
 });
 
-// AO SELECIONAR UM OBJETO
-canvas.on("options:selected", function(options) {});
+
 
 // AO CLICAR DUAS VEZES
 var timer;
@@ -352,8 +368,8 @@ function createDoor(doorParams) {
             img.scaleX = doorParams.scaleX;
             img.scaleY = doorParams.scaleY;
             img.angle = doorParams.angle;
-            img.top = doorParams.top;
-            img.left = doorParams.left;
+            img.top = doorParams.top * canvasScale;
+            img.left = doorParams.left * canvasScale;
             canvas.add(img);
             canvas.renderAll();
         });
@@ -398,8 +414,8 @@ function createPc(pcParams) {
             img.setHeight(70 * canvasScale);
             text.setHeight(70 * canvasScale);
             text.setWidth(70 * canvasScale);
-            text.setLeft(-13 - text.text.length * 4);
-            text.setTop(20);
+            text.setLeft((-13 - text.text.length * 4)*canvasScale);
+            text.setTop(23*canvasScale);
             img.setTop();
             img.setLeft();
             text.setTextAlign("center center");
@@ -468,8 +484,8 @@ if ($("#slt-pc").val() != '') {
         img.stroke=''
         text.setHeight(70 * canvasScale);
         text.setWidth(70 * canvasScale);
-        text.setLeft(-13 - text.text.length * 4);
-        text.setTop(20);
+        text.setLeft((-13 - text.text.length * 4)*canvasScale);
+        text.setTop(23*canvasScale);
         img.setTop();
         img.setLeft();
         text.setTextAlign("center center");
@@ -487,28 +503,28 @@ if ($("#slt-pc").val() != '') {
         img.crossOrigin = {id:idSel, nome:textoSel};
         textoSel = lastTarget;
         group.angle=0;
-          for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
-                if (scope.equipamentos[i].id==Number(group.id.substr(group.id.lastIndexOf(":")+1,group.id.length-1))) {
-                    for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
-                        if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
-                            var imagem=new Image();
-                            imagem.onload=function(){
-                                imagem.width=70*canvasScale
-                                imagem.height=70*canvasScale
-                                img.setElement(imagem);
-                                img.stroke='green'
-                                console.log(img);
-                                canvas.renderAll()
-                            }
+        for (var i = scope.equipamentos.length - 1; i >= 0; i--) {
+            if (scope.equipamentos[i].id==Number(group.id.substr(group.id.lastIndexOf(":")+1,group.id.length-1))) {
+                for (var j = scope.pcsligados.length - 1; j >= 0; j--) {
+                    if (scope.pcsligados[j]==scope.equipamentos[i].mac) {
+                        var imagem=new Image();
+                        imagem.onload=function(){
+                            imagem.width=70*canvasScale
+                            imagem.height=70*canvasScale
+                            img.setElement(imagem);
+                            img.stroke='green'
+                            console.log(img);
+                            canvas.renderAll()
+                        }
 
-                            imagem.src="/img/canvas-icons/pc-icon-on.png";
+                        imagem.src="/img/canvas-icons/pc-icon-on.png";
 
-                            console.log(img)
+                        console.log(img)
 
-                        };
                     };
                 };
             };
+        };
         canvas.add(group);
     });
 
@@ -812,6 +828,7 @@ var out = 0;
 //DESATIVAR MENU DE CONTEXTO
 $(document).ready(function() {
     $('canvas').bind("contextmenu", function(e) {
+        console.log(e)
         if (target) {
             lastTarget = target;
             mostrarMenu(e)
