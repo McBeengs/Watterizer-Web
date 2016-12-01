@@ -353,21 +353,21 @@ $("#btn-create-box").click(function() {
 function createBox(boxParams) {
     if (boxParams!=null && boxParams!=undefined){
         var rect = new fabric.Rect({
-            left: boxParams.left * canvasScale,
-            top: boxParams.top * canvasScale,
+            left: boxParams.left,
+            top: boxParams.top,
             hasRotatingPoint: false,
             stroke: 'black',
             fill: 'transparent',
             strokeWidth: 2,
-            width: 300 * canvasScale,
-            height: 300 * canvasScale,
+            width: 300 ,
+            height: 300,
             scaleX:boxParams.scaleX,
             scaleY:boxParams.scaleY,
         });
     } else {
         var rect = new fabric.Rect({
-            left: 10 * canvasScale,
-            top: 10 * canvasScale,
+            left: 10 ,
+            top: 10 ,
             hasRotatingPoint: false,
             stroke: 'black',
             fill: 'transparent',
@@ -389,14 +389,14 @@ function createDoor(doorParams) {
     if (doorParams!=null && doorParams!=undefined) {
         fabric.Image.fromURL('/img/canvas-icons/door-icon.png', function(img) {
             img.id = null;
-            img.setWidth(100 * canvasScale);
-            img.setHeight(100 * canvasScale);
+            img.setWidth(100);
+            img.setHeight(100);
             img.crossOrigin = null;
             img.scaleX = doorParams.scaleX;
             img.scaleY = doorParams.scaleY;
             img.angle = doorParams.angle;
-            img.top = doorParams.top * canvasScale;
-            img.left = doorParams.left * canvasScale;
+            img.top = doorParams.top;
+            img.left = doorParams.left;
             canvas.add(img);
             canvas.renderAll();
         });
@@ -430,8 +430,8 @@ function createPc(pcParams) {
                 fontSize: 20 * canvasScale,
             });
             var group = new fabric.Group([img, text], {
-                left: pcParams.left * canvasScale,
-                top: pcParams.top * canvasScale,
+                left: pcParams.left,
+                top: pcParams.top,
             });
             group.id = idSel;
             img.id = idimg;
@@ -796,6 +796,8 @@ function saveCanvas() {
                     boxes:[]
                 }
             }
+            console.log(canvasToSave.canvasScale);
+            
             for (var i = canvas._objects.length - 1; i >= 0; i--) {
                 obj = canvas._objects[i]
                 if (obj.id!=null && obj.id!=undefined) {
