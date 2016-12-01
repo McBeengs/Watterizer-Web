@@ -352,8 +352,8 @@ function createDoor(doorParams) {
             img.scaleX = doorParams.scaleX;
             img.scaleY = doorParams.scaleY;
             img.angle = doorParams.angle;
-            img.top = doorParams.top;
-            img.left = doorParams.left;
+            img.top = doorParams.top * canvasScale;
+            img.left = doorParams.left * canvasScale;
             canvas.add(img);
             canvas.renderAll();
         });
@@ -398,8 +398,8 @@ function createPc(pcParams) {
             img.setHeight(70 * canvasScale);
             text.setHeight(70 * canvasScale);
             text.setWidth(70 * canvasScale);
-            text.setLeft(-13 - text.text.length * 4);
-            text.setTop(20);
+            text.setLeft((-13 - text.text.length * 4)*canvasScale);
+            text.setTop(23*canvasScale);
             img.setTop();
             img.setLeft();
             text.setTextAlign("center center");
@@ -468,8 +468,8 @@ if ($("#slt-pc").val() != '') {
         img.stroke=''
         text.setHeight(70 * canvasScale);
         text.setWidth(70 * canvasScale);
-        text.setLeft(-13 - text.text.length * 4);
-        text.setTop(20);
+        text.setLeft((-13 - text.text.length * 4)*canvasScale);
+        text.setTop(23*canvasScale);
         img.setTop();
         img.setLeft();
         text.setTextAlign("center center");
