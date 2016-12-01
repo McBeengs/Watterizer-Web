@@ -519,7 +519,6 @@
 
 #div
 {
-	position: absolute;
 	background: var(--mainYellow);
 	height: 3px;
 }

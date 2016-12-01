@@ -4,10 +4,11 @@ var canvas = new fabric.Canvas(
         selection: true,
         controlsAboveOverlay: true,
         centeredScaling: false,
-        allowTouchScrolling: false
+        allowTouchScrolling: true
 
     }
     );
+var socket
 
 var canvasScale = 1;
 var scaleFactor = 1.1;
@@ -33,7 +34,7 @@ $(document).ready(function() {
     });
 });
 setTimeout(function () {
-    var socket = io.connect(scope.ip+':1515');
+    socket = io.connect(scope.ip+':1515');
     socket.on("pcLigado",function(data) {
         scope.getPcs();
         setTimeout(function() {
@@ -99,6 +100,12 @@ socket.on("continuaUsando",function(data) {
        $("#modal-continua").fadeOut();
        $("#modal-continua").attr("class","modal fade");
    }, 3000);
+})
+socket.on("save",function(data) {
+    var scope = angular.element($("body")).scope();
+    if (scope.canvasSel.id==data) {
+        loadCanvas(data)
+    }
 })
 }, 1000);
 var canvasToLoad;
@@ -172,12 +179,12 @@ $("#slt-setores").change(function() {
     canvas.renderAll();
     setTimeout(function() {
         for (var i = canvas._objects.length - 1; i >= 0; i--) {
-            if (canvas._objects[i].left+canvas._objects[i].width+100>$(window).width()) {
-                canvas.setWidth(canvas._objects[i].left+canvas._objects[i].width+100)
+            if (canvas._objects[i].left+canvas._objects[i].width>$(window).width()) {
+                canvas.setWidth(canvas._objects[i].left+canvas._objects[i].width+400)
             };
             
         };
-    }, 1000);
+    }, 500);
    
 
 });
@@ -189,7 +196,7 @@ var lastTarget;
 
 // LIMITE DE BORDAS
 canvas.on('object:moving', function(e) {
-    console.log(e)
+
     var obj = e.target;
 
     if (obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width) {
@@ -243,12 +250,17 @@ canvas.observe('mouse:over', function(evento) {
 
     if (evento.target) {
         target = evento.target;
+        
 
         if (evento.target.crossOrigin != null || evento.target.crossOrigin != undefined) {
             // showImageTools(evento);
             canvas.renderAll();
         }
     }
+    if (evento.target.fill!="transparent") {
+        canvas.allowTouchScrolling = false
+    }
+
 });
 
 // AO MOVER UM OBJETO
@@ -258,6 +270,9 @@ canvas.observe('object:moving', function(evento) {
 
 // AO TIRAR O MOUSE DE CIMA
 canvas.observe('mouse:out', function(evento) {
+    
+    canvas.allowTouchScrolling = true
+
     target = false;
     $('#janela').hide();
 });
@@ -532,6 +547,7 @@ $("#slt-pc option:selected").remove();
 }
 if (pcParams==null || pcParams==undefined) {
     saveCanvas();
+    
 };
 
 }
@@ -682,6 +698,7 @@ canvas.on("object:modified", function(e) {
     refresh = true;
     object.crossOrigin;
     saveCanvas();
+
 });
 
 //UNDO FUNCTION
@@ -745,6 +762,7 @@ function del() {
                 if (activeObject.id!=undefined){
                     scope.removePc(activeObject.id.substr(activeObject.id.lastIndexOf(":")+1,activeObject.id.length-1));
                     saveCanvas();
+
                 }
             };
             canvas.remove(activeObject);
@@ -800,12 +818,14 @@ function saveCanvas() {
             // console.log($("#slt-setores").val(), savedCanvas);
         }, 0);
 }
+socket.emit("save",scope.canvasSel.id);
 };
 
 // SALVA AS COORDENADAS DO CANVAS NO BANCO DE DADOS
 var currentCanvas;
 $("#btn-canvas-save").click(function() {
     saveCanvas();
+    socket.emit("save",scope.canvasSel.id);
 });
 
 // BAIXA A IMAGEM DO CANVAS
@@ -828,7 +848,7 @@ var out = 0;
 //DESATIVAR MENU DE CONTEXTO
 $(document).ready(function() {
     $('canvas').bind("contextmenu", function(e) {
-        console.log(e)
+
         if (target) {
             lastTarget = target;
             mostrarMenu(e)
