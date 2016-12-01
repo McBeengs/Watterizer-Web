@@ -1,9 +1,116 @@
 // CONTROLLER DE GASTOS
 app.requires.push('nvd3');
 app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $timeout) {
+	var socket 
+	 var intervalo=setInterval(function () {
+        	if ($scope.load) {
+        		setTimeout(function() {
+        			socket = io.connect($scope.ip+':1515');
+        		}, 100);
+        		$http.get("/dados/gasto/mensal/")
+        		.then(function (response) {
+        			$rootScope.gastosMes = [];
+        			var meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dec"]
+        			for (var i = 0; i <= response.data.length - 1; i++) {
+        				$rootScope.gastosMes.push({x: meses[i], y: Number(response.data[i])});
+        			}
+        			$rootScope.i = i;
+        			$timeout(function() {
+        				$scope.createChartMes($rootScope.gastosMes);
+        			}, 500);
+        		});	
+        		clearInterval(intervalo);
+        	}
+        },0)
+        // CRIA O GRÁFICO
+	$scope.createChartMes = function (data) {
+		$scope.chartMes = {};
+		// CONFIGURAÇÕES DO GRÁFICO
+		$scope.chartMes.options = {
+			chart: {
+				type: 'discreteBarChart',
+				height: 450,
+				margin : {
+					top: 20,
+					right: 20,
+					bottom: 40,
+					left: 55
+				},
+				x: function(d){ return d.x; },
+				y: function(d){ return d.y; },
+				useInteractiveGuideline: true,
+				dispatch: {
+					stateChange: function(e){ console.log("stateChange"); },
+					changeState: function(e){ console.log("changeState"); },
+					tooltipShow: function(e){ console.log("tooltipShow"); },
+					tooltipHide: function(e){ console.log("tooltipHide"); }
+				},
+				xAxis: {
+					axisLabel: 'Mes'
+				},
+				yAxis: {
+					axisLabel: 'Kilowatts (kw)',
+					tickFormat: function(d){
+						return d3.format('.02f')(d);
+					},
+					axisLabelDistance: -10
+				},
+				callback: function(chart){
+					console.log("!!! lineChart callback !!!");
+				}
+			},
+			title: {
+				enable: true,
+				text: 'Consumo Mensal',
+				css: {
+					'color':'white',
+					'font-size':'24px'
+				}
+			},
+			subtitle: {
+				enable: false,
+				html: "",
+				css: {
+					'text-align': 'center',
+					'margin': '10px 13px 0px 7px',
+					'color':'white'
+				}
+			},
+			caption: {
+				enable: false,
+				html: '',
+				css: {
+					'text-align': 'justify',
+					'margin': '10px 13px 0px 7px'
+				}
+			}
+		};
+
+		// DADOS NO GRÁFICO
+		$scope.chartMes.data = createChartData(data);
+		function createChartData(data) {
+			// LIMITA A QUANTIDADE DE DADOS
+			var limit = 40;
+			if(data!=null){
+				data.splice(0, data.length - limit);
+			} else {
+				data = [{x:0, y:0}];
+			}
+
+			// ARRAY DE OBJETOS RETORNADO
+			return [
+            	// LINHA PRINCIPAL
+            	{
+            		values: data,
+            		key: 'Hoje',
+            		color: '#FFC814' 
+            	}
+            	];
+            };
+        };
 	$timeout(function() {
 		// CONECTA AO SOCKET
-		var socket = io.connect($scope.ip+':1515');
+		
 		var active = false;
 
 		// PEGA OS SETORES DO BANCO DE DADOS
@@ -32,6 +139,7 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			$http.get("/dados/gasto/custo/"+$scope.equipSel)
 			.then(function (response) {
 				$rootScope.custo=response.data[0].custo
+				console.log($rootScope.custo)
 			});	
 		}
 
@@ -40,7 +148,10 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			// ENVIA EVENTO LOAD AO SOCKET
 			socket.emit("load",$scope.equipSel);
 			socket.on('toClientLoad', function (data) {
-				$rootScope.custo+=Number(data.custo);
+				if (data.custo!=undefined) {
+					$rootScope.custo+=Number(data.custo);
+				};
+				
 				// CASO OS GASTOS SEJAM NULOS
 				if (data.gasto==null) {
 					console.log('null');
@@ -85,7 +196,8 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 				active == false;
 			}
 		}, 1000);
-    }, 100);
+	}, 1000);
+
 
 	// PAUSA O GRÁFICO
 	$scope.stopedChart = function () {
@@ -169,28 +281,17 @@ app.controller("gastoCtrl", function ($rootScope, $scope, $http, $interval, $tim
 			}
 
 			// ARRAY DE OBJETOS RETORNADO
-            return [
+			return [
             	// LINHA PRINCIPAL
             	{
-                    values: data,
-                    key: 'Hoje',
-                    color: '#FFC814' 
-                }
-            ];
-	    };
-	};
-});
-// $scope.startChart = function () {
-// 					$http.get("/dados/gasto/mensal/")
-// 					.then(function (response) {
-// 						$rootScope.gastos = [];
-// 						var meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dec"]
-// 						for (var i = 0; i <= response.data.length - 1; i++) {
-// 							$rootScope.gastos.push({x: meses[i], y: Number(response.data[i])});
-// 						}
-// 						$rootScope.i = i;
-// 						$timeout(function() {
-// 							$scope.createChart($rootScope.gastos);
-// 						}, 500);
-// 					});	
-// 				}
+            		values: data,
+            		key: 'Hoje',
+            		color: '#FFC814' 
+            	}
+            	];
+            };
+        };
+       
+    });
+
+

@@ -475,6 +475,10 @@
 {
 	z-index: 2;
 }
+#chartMes-container
+{
+	margin-top: 228px;
+}
 
 #all-arround-chart
 {
@@ -513,7 +517,6 @@
 
 #div
 {
-	width: 100% !important;
 	position: absolute;
 	background: rgb(240,190,17);
 	height: 3px;

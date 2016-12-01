@@ -40,6 +40,9 @@ function Gasto() {
 		connection.acquire(function(err, con) {
 			con.query("SELECT SUM(custo) as custo FROM gasto WHERE id_equipamento=? AND data = CURDATE()",[id], function(err, result) {
 				con.release();
+				if (result[0].custo==null) {
+					result[0].custo=0
+				};
 				res.send(result)
 
 			});

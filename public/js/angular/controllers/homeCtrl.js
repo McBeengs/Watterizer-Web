@@ -3,11 +3,11 @@ app.requires.push('nvd3');
 app.controller('homeCtrl', function($rootScope, $scope, $window, $http, $interval, $timeout) {
 	// LISTA TODOS OS SETORES
 	var intervalo = setInterval(function () {
-		var socket = io.connect($scope.ip+':1515');
+		var socket;
 		var active = false;
 		if ($scope.load) {
 			$timeout(function() {
-				
+							socket = io.connect($scope.ip+':1515');
 				$http.get("/setor/arduino")
 				.then(function (response) {
 					$scope.setores = response.data;
