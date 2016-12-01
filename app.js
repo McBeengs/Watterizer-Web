@@ -186,6 +186,11 @@ var details = {
         // console.log(aasd);
         socket.emit('toClientLoad', {gasto:arrayDadosEquipamento[data], custo:arrayCustoEquipamento[data]});
     });
+    socket.on('save',function(data) {
+        // var aasd = gasto.getOneHoje(data, null);
+        // console.log(aasd);
+        socket.broadcast.emit('save', data);
+    });
     
 });
 
