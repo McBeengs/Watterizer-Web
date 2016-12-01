@@ -79,7 +79,7 @@
 			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length!=0 && arduinoSel.equipamentos.length==0">Nenhum equipamento foi encontrado</h3>
 			<div id="all-arround-chart">
 				<div id="container-chart">
-					<nvd3 id="chart" options="chart.options" data="chart.data"></nvd3>
+					<nvd3 id="chart" class="nvd3-chart" options="chart.options" data="chart.data"></nvd3>
 				</div>
 				<div id="container-mask" class="col-xs-12">
 					<div id="blur"></div>
@@ -88,7 +88,7 @@
 			</div>
 			<div id="div" class="col-xs-12"></div>
 			<div id="chartMes-container">
-				<nvd3 id="chartMes" options="chartMes.options" data="chartMes.data"></nvd3>
+				<nvd3 id="chartMes" class="nvd3-chart" options="chartMes.options" data="chartMes.data"></nvd3>
 			</div>
 			
 		</div>
