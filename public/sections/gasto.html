@@ -1,130 +1,133 @@
 <!DOCTYPE html>
 <html lang="zxx" ng-app="watterizerApp">
+
 <head>
-	<meta charset="UTF-8">
-	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Dados de Consumo - Watterizer</title>
-	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
-	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
-	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"> <!-- CSS JQUERY UI -->
-	<link rel="stylesheet" type="text/css" href="/bower_components/nvd3/build/nv.d3.css"> <!-- JS NVD3 -->
-	<link rel="icon" href="/img/icon.png" type="image/x-icon" />
-	<link rel="shortcut icon" href="/img/icon.png" type="image/x-icon" />
-	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
-	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
-	<script src="/bower_components/d3/d3.js"></script> <!-- JS NVD3 -->
-	<script src="/bower_components/nvd3/build/nv.d3.js"></script> <!-- JS NVD3 -->
-	<script src="/bower_components/angular-nvd3/dist/angular-nvd3.js"></script> <!-- JS NVD3 -->
-	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
-	<script src="/js/angular/controllers/gastoCtrl.js"></script> <!-- JS DA CONTROLLER -->
+    <meta charset="UTF-8">
+    <!-- NECESSARIO PARA AJUSTE EM MOBILE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados de Consumo - Watterizer</title>
+    <link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
+    <link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
+    <link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"> <!-- CSS JQUERY UI -->
+    <link rel="stylesheet" type="text/css" href="/js/chart/nvd3/build/nv.d3.css"> <!-- CSS NVD3 -->
+    <link rel="icon" href="/img/icon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon" />
+    <script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+    <script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+    <script src="/js/chart/d3/d3.js"></script> <!-- JS NVD3 -->
+    <script src="/js/chart/nvd3/build/nv.d3.js"></script> <!-- JS NVD3 -->
+    <script src="/js/chart/angular-nvd3/dist/angular-nvd3.js"></script> <!-- JS NVD3 -->
+    <script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
+    <script src="/js/angular/controllers/gastoCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
+
 <body ng-controller="gastoCtrl">
-	<div class="container-fluid">
-	
-		<!-- CABEÇALHO -->
-		<header class="col-xs-12">
-			<div class="wrapper col-xs-12">
-				<a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
-				<!-- LOGO -->
-				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
-					<a class="col-xs-12" href="/portal">Watterizer</a>
-				</div>
-				<!-- DADOS DO USUARIO  -->
-				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
-					<img src="/foto.png">
-					<a id="name" href="/portal/configuracoes">Carregando...</a>
-					<div id="options" class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+    <div class="container-fluid">
+
+        <!-- CABEÇALHO -->
+        <header class="col-xs-12">
+            <div class="wrapper col-xs-12">
+                <a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
+                <!-- LOGO -->
+                <div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
+                    <a class="col-xs-12" href="/portal">Watterizer</a>
+                </div>
+                <!-- DADOS DO USUARIO  -->
+                <div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
+                    <img src="/foto.png">
+                    <a id="name" href="/portal/configuracoes">Carregando...</a>
+                    <div id="options" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 							<span class="caret"></span>
 						</button>
-						<ul class="dropdown-menu">
-							<li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</header>
-		<!-- CONTEUDO DO SITE -->
-
-		<div id="content-portal" class="container-fluid">
-		<h2 id="custo">Custo: rs{{custo}}</h2>
-			<form id="chart-select" class='form-inline'>
-				<div class="form-group">
-					<label><b>Setor:</b></label>
-					<select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
+                        <ul class="dropdown-menu">
+                            <li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- CONTEUDO DO SITE -->
+        <div id="content-portal" class="container-fluid">
+            <h2 id="custo">Custo: rs{{custo}}</h2>
+            <form id="chart-select" class='form-inline'>
+                <div class="form-group">
+                    <label><b>Setor:</b></label>
+                    <select ng-options='setor as setor.setor for setor in setores' ng-model='setorSel'>
 						<option value=''>-- Setor --</option>
 					</select>
-				</div> 
-				<div class="form-group">
-					<label><b>Arduino:</b></label>
-					<select ng-options='arduino as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'>
+                </div>
+                <div class="form-group">
+                    <label><b>Arduino:</b></label>
+                    <select ng-options='arduino as arduino.id for arduino in setorSel.arduinos' ng-model='arduinoSel'>
 						<option value=''>-- Arduino --</option>
 					</select>
-				</div>
-				<div class="form-group">
-					<label><b>Equipamento:</b></label>
-					<select ng-options='equipamento.id as equipamento.nome for equipamento in arduinoSel.equipamentos' ng-model='equipSel' ng-change='startChart()'>
+                </div>
+                <div class="form-group">
+                    <label><b>Equipamento:</b></label>
+                    <select ng-options='equipamento.id as equipamento.nome for equipamento in arduinoSel.equipamentos' ng-model='equipSel' ng-change='startChart()'>
 						<option value=''>-- Equipamento --</option>
 					</select>
-				</div>
-			</form>
-			<h3 id="no-data" ng-if="setores.length==0">Nenhum setor foi encontrado</h3>
-			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length==0">Nenhum arduíno foi encontrado</h3>
-			<h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length!=0 && arduinoSel.equipamentos.length==0">Nenhum equipamento foi encontrado</h3>
-			<div id="all-arround-chart">
-				<div id="container-chart">
-					<nvd3 id="chart" class="nvd3-chart" options="chart.options" data="chart.data"></nvd3>
-				</div>
-				<div id="container-mask" class="col-xs-12">
-					<div id="blur"></div>
-					<div id="mask"><h2>Não Medindo No Momento</h2></div>
-				</div>
-			</div>
-			<div id="div" class="col-xs-12"></div>
-			<div id="chartMes-container">
-				<nvd3 id="chartMes" class="nvd3-chart" options="chartMes.options" data="chartMes.data"></nvd3>
-			</div>
-			
-		</div>
+                </div>
+            </form>
+            <h3 id="no-data" ng-if="setores.length==0">Nenhum setor foi encontrado</h3>
+            <h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length==0">Nenhum arduíno foi encontrado</h3>
+            <h3 id="no-data" ng-if="setores.length!=0 && setorSel.arduinos.length!=0 && arduinoSel.equipamentos.length==0">Nenhum equipamento foi encontrado</h3>
+            <div id="all-arround-chart">
+                <div id="container-chart">
+                    <nvd3 id="chart" class="nvd3-chart" options="chart.options" data="chart.data"></nvd3>
+                </div>
+                <div id="container-mask" class="col-xs-12">
+                    <div id="blur"></div>
+                    <div id="mask">
+                        <h2>Não Medindo No Momento</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="div" class="col-xs-12"></div>
+            <div id="chartMes-container">
+                <nvd3 id="chartMes" class="nvd3-chart" options="chartMes.options" data="chartMes.data"></nvd3>
+            </div>
 
-		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja sair?</p>
-						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- RODAPÉ -->
-	</div>
+        </div>
+
+        <div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Confirmação Logout</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem certeza que deseja sair?</p>
+                        <a href="/logout">Sim</span></a>
+                        <a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- RODAPÉ -->
+    </div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="/js/bootstrap/bootstrap.min.js"></script> <!-- JS BOOTSTRAP -->
 <script src="/js/bootstrap/sync-bs.js"></script> <!-- JS DE SINCORINIZAÇÃO COM O BOOTSTRAP -->
 <script src="/js/custom/portal.js"></script> <!-- JS DO PORTAL -->
-<script src="/socket.io/socket.io.js"></script>	<!-- LINK DO SOCKET-IO -->
+<script src="/socket.io/socket.io.js"></script> <!-- LINK DO SOCKET-IO -->
 <script type="text/javascript">
-	setTimeout(function () {
-		$("nvd3").removeAttr("class");
-	}, 1);
-	resizeMask(chart);
-	$(chart).resize(function (){
-		resizeMask(chart);
-	});
+    setTimeout(function() {
+        $("nvd3").removeAttr("class");
+    }, 1);
+    resizeMask(chart);
+    $(chart).resize(function() {
+        resizeMask(chart);
+    });
 </script>
 </html>

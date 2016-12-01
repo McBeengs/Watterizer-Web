@@ -1,5 +1,5 @@
 const mysql = require('mysql');
- 
+
 function Connection() {
     this.pool = null;
 
@@ -19,5 +19,5 @@ function Connection() {
         });
     };
 }
- 
+
 module.exports = new Connection();

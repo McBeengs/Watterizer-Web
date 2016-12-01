@@ -1,180 +1,182 @@
 <!DOCTYPE html>
 <html ng-app="watterizerApp">
+
 <head>
-	<meta charset="UTF-8">
-	<!-- NECESSARIO PARA AJUSTE EM MOBILE -->
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Usuários - Watterizer</title>
-	<link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"><!-- CSS DO JQUERY UI -->
-	<link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
-	<link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL --> 
-	<link rel="stylesheet" type="text/css" href="/css/library/data-tables.min.css"> <!-- CSS DATATABLES -->
-	<link rel="icon" href="/img/icon.png" type="image/x-icon" />
-	<link rel="shortcut icon" href="/img/icon.png" type="image/x-icon" />
-	<script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
-	<script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
-	<script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
-	<script src="/js/angular/controllers/usuarioCtrl.js"></script> <!-- JS DA CONTROLLER -->
+    <meta charset="UTF-8">
+    <!-- NECESSARIO PARA AJUSTE EM MOBILE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - Watterizer</title>
+    <link rel="stylesheet" type="text/css" href="/css/library/jquery-ui.min.css"> <!-- CSS DO JQUERY UI -->
+    <link rel="stylesheet" type="text/css" href="/css/library/bootstrap.min.css"> <!-- CSS BOOTSTRAP -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/post-processed/post-base.css"> <!-- CSS BASE -->
+    <link rel="stylesheet" type="text/css" href="/css/post-processed/post-portal.css"> <!-- CSS DO PORTAL -->
+    <link rel="stylesheet" type="text/css" href="/css/library/data-tables.min.css"> <!-- CSS DATATABLES -->
+    <link rel="icon" href="/img/icon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="/img/icon.png" type="image/x-icon" />
+    <script src="/js/jquery/jquery.js"></script> <!-- JS JQUERY -->
+    <script src="/js/angular/angular.js"></script> <!-- JS DO ANGULAR -->
+    <script src="/js/angular/watterizerApp.js"></script> <!-- JS DO APP ANGULAR -->
+    <script src="/js/angular/controllers/usuarioCtrl.js"></script> <!-- JS DA CONTROLLER -->
 </head>
+
 <body ng-controller="usuarioCtrl">
-	<div class="container-fluid">
-		<!-- CABEÇALHO -->
-		<header class="col-xs-12">
-			<div class="wrapper col-xs-12">
-				<a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
-				<!-- LOGO -->
-				<div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
-					<a class="col-xs-12" href="/portal">Watterizer</a>
-				</div>
-				<!-- DADOS DO USUARIO  -->
-				<div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
-					<img src="/foto.png">
-					<a id="name" href="/portal/configuracoes">Carregando...</a>
-					<div id="options" class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+    <div class="container-fluid">
+        <!-- CABEÇALHO -->
+        <header class="col-xs-12">
+            <div class="wrapper col-xs-12">
+                <a id="voltar" class="hidden-md hidden-lg" href="/portal">Voltar</a>
+                <!-- LOGO -->
+                <div class="logo hidden-xs hidden-sm col-md-5 col-lg-6">
+                    <a class="col-xs-12" href="/portal">Watterizer</a>
+                </div>
+                <!-- DADOS DO USUARIO  -->
+                <div id="auth" class="container col-xs-12 col-md-7 col-lg-6">
+                    <img src="/foto.png">
+                    <a id="name" href="/portal/configuracoes">Carregando...</a>
+                    <div id="options" class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 							<span class="caret"></span>
 						</button>
-						<ul class="dropdown-menu">
-							<li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
-							<li class="divider"></li>
-							<li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</header>
-		<!-- CONTEUDO DO SITE -->
-		<div id="content-portal" class="container-fluid">
-			<div id="usuarios" >
-				<button id="new-user" type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-usuario">
+                        <ul class="dropdown-menu">
+                            <li><a href="/portal/configuracoes">Configurações de Conta<span class="glyphicon glyphicon-wrench"></span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" data-toggle="modal" data-target="#modal-logout">Logout<span class="glyphicon glyphicon-log-out"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- CONTEUDO DO SITE -->
+        <div id="content-portal" class="container-fluid">
+            <div id="usuarios">
+                <button id="new-user" type="button" ng-click="novo()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-dados-usuario">
 					Novo Usuário
 				</button>
-				<table class="table-striped" datatable="ng" ng-if="load" dt-options="dtOptions">
-					<thead>
-						<tr>
-							<th>Nome</th>					
-							<th>Username</th>
-							<th>Email</th>
-							<th>Perfil</th>
-							<th>Telefone</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="usuario in usuarios">
-							<td>{{usuario.nome}}</td>
-							<td>{{usuario.username}}</td>
-							<td>{{usuario.email}}</td>
-							<td>{{usuario.perfil}}</td>
-							<td>{{usuario.telefone}}</td>
-							<td>
-								<button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#modal-dados-usuario">Editar</button>
-								<button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)"data-toggle="modal" data-target="#modal-excluir">Excluir</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-message">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="log-out-message">Confirmação Logout</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja sair?</p>
-						<a href="/logout">Sim</span></a>
-						<a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="modal-dados-usuario" tabindex="-1" role="dialog" aria-labelledby="user-data-label">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="user-data-label">{{titulo}}</h4>
-					</div>
-					<div class="modal-body">
-						<form ng-submit="create()">
-							<div class="form-group col-sm-6">
-								<label for="txt-nome">Nome:</label>
-								<input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome" placeholder="Fulano Sicrano Beltrano" ng-model="usuario.nome" required>
-							</div>
-							<div class="form-group col-sm-6">
-								<label for="txt-username">Nome de Usuário</label>
-								<input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" placeholder="FulanoBeltrano1234" ng-model="usuario.username" readonly required>
-							</div>
-							<div class="form-group col-sm-6">
-								<label for="txt-email">Email</label>
-								<input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" placeholder="fulano@email.com" ng-model="usuario.email" required>
-							</div>
-							<div class="form-group col-sm-6">
-								<label for="txt-telefone">Telefone</label>
-								<input type="text" minlength="8" maxlength="16" class="form-control" id="txt-telefone" placeholder="(11) 98765-4321" ng-model="usuario.telefone" ng-change="telMask()" required>
-							</div>
-							<div class="form-group col-sm-4">
-								<label for="txt-hr-entrada">Hora de Entrada</label>
-								<input type="time" class="form-control" id="txt-hr-entrada" placeholder="" ng-model="usuario.hora_entrada" required>
-							</div>
-							<div class="form-group col-sm-4">
-								<label for="txt-hr-intervalo">Hora de Intervalo</label>
-								<input type="time" class="form-control" id="txt-hr-intervalo" placeholder="" ng-model="usuario.hora_intervalo" required>
-							</div>
-							<div class="form-group col-sm-4">
-								<label for="txt-hr-saida">Hora de Saída</label>
-								<input type="time" class="form-control" id="txt-hr-saida" placeholder="" ng-model="usuario.hora_saida" required>
-							</div>
-							<div class="form-group col-xs-6">
-								<label for="txt-id_setor">Setor</label>
-								<select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" class="form-control" id="txt-id_setor" placeholder="" required>
+                <table class="table-striped" datatable="ng" ng-if="load" dt-options="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Perfil</th>
+                            <th>Telefone</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="usuario in usuarios">
+                            <td>{{usuario.nome}}</td>
+                            <td>{{usuario.username}}</td>
+                            <td>{{usuario.email}}</td>
+                            <td>{{usuario.perfil}}</td>
+                            <td>{{usuario.telefone}}</td>
+                            <td>
+                                <button ng-show="autoExclusao(usuario.id)" ng-click="editar(usuario)" data-toggle="modal" data-target="#modal-dados-usuario">Editar</button>
+                                <button ng-show="autoExclusao(usuario.id)" ng-click="preparaExclusao(usuario.nome,usuario.id)" data-toggle="modal" data-target="#modal-excluir">Excluir</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-logout" tabindex="-1" role="dialog" aria-labelledby="log-out-message">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="log-out-message">Confirmação Logout</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem certeza que deseja sair?</p>
+                        <a href="/logout">Sim</span></a>
+                        <a href="/logout" data-toggle="modal" data-target="#modal-logout">Não</a>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-dados-usuario" tabindex="-1" role="dialog" aria-labelledby="user-data-label">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="user-data-label">{{titulo}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="create()">
+                            <div class="form-group col-sm-6">
+                                <label for="txt-nome">Nome:</label>
+                                <input type="text" minlength="3" maxlength="50" class="form-control" id="txt-nome" placeholder="Fulano Sicrano Beltrano" ng-model="usuario.nome" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txt-username">Nome de Usuário</label>
+                                <input type="text" minlength="7" maxlength="54" class="form-control" id="txt-username" placeholder="FulanoBeltrano1234" ng-model="usuario.username" readonly required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txt-email">Email</label>
+                                <input type="email" minlength="12" maxlength="35" class="form-control" id="txt-email" placeholder="fulano@email.com" ng-model="usuario.email" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="txt-telefone">Telefone</label>
+                                <input type="text" minlength="8" maxlength="16" class="form-control" id="txt-telefone" placeholder="(11) 98765-4321" ng-model="usuario.telefone" ng-change="telMask()" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txt-hr-entrada">Hora de Entrada</label>
+                                <input type="time" class="form-control" id="txt-hr-entrada" placeholder="" ng-model="usuario.hora_entrada" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txt-hr-intervalo">Hora de Intervalo</label>
+                                <input type="time" class="form-control" id="txt-hr-intervalo" placeholder="" ng-model="usuario.hora_intervalo" required>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="txt-hr-saida">Hora de Saída</label>
+                                <input type="time" class="form-control" id="txt-hr-saida" placeholder="" ng-model="usuario.hora_saida" required>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label for="txt-id_setor">Setor</label>
+                                <select ng-options="setor.id as setor.setor for setor in setores" ng-model="usuario.id_setor" class="form-control" id="txt-id_setor" placeholder="" required>
 									<option value="">-- Selecione um Setor --</option>
 									<option value="usuario.id_setor">{{setor.id}}</option>
 								</select>
-							</div>
-							<div class="form-group col-xs-6">
-								<label for="txt-id_perfil">Perfil</label>
-								<select ng-options="perfil.id as perfil.perfil for perfil in perfis" ng-model="usuario.id_perfil"  class="form-control" id="txt-id_perfil" placeholder="" required>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label for="txt-id_perfil">Perfil</label>
+                                <select ng-options="perfil.id as perfil.perfil for perfil in perfis" ng-model="usuario.id_perfil" class="form-control" id="txt-id_perfil" placeholder="" required>
 									<option value="">-- Selecione um Perfil --</option>
 									<option value="usuario.id_perfil">{{perfil.id}}</option>
 								</select>
-							</div>
-							<div class="col-xs-12">
-								<input type="submit" value="Cadastrar" class="form-control btn-primary centered">
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="modal-excluir" tabindex="-1" role="dialog" aria-labelledby="delete-label">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="delete-label">Excluir Usuário</h4>
-					</div>
-					<div class="modal-body">
-						<p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
-						<button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modal-excluir">Sim</button>
-						<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-excluir">Não</button>
-					</div>
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            </div>
+                            <div class="col-xs-12">
+                                <input type="submit" value="Cadastrar" class="form-control btn-primary centered">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-excluir" tabindex="-1" role="dialog" aria-labelledby="delete-label">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="delete-label">Excluir Usuário</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem certeza que deseja excluir o usuário ( {{usuarioExclusao.nome}} )?</p>
+                        <button class="btn btn-primary btn-lg" ng-click="excluir(usuarioExclusao.id)" data-toggle="modal" data-target="#modal-excluir">Sim</button>
+                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-excluir">Não</button>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <!-- IMPORTAÇÕES JAVASCRIPT -->
 <script src="/js/jquery/jquery-ui.min.js"></script> <!-- JS DO JQUERY UI -->
