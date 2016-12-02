@@ -249,6 +249,9 @@ canvas.observe('mouse:down', function(options) {
         }
 
         timer = timeNow;
+        if (options.target.fill!="transparent") {
+        canvas.allowTouchScrolling = false
+    }
     }
 });
 
