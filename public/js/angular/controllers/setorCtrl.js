@@ -80,6 +80,14 @@ app.controller('setorCtrl', function($scope, $http, $timeout, $window) {
         });
         $scope.getPcs();
     }
+    $scope.editPc = function(id,nome) {
+            console.log(id,nome);
+        $http.put("/dados/computadores", {
+            id: id,
+            nome: nome
+        });
+        $scope.getPcs();
+    }
 
     $scope.saveCanvas = function(setor, code) {
         $http.post("/canvas/", {

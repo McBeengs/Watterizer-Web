@@ -106,7 +106,7 @@ socket.on("continuaUsando",function(data) {
 })
 socket.on("saveClient",function(data) {
 
-        if (scope.canvasSel.id==data) {
+    if (scope.canvasSel.id==data) {
         loadCanvas(data.toString())
     }
 
@@ -116,52 +116,53 @@ socket.on("saveClient",function(data) {
 var canvasToLoad;
 function loadCanvas(id) {
     canvas.clear();
+
     setTimeout(function  (argument) {
         scope.getCanvas()
     }, 100);
     setTimeout(function  (argument) {
-    
-    setores=scope.setores;
-    setTimeout(function  (argument) {
-        for (var i = setores.length - 1; i >= 0; i--) {
-        if (setores[i].id == Number(id)){
-            if (setores[i].canvas!="") {
 
-                canvasToLoad = JSON.parse(setores[i].canvas);
-            }
-            else{
-                canvasToLoad = setores[i].canvas;
-            }
+        setores=scope.setores;
+        setTimeout(function  (argument) {
+            for (var i = setores.length - 1; i >= 0; i--) {
+                if (setores[i].id == Number(id)){
+                    if (setores[i].canvas!="") {
 
-        }
-    }
-    if (canvasToLoad!="") {
-        canvasScale = canvasToLoad.canvasScale;
-        if (canvasToLoad.objects.pcs!=null){
-            for (var i = canvasToLoad.objects.pcs.length - 1; i >= 0; i--) {
-                for (var j = scope.equipamentos.length - 1; j >= 0; j--) {
-                    if (scope.equipamentos[j].id==Number(canvasToLoad.objects.pcs[i].id.substr(canvasToLoad.objects.pcs[i].id.lastIndexOf(":")+1,canvasToLoad.objects.pcs[i].id.length-1))) {
-                        if (scope.equipamentos[j].posicionado==1) {
-                            createPc(canvasToLoad.objects.pcs[i]);
+                        canvasToLoad = JSON.parse(setores[i].canvas);
+                    }
+                    else{
+                        canvasToLoad = setores[i].canvas;
+                    }
+
+                }
+            }
+            if (canvasToLoad!="") {
+                canvasScale = canvasToLoad.canvasScale;
+                if (canvasToLoad.objects.pcs!=null){
+                    for (var i = canvasToLoad.objects.pcs.length - 1; i >= 0; i--) {
+                        for (var j = scope.equipamentos.length - 1; j >= 0; j--) {
+                            if (scope.equipamentos[j].id==Number(canvasToLoad.objects.pcs[i].id.substr(canvasToLoad.objects.pcs[i].id.lastIndexOf(":")+1,canvasToLoad.objects.pcs[i].id.length-1))) {
+                                if (scope.equipamentos[j].posicionado==1) {
+                                    createPc(canvasToLoad.objects.pcs[i]);
+                                };
+                            };
                         };
-                    };
-                };
-                
-            }
-        }
-        if (canvasToLoad.objects.doors!=null){
-            for (var i = canvasToLoad.objects.doors.length - 1; i >= 0; i--) {
-                createDoor(canvasToLoad.objects.doors[i]);
-            }
-        }
-        if (canvasToLoad.objects.boxes!=null){
-            for (var i = canvasToLoad.objects.boxes.length - 1; i >= 0; i--) {
-                createBox(canvasToLoad.objects.boxes[i]);
-            }
-        }
-    };
-    }, 100);
-    
+
+                    }
+                }
+                if (canvasToLoad.objects.doors!=null){
+                    for (var i = canvasToLoad.objects.doors.length - 1; i >= 0; i--) {
+                        createDoor(canvasToLoad.objects.doors[i]);
+                    }
+                }
+                if (canvasToLoad.objects.boxes!=null){
+                    for (var i = canvasToLoad.objects.boxes.length - 1; i >= 0; i--) {
+                        createBox(canvasToLoad.objects.boxes[i]);
+                    }
+                }
+            };
+        }, 100);
+
 }, 200);
 };
 
@@ -200,7 +201,7 @@ $("#slt-setores").change(function() {
             
         };
     }, 500);
-   
+
 
 });
 
@@ -252,9 +253,8 @@ canvas.observe('mouse:down', function(options) {
         }
 
         timer = timeNow;
-        if (options.target.fill!="transparent") {
         canvas.allowTouchScrolling = false
-    }
+
     }
 });
 
@@ -288,7 +288,7 @@ canvas.observe('object:moving', function(evento) {
 
 // AO TIRAR O MOUSE DE CIMA
 canvas.observe('mouse:out', function(evento) {
-    
+
     canvas.allowTouchScrolling = true
 
     target = false;
@@ -381,10 +381,15 @@ function createBox(boxParams) {
             width: 300 * canvasScale,
             height: 300 * canvasScale
 
+
         });
+        setTimeout(function () {
+            saveCanvas();
+        }, 500);
     }
     canvas.add(rect);
     canvas.renderAll();
+    
 }
 
 // CRIA UMA PORTA
@@ -414,7 +419,11 @@ function createDoor(doorParams) {
             img.crossOrigin = null;
             canvas.add(img);
             canvas.renderAll();
+            
         });
+        setTimeout(function () {
+            saveCanvas();
+        }, 500);
     }
 }
 
@@ -560,27 +569,29 @@ if ($("#slt-pc").val() != '') {
         };
         canvas.add(group);
     });
+scope.getPcsChange(idSel);
 
-$("#slt-pc option:selected").remove();
-}
-if (pcParams==null || pcParams==undefined) {
+setTimeout(function () {
     saveCanvas();
-    
-};
+}, 500);
+
+}
 
 }
 
 //EDITANDO NOME PC
-$("#editar").click(function editar() {
-    var texto2 = $("#txt-new-name-pc").val();
-
-    if (texto2 != "") {
-        alert("antigo texto " + lastTarget.crossOrigin)
-        lastTarget.crossOrigin = texto2;
-        alert("novo texto " + lastTarget.crossOrigin)
-    } else {
-        alert("necessário colocar um novo")
+$("#btn-editar").click(function editar() {
+    var obj = canvas.getActiveObject();
+    if ($("#txt-new-name-pc").val()!='') {
+        obj._objects[1].text=$("#txt-new-name-pc").val()
+        obj._objects[1].setLeft((-13 - obj._objects[1].text.length * 4)*canvasScale);
+        scope.editPc(Number(obj.id.substr(obj.id.lastIndexOf(":")+1,obj.id.length-1)), obj._objects[1].text)
+        canvas.renderAll()
     }
+    else{
+        alert("Preencha o campo de texto")
+    }
+    
 });
 //EDITANDO NOME PC
 $("#desligar").click(function desliga() {
@@ -766,25 +777,43 @@ function del() {
     var activeObject = canvas.getActiveObject(),
     activeGroup = canvas.getActiveGroup();
     if (activeGroup) {
-        if (confirm('Tem certeza ?')) {
+        $("#modal-confirm").fadeIn();
+        $("#modal-confirm").attr("class","modal fade in");
+        $("#excluir-sim").click(function () {
             var objectsInGroup = activeGroup.getObjects();
             canvas.discardActiveGroup();
             objectsInGroup.forEach(function(object) {
                 canvas.remove(object);
             });
-        }
-    } else if (activeObject) {
+            $("#modal-confirm").attr("class","modal fade");
+            $("#modal-confirm").fadeOut();
+            saveCanvas()
+        })
+        $("#excluir-nao").click(function () {
+            $("#modal-confirm").attr("class","modal fade");
+            $("#modal-confirm").fadeOut();
+        })
 
-        if (confirm('Tem certeza ?')) {
+    } else if (activeObject) {
+        $("#modal-confirm").fadeIn();
+        $("#modal-confirm").attr("class","modal fade in");
+        $("#excluir-sim").click(function () {
             if (activeObject._objects!=undefined) {
                 if (activeObject.id!=undefined){
                     scope.removePc(activeObject.id.substr(activeObject.id.lastIndexOf(":")+1,activeObject.id.length-1));
-                    saveCanvas();
 
                 }
             };
             canvas.remove(activeObject);
-        }
+            $("#modal-confirm").attr("class","modal fade");
+            $("#modal-confirm").fadeOut();
+            saveCanvas()
+        });
+        $("#excluir-nao").click(function () {
+            $("#modal-confirm").attr("class","modal fade");
+            $("#modal-confirm").fadeOut();
+        })
+
     } 
     canvas.renderAll();
 }
@@ -836,7 +865,7 @@ function saveCanvas() {
             // var savedCanvas = JSON.stringify(canvas.toJSON());
             // scope.saveCanvas($("#slt-setores").val(), savedCanvas);
             // console.log($("#slt-setores").val(), savedCanvas);
-                
+
         }, 0);
 socket.emit("save",scope.canvasSel.id);
 
@@ -893,8 +922,11 @@ function mostrarMenu(event) {
     menu.style.top = Y.toString() + "px";
     menu.style.left = X.toString() + "px";
     menu.style.display = "block";
-
+    
     //CONTEXT-MENU
+    if (target._objects!=undefined && target._objects[0].stroke!='green') {
+        $("#desligar").hide();
+    }
     if (target.id == null || target.id == undefined) {
         $("#editar").hide();
         $("#desligar").hide();
