@@ -925,15 +925,16 @@ function mostrarMenu(event) {
     menu.style.display = "block";
     
     //CONTEXT-MENU
-    if (target._objects!=undefined && target._objects[0].stroke!='green') {
-        $("#desligar").hide();
-    }
+    
     if (target.id == null || target.id == undefined) {
         $("#editar").hide();
         $("#desligar").hide();
     } else {
         $("#editar").show();
         $("#desligar").show();
+    }
+    if (target._objects!=undefined && target._objects[0].stroke!='green') {
+        $("#desligar").hide();
     }
 
 }
