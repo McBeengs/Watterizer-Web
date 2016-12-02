@@ -587,6 +587,7 @@ $("#btn-editar").click(function editar() {
         obj._objects[1].setLeft((-13 - obj._objects[1].text.length * 4)*canvasScale);
         scope.editPc(Number(obj.id.substr(obj.id.lastIndexOf(":")+1,obj.id.length-1)), obj._objects[1].text)
         canvas.renderAll()
+        saveCanvas();
     }
     else{
         alert("Preencha o campo de texto")
