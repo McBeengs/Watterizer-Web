@@ -17,9 +17,12 @@ var setores;
 canvas.setBackgroundColor('rgb(224, 224, 224)', canvas.renderAll.bind(canvas));
 setTimeout(function () {
     scope = angular.element($("body")).scope();
+    while (!scope.load) {
+        scope = angular.element($("body")).scope();
+    };
     setores = scope.setores;
     console.log(scope)
-}, 500);
+}, 1000);
 
 // RESPONSIVIDADE
 $(document).ready(function() {      
