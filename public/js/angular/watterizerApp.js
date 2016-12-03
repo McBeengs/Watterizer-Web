@@ -13,4 +13,5 @@ app.run(function($rootScope, $http) {
         .then(function(response) {
             $rootScope.ip = response.data
         });
+        
 });
