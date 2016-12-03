@@ -1,7 +1,7 @@
 /* CRIA O CANVAS */
 var canvas = new fabric.Canvas(
     'canvas-drawer', {
-        selection: true,
+        selection: false,
         controlsAboveOverlay: true,
         centeredScaling: false,
         allowTouchScrolling: true
