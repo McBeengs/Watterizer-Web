@@ -115,7 +115,7 @@ socket.on("saveClient",function(data) {
 }, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
-    canvas.clear();
+    
 
     setTimeout(function  (argument) {
         scope.getCanvas()
@@ -124,6 +124,7 @@ function loadCanvas(id) {
 
         setores=scope.setores;
         setTimeout(function  (argument) {
+            canvas.clear();
             for (var i = setores.length - 1; i >= 0; i--) {
                 if (setores[i].id == Number(id)){
                     if (setores[i].canvas!="") {
@@ -161,6 +162,7 @@ function loadCanvas(id) {
                     }
                 }
             };
+
         }, 100);
 
 }, 200);

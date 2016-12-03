@@ -48,8 +48,16 @@ app.controller('pcCtrl', function($scope, $timeout, $http) {
             $timeout(function() {
                 for (var i = $scope.equipamentos.length - 1; i >= 0; i--) {
                     if ($scope.equipamentos[i].mac == data) {
-
-                        $scope.pcsLigadosFull.push($scope.equipamentos[i])
+                        var repetido = false;
+                        for (var j = $scope.pcsLigadosFull.length - 1; j >= 0; j--) {
+                            if ($scope.pcsLigadosFull[j]==$scope.equipamentos[i]) {
+                                repetido=true
+                            };
+                        };
+                        if (!repetido) {
+                            $scope.pcsLigadosFull.push($scope.equipamentos[i])
+                            repetido=false
+                        };
 
                     }
                 };
