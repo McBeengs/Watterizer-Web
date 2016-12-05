@@ -259,7 +259,7 @@ net.createServer(function(sock) {
                     gasto.create(arrayDadosEquipamento[idEquipamento], idEquipamento, arrayCustoEquipamento[idEquipamento], null);
                     ultimoEnvioData = new Date();
                     arrayDadosEquipamento[idEquipamento] = new Array(0);
-                    arrayCustoEquipamento[idEquipamento] = new Array(0);
+                    arrayCustoEquipamento[idEquipamento] = 0;
                     arrayCustoArduino[arduino] = 0;
                 }
             };
@@ -297,7 +297,7 @@ net.createServer(function(sock) {
         if (idEquipamento != 0) {
             gasto.create(arrayDadosEquipamento[idEquipamento], idEquipamento, arrayCustoEquipamento[idEquipamento], null);
             arrayDadosEquipamento[idEquipamento] = new Array(0);
-            arrayCustoEquipamento[idEquipamento] = new Array(0);
+            arrayCustoEquipamento[idEquipamento] = 0;
             request.get("http://" + ip.address() + ":1515/equipamento/" + idEquipamento + "", function(error, response, body) {
                 io.sockets.emit('pcDesligado', body.mac);
                 io.sockets.emit('pcCount', pcsLigados);
