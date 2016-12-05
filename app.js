@@ -232,13 +232,7 @@ net.createServer(function(sock) {
             }
             arrayCustoArduino[arduino] = arrayCustoArduino[arduino] + (127 * gastoRecebido / 1000) * precoKilowatt.valor / 3600
             arrayCustoEquipamento[idEquipamento] = arrayCustoEquipamento[idEquipamento] + (127 * gastoRecebido / 1000) * precoKilowatt.valor / 3600
-            request.post("http://" + ip.address() + ":1515/intervalo", function(error, response, body) {
-                console.log("body" + body);
-                gasto.intervalo(ultimoEnvio, idEquipamento);
-            }).form({
-                arduino: arduino,
-                data: ultimoEnvio
-            })
+            gasto.intervalo(ultimoEnvio, idEquipamento);
 
             // console.log('ultimoEnvio'+ultimoEnvio);
             if (arrayDadosEquipamento[idEquipamento] == undefined) {
@@ -265,7 +259,7 @@ net.createServer(function(sock) {
                     gasto.create(arrayDadosEquipamento[idEquipamento], idEquipamento, arrayCustoEquipamento[idEquipamento], null);
                     ultimoEnvioData = new Date();
                     arrayDadosEquipamento[idEquipamento] = new Array(0);
-                    arrayCustoEquipamento[idEquipamento] = new Array(0);
+                    arrayCustoEquipamento[idEquipamento] = 0;
                     arrayCustoArduino[arduino] = 0;
                 }
             };
@@ -303,7 +297,7 @@ net.createServer(function(sock) {
         if (idEquipamento != 0) {
             gasto.create(arrayDadosEquipamento[idEquipamento], idEquipamento, arrayCustoEquipamento[idEquipamento], null);
             arrayDadosEquipamento[idEquipamento] = new Array(0);
-            arrayCustoEquipamento[idEquipamento] = new Array(0);
+            arrayCustoEquipamento[idEquipamento] = 0;
             request.get("http://" + ip.address() + ":1515/equipamento/" + idEquipamento + "", function(error, response, body) {
                 io.sockets.emit('pcDesligado', body.mac);
                 io.sockets.emit('pcCount', pcsLigados);

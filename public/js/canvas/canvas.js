@@ -26,10 +26,10 @@ setTimeout(function () {
 
 // RESPONSIVIDADE
 $(document).ready(function() {
-    // if (get_browser().name.toLowerCase()=="msie") {
-    //     $("#canvas").remove();
-    //     alert("Seu browser nao suporta essa função")
-    // };      
+    if (get_browser().name.toLowerCase()=="msie" || get_browser().name.toLowerCase()=="ie") {
+        $("#canvas").remove();
+        alert("Seu browser nao suporta essa função")
+    };      
     canvas.setWidth($(window).width());
 
     $( "#controles" ).find("button").prop( "disabled", true );
@@ -39,23 +39,23 @@ $(document).ready(function() {
         
     });
 });
-// function get_browser() {
-//     var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
-//     if(/trident/i.test(M[1])){
-//         tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
-//         return {name:'IE',version:(tem[1]||'')};
-//         }   
-//     if(M[1]==='Chrome'){
-//         tem=ua.match(/\bOPR|Edge\/(\d+)/)
-//         if(tem!=null)   {return {name:'Opera', version:tem[1]};}
-//         }   
-//     M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-//     if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
-//     return {
-//       name: M[0],
-//       version: M[1]
-//     };
-//  }
+function get_browser() {
+    var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []; 
+    if(/trident/i.test(M[1])){
+        tem=/\brv[ :]+(\d+)/g.exec(ua) || []; 
+        return {name:'IE',version:(tem[1]||'')};
+        }   
+    if(M[1]==='Chrome'){
+        tem=ua.match(/\bOPR|Edge\/(\d+)/)
+        if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+        }   
+    M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+    return {
+      name: M[0],
+      version: M[1]
+    };
+ }
 setTimeout(function () {
     socket = io.connect(scope.ip+':1515');
     socket.on("pcLigado",function(data) {
@@ -135,10 +135,10 @@ socket.on("saveClient",function(data) {
 }, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
-    
 
     setTimeout(function  (argument) {
         scope.getCanvas()
+        scope.getPcs()
     }, 100);
     setTimeout(function  (argument) {
 
@@ -157,6 +157,19 @@ function loadCanvas(id) {
 
                 }
             }
+            var array = canvasToLoad.objects.pcs;
+
+            var dupes = {};
+            var singles = [];
+
+            $.each(array, function(i, el) {
+
+                if (!dupes[el.text]) {
+                    dupes[el.text] = true;
+                    singles.push(el);
+                }
+            });
+            canvasToLoad.objects.pcs=singles
             if (canvasToLoad!="") {
                 canvasScale = canvasToLoad.canvasScale;
                 if (canvasToLoad.objects.pcs!=null){
@@ -527,7 +540,8 @@ function createPc(pcParams) {
 }
 idimg++;
 if ($("#slt-pc").val() != '') {
-    var textoSel = $("#slt-pc option:selected").text();
+    if (pcParams==null || pcParams==undefined) {
+            var textoSel = $("#slt-pc option:selected").text();
     var idSel = $("#slt-pc option:selected").val();
     var pcSelecionado;
     fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
@@ -591,11 +605,9 @@ if ($("#slt-pc").val() != '') {
         };
         canvas.add(group);
     });
+saveCanvas();
 scope.getPcsChange(idSel);
-
-setTimeout(function () {
-    saveCanvas();
-}, 500);
+    }
 
 }
 
