@@ -135,10 +135,10 @@ socket.on("saveClient",function(data) {
 }, 1000);
 var canvasToLoad;
 function loadCanvas(id) {
-    
 
     setTimeout(function  (argument) {
         scope.getCanvas()
+        scope.getPcs()
     }, 100);
     setTimeout(function  (argument) {
 
@@ -157,6 +157,19 @@ function loadCanvas(id) {
 
                 }
             }
+            var array = canvasToLoad.objects.pcs;
+
+            var dupes = {};
+            var singles = [];
+
+            $.each(array, function(i, el) {
+
+                if (!dupes[el.text]) {
+                    dupes[el.text] = true;
+                    singles.push(el);
+                }
+            });
+            canvasToLoad.objects.pcs=singles
             if (canvasToLoad!="") {
                 canvasScale = canvasToLoad.canvasScale;
                 if (canvasToLoad.objects.pcs!=null){
@@ -527,7 +540,8 @@ function createPc(pcParams) {
 }
 idimg++;
 if ($("#slt-pc").val() != '') {
-    var textoSel = $("#slt-pc option:selected").text();
+    if (pcParams==null || pcParams==undefined) {
+            var textoSel = $("#slt-pc option:selected").text();
     var idSel = $("#slt-pc option:selected").val();
     var pcSelecionado;
     fabric.Image.fromURL('/img/canvas-icons/pc-icon.png', function(img) {
@@ -591,11 +605,9 @@ if ($("#slt-pc").val() != '') {
         };
         canvas.add(group);
     });
+saveCanvas();
 scope.getPcsChange(idSel);
-
-setTimeout(function () {
-    saveCanvas();
-}, 500);
+    }
 
 }
 
