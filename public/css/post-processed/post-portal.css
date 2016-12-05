@@ -447,6 +447,11 @@
 }
 
 /* GRÁFICO DE GASTOS */
+#custo
+{
+	color: white;
+}
+
 #chart-select
 {
 	text-align: center;

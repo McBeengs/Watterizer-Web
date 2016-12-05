@@ -114,16 +114,25 @@
 #bot-content
 {
 	margin: 20px;
+	text-align: center;
 }
 
-#bot h2
+#bot-content img
 {
-	border-right: inset rgba(66,66,66,0.3) 1px;
-	font-size: 34px;
-	font-weight: normal;
+	max-height: 80px;
+	height: auto;
+	max-width: 80px;
+	width: auto;
+	display: inline-block;
+	margin: 0 auto;
 }
 
-#bot p
+#bot-content img:nth-of-type(5)
 {
-	padding-top: 10px;
+	max-width: 110px;
+}
+
+#bot-content img:not(:last-of-type)
+{
+	margin-right: 5%; 	
 }
