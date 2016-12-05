@@ -232,13 +232,7 @@ net.createServer(function(sock) {
             }
             arrayCustoArduino[arduino] = arrayCustoArduino[arduino] + (127 * gastoRecebido / 1000) * precoKilowatt.valor / 3600
             arrayCustoEquipamento[idEquipamento] = arrayCustoEquipamento[idEquipamento] + (127 * gastoRecebido / 1000) * precoKilowatt.valor / 3600
-            request.post("http://" + ip.address() + ":1515/intervalo", function(error, response, body) {
-                console.log("body" + body);
-                gasto.intervalo(ultimoEnvio, idEquipamento);
-            }).form({
-                arduino: arduino,
-                data: ultimoEnvio
-            })
+            gasto.intervalo(ultimoEnvio, idEquipamento);
 
             // console.log('ultimoEnvio'+ultimoEnvio);
             if (arrayDadosEquipamento[idEquipamento] == undefined) {
