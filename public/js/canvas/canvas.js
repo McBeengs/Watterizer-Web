@@ -138,7 +138,7 @@ function loadCanvas(id) {
 
     setTimeout(function  (argument) {
         scope.getCanvas()
-        scope.getPcs()
+        scope.getPcsChange(Number(id))
     }, 100);
     setTimeout(function  (argument) {
 
