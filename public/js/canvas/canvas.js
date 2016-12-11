@@ -822,11 +822,15 @@ function del() {
             });
             $("#modal-confirm").attr("class","modal fade");
             $("#modal-confirm").fadeOut();
+            console.log("save")
+            $( "#excluir-sim" ).unbind();
             saveCanvas()
+            
         })
         $("#excluir-nao").click(function () {
             $("#modal-confirm").attr("class","modal fade");
             $("#modal-confirm").fadeOut();
+            $( "#excluir-nao" ).unbind();
         })
 
     } else if (activeObject) {
@@ -842,11 +846,14 @@ function del() {
             canvas.remove(activeObject);
             $("#modal-confirm").attr("class","modal fade");
             $("#modal-confirm").fadeOut();
+            console.log("save")
+            $( "#excluir-sim" ).unbind();
             saveCanvas()
         });
         $("#excluir-nao").click(function () {
             $("#modal-confirm").attr("class","modal fade");
             $("#modal-confirm").fadeOut();
+            $( "#excluir-nao" ).unbind();
         })
 
     } 
